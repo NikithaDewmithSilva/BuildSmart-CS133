@@ -1,0 +1,169 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.output-page {
+    height: 100vh;
+    background: radial-gradient(circle at center, #2d3e6f, #1e2947);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 20px;
+}
+
+.output-header {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+}
+
+.output-logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+}
+
+.output-highlight {
+    color: #5ce1e6;
+}
+
+.output-profile-btn {
+    background: transparent;
+    border: 2px solid #5ce1e6;
+    color: #5ce1e6;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.output-profile-btn:hover {
+    background: #5ce1e6;
+    color: #1c2a4c;
+}
+
+.output-content {
+    margin-top: 80px;
+    text-align: center;
+    width: 80%;
+}
+
+.output-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+/* BOQ Table(FYI) */
+.boq-table {
+    width: 100%;
+    max-width: 800px;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.boq-table:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.boq-table.processed {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+}
+
+.boq-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.boq-table th, .boq-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.boq-table th {
+    background: #5ce1e6;
+    color: #1e2947;
+    font-size: 16px;
+}
+
+.boq-table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.grand-total-row {
+    font-weight: bold;
+    background: #5ce1e6;
+    color: #1e2947;
+}
+
+.grand-total-label {
+    text-align: right;
+    padding-right: 15px;
+}
+
+.grand-total-amount {
+    font-weight: bold;
+}
+
+/* Processing Text(FYI) */
+.processing-text {
+    font-size: 18px;
+    color: white;
+}
+
+/* Grand Total & Estimated Time(FYI) */
+.output-summary {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.grand-total, .completion-time {
+    margin-bottom: 20px;
+}
+
+.output-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.download-btn, .submit-btn {
+    background: #5ce1e6;
+    color: #1e2947;
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+}
+
+.download-btn:hover, .submit-btn:hover {
+    background: white;
+    color: #1e2947;
+}
