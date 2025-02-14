@@ -7,6 +7,7 @@ import Services from "./Components/Services";
 import Contact from "./Components/Contact";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import Input from "./Components/Input";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/input" element={<Input />} />
         </Routes>
       </div>
     </Router>
