@@ -8,6 +8,7 @@ import Contact from "./Components/Contact";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import Input from "./Components/Input";
+import Process from "./Components/Process";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/input" element={<Input />} />
+          <Route path="/process" element={<Process />} />
         </Routes>
       </div>
     </Router>
