@@ -10,6 +10,7 @@ import Signup from "./Components/Signup";
 import Input from "./Components/Input";
 import Process from "./Components/Process";
 import Output from "./Components/Output";
+import Profile from "./Components/Profile";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/input" element={<Input />} />
           <Route path="/process" element={<Process />} />
           <Route path="/output" element={<Output />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>
