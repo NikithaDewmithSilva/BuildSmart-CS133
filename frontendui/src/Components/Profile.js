@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 
-const Profile = () => {                           //Temporary
+const Profile = () => {                           //Temporarily made
   const navigate = useNavigate();
 
   return (
