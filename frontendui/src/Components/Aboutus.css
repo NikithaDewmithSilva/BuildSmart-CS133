@@ -1,43 +1,103 @@
 .aboutus-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to bottom, #2d3e6f, #1e2947);
-    color: white;
-    padding: 40px;
-    min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #2d3e6f, #1e2947);
+  color: white;
+  padding: 40px;
+  min-height: 100vh;
+}
+
+.aboutus-image {
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.aboutus-image img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.aboutus-content {
+  flex: 1 1 50%;
+  padding: 20px;
+  max-width: 600px;
+}
+
+.aboutus-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #00d1ff;
+}
+
+.aboutus-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 1024px) {
+  .aboutus-container {
+    flex-direction: column;
+    padding: 20px;
   }
-  
+
   .aboutus-image {
-    flex: 1 1 50%;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
+    max-width: 80%;
+    margin-bottom: 20px;
   }
-  
-  .aboutus-image img {
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  }
-  
+
   .aboutus-content {
-    flex: 1 1 50%;
-    padding: 20px;
-    max-width: 600px;
+    max-width: 90%;
+    padding: 15px;
+    text-align: center;
   }
-  
+
   .aboutus-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #00d1ff;
+    font-size: 2rem;
+    margin-bottom: 15px;
   }
-  
+
   .aboutus-content p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    font-size: 0.95rem;
   }
-  
+}
+
+@media (max-width: 768px) {
+  .aboutus-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .aboutus-content p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutus-title {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+
+  .aboutus-content p {
+    font-size: 0.85rem;
+  }
+
+  .aboutus-container {
+    padding: 10px;
+  }
+
+  .aboutus-image img {
+    width: 100%;
+  }
+
+  .aboutus-content {
+    max-width: 100%;
+  }
+}
