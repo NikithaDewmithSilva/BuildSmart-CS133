@@ -9,7 +9,7 @@ const Home = () => {
     <div className="home-container">
       <div className="home-content">
         <div className="home-text">
-          <h1>Take Your First Step to Build Your Dream House With Us</h1>
+          <h1>Take Your First Step To Build Your Dream House With Us</h1>
 
           <div className="home-buttons">
 
