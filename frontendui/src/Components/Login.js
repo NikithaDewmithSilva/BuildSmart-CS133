@@ -21,11 +21,6 @@ const Login = ({setSession}) => {
     });
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   alert("Login Successful!");
-  //   navigate("/input");
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

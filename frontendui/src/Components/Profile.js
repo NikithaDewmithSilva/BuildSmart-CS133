@@ -1,9 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Profile.css";
 
 const Profile = () => {                           //Temporarily made
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login"); // Redirect to login page
+  }
 
   return (
     <div className="profile-page">
@@ -25,7 +32,7 @@ const Profile = () => {                           //Temporarily made
             <p>Password: ********</p>
             <div className="profile-actions">
               <button className="edit-btn">Edit</button>
-              <button className="logout-btn" onClick={() => navigate("/login")}>Log Out</button>
+              <button className="logout-btn" onClick={handleLogout}>Log Out</button>
             </div>
           </div>
         </div>
