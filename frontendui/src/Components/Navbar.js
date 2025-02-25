@@ -1,11 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom"; 
 import "./Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
+
+    const navigate = useNavigate(); 
+  
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+  }
   return (
     <div className="navbar">
-  
+      {/* what to be displayed in the navbar if the user has logged in */}
       <div className="navbar-logo">
         <img src="/logo.png" alt="Logo" className="logo-image" />
       </div>
@@ -23,12 +31,43 @@ const Navbar = () => {
         <Link to="/contact" className="nav-link">
           Contact Us
         </Link>
+
+      <div className="navbar-right">
+        <button className="nav-member-btn" onClick={handleProfileClick}>Profile</button>
       </div>
 
-     
-      <div className="navbar-right">
-        <button className="nav-member-btn">Member</button>
-      </div>
+        {!user && (
+          <div>
+            <div className="navbar-logo">
+              <img src="/logo.png" alt="Logo" className="logo-image" />
+            </div>
+    
+            <div className="navbar-links">
+              <Link to="/" className="nav-link">
+                Home
+              </Link>
+              <Link to="/about" className="nav-link">
+                About Us
+              </Link>
+              <Link to="/services" className="nav-link">
+                Services
+              </Link>
+              <Link to="/contact" className="nav-link">
+                Contact Us
+              </Link>
+            </div>
+  
+       
+            <div className="navbar-right">
+              <button className="nav-member-btn">Login</button>
+            </div>
+          </div>
+          
+        )}
+      </div> 
+
+      {/* what to be displayed if the user hasn't logged in yet */}
+  
     </div>
   );
 };
