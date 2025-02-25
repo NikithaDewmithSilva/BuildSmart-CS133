@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
+import { supabase } from '../supabase';
 import "./Signup.css";
 
 const Signup = () => {
   const navigate = useNavigate(); 
 
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     number: "+94 ",
     password: "",
@@ -22,17 +22,47 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+
+    const { email, number, password, confirmPassword, termsAccepted } = formData;
+
+    // Check if password matches with the re-entered password
+    if (password !== confirmPassword) {
       alert("Passwords do not match!");
-    } else if (!formData.termsAccepted) {
+      return;
+    }else if (!formData.termsAccepted) {
       alert("You must accept the terms and conditions!");
+    }
+
+    // Use Supabase's signUp method to create a new user
+    const { user, error } = await supabase.auth.signUp({
+      email: email,
+      number: number,
+      password: password,
+      termsAccepted: termsAccepted
+    });
+
+    if (error) {
+      alert(error.message); // Show error message if signup fails
     } else {
-      alert("Signup Successful!");
-      navigate("/input"); 
+      console.log("User signed up successfully!", user);
+      navigate('/signup') // Handle success
+      // You can redirect the user to the login page or log them in automatically
     }
   };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (formData.password !== formData.confirmPassword) {
+  //     alert("Passwords do not match!");
+  //   } else if (!formData.termsAccepted) {
+  //     alert("You must accept the terms and conditions!");
+  //   } else {
+  //     alert("Signup Successful!");
+  //     navigate("/input"); 
+  //   }
+  // };
 
   return (
     <div className="signup-page">
@@ -43,19 +73,9 @@ const Signup = () => {
       <div className="signup-right">
         <h2>SIGN UP</h2>
         <form onSubmit={handleSubmit} className="signup-form">
-          <label>
-            USER NAME
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-          </label>
 
           <label>
-            EMAIL
+            Email
             <input
               type="text"
               name="email"
@@ -66,7 +86,7 @@ const Signup = () => {
           </label>
 
           <label>
-            CONTACT NUMBER
+            Contact Number
             <input
               type="text"
               name="number"
@@ -77,7 +97,7 @@ const Signup = () => {
           </label>
 
           <label>
-            PASSWORD
+            Password
             <input
               type="password"
               name="password"
@@ -88,7 +108,7 @@ const Signup = () => {
           </label>
 
           <label>
-            RE-TYPE PASSWORD
+            Re-enter the password
             <input
               type="password"
               name="confirmPassword"
@@ -106,7 +126,13 @@ const Signup = () => {
               onChange={handleChange}
             />
             <span>
-              HEREBY I AGREE TO THE <a href="#">TERMS AND CONDITIONS</a>
+              Hereby I agree to the <a href="#">Terms & Conditions</a>
+            </span>
+          </div>
+
+          <div className="already-member">
+            <span>
+              Already a member ? <a href="/login">Login</a>
             </span>
           </div>
 
@@ -114,19 +140,14 @@ const Signup = () => {
             <button type="submit" className="signup-btn">
               SIGN-UP
             </button>
-            <button
-              type="button"
-              className="signup-btn secondary"
-              onClick={() => navigate("/login")}
-            >
-              LOGIN
-            </button>
           </div>
         </form>
 
+        <div className="signup-or">or</div>
+
         <button type="button" className="google-btn">
           <img src="signup1.svg" alt="Google" className="google-btn-img" />
-          LOGIN WITH GOOGLE
+          Continue with Google
         </button>
       </div>
     </div>
