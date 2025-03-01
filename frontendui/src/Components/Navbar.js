@@ -39,7 +39,7 @@ const Navbar = ({ user }) => {
 
         {user ? (
         <div className="navbar-right">
-          <button className="nav-member-btn" onClick={handleProfileClick}>Profile</button>
+          <button className="nav-member-btn nav-member-icon" onClick={handleProfileClick}><i class="fa-regular fa-user"></i></button>
         </div>
         ) : (
         <div className="navbar-right">

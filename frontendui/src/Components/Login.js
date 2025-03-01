@@ -11,7 +11,9 @@ const Login = ({setSession}) => {
     password: "",
   });
 
-  
+  const handleSignupClick = () => {
+    navigate('/signup');
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +77,7 @@ const Login = ({setSession}) => {
             <button
               type="button"
               className="login-btn secondary"
+              onClick={handleSignupClick}
             >
               Sign-up
             </button>

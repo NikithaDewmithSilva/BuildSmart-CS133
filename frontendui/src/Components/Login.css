@@ -1,3 +1,7 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .login-page {
     display: flex;
     height: 100vh;

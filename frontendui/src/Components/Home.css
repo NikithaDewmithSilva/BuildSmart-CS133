@@ -1,3 +1,7 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .home-container {
   display: flex;
   justify-content: center;
@@ -8,6 +12,10 @@
   height: 100vh;
   overflow: hidden;
 }
+
+/* .loggedin-home{
+  background-image: url(../../welcomePage.png);
+} */
 
 .home-content {
   display: flex;

@@ -5,8 +5,10 @@ import "./Signup.css";
 
 const Signup = () => {
   const navigate = useNavigate(); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     number: "+94 ",
     password: "",
@@ -24,45 +26,52 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    const { email, number, password, confirmPassword, termsAccepted } = formData;
+    const { name, email, number, password, confirmPassword, termsAccepted } = formData;
 
-    // Check if password matches with the re-entered password
+    // Validate password match
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
+      setIsLoading(false);
       return;
-    }else if (!formData.termsAccepted) {
+    }
+    
+    // Validate terms acceptance
+    if (!termsAccepted) {
       alert("You must accept the terms and conditions!");
+      setIsLoading(false);
+      return;
     }
 
-    // Use Supabase's signUp method to create a new user
-    const { user, error } = await supabase.auth.signUp({
-      email: email,
-      number: number,
-      password: password,
-      termsAccepted: termsAccepted
-    });
+    try {
+      // Create user with metadata that will be used by the database trigger
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            user_name: name,
+            phone_number: number
+          }
+        }
+      });
 
-    if (error) {
-      alert(error.message); // Show error message if signup fails
-    } else {
-      console.log("User signed up successfully!", user);
-      navigate('/signup') // Handle success
-      // You can redirect the user to the login page or log them in automatically
+      if (error) throw error;
+
+      const user = data.user;
+
+      if (user) {
+        alert("Signup successful! Please check your email to verify your account.");
+        navigate('/login'); // Navigate to the login page
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert(error.message); // Show any error messages
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (formData.password !== formData.confirmPassword) {
-  //     alert("Passwords do not match!");
-  //   } else if (!formData.termsAccepted) {
-  //     alert("You must accept the terms and conditions!");
-  //   } else {
-  //     alert("Signup Successful!");
-  //     navigate("/input"); 
-  //   }
-  // };
 
   return (
     <div className="signup-page">
@@ -74,9 +83,20 @@ const Signup = () => {
         <h2>SIGN UP</h2>
         <form onSubmit={handleSubmit} className="signup-form">
           <label>
-            Email
+            Name
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <label>
+            Email
+            <input
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -103,6 +123,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              minLength="6"
             />
           </label>
 
@@ -131,20 +152,20 @@ const Signup = () => {
 
           <div className="already-member">
             <span>
-              Already a member ? <a href="/login">Login</a>
+              Already a member? <a href="/login">Login</a>
             </span>
           </div>
 
           <div className="signup-buttons">
-            <button type="submit" className="signup-btn">
-              SIGN-UP
+            <button type="submit" className="signup-btn" disabled={isLoading}>
+              {isLoading ? "SIGNING UP..." : "SIGN-UP"}
             </button>
           </div>
         </form>
 
         <div className="signup-or">or</div>
 
-        <button type="button" className="google-btn">
+        <button type="button" className="google-btn" disabled={isLoading}>
           <img src="signup1.svg" alt="Google" className="google-btn-img" />
           Continue with Google
         </button>
@@ -154,3 +175,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

@@ -12,6 +12,7 @@ import Input from "./Components/Input";
 import Process from "./Components/Process";
 import Output from "./Components/Output";
 import Profile from "./Components/Profile";
+import Footer from "./Components/Footer";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -58,6 +59,8 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
+
+      <Footer/>
     </Router>
   );
 };

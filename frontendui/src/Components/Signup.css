@@ -1,6 +1,10 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .signup-page {
     display: flex;
-    height: 100vh;
+    height: auto;
     font-family: Arial, sans-serif;
   }
   
