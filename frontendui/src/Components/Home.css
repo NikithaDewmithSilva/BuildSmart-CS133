@@ -1,3 +1,7 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .home-container {
   display: flex;
   justify-content: center;
@@ -9,6 +13,12 @@
   overflow: hidden;
 }
 
+/* .loggedin-home{
+  background-image: url(../../welcomePage.png);
+} */
+
+
+
 .home-content {
   display: flex;
   flex-wrap: wrap;
@@ -16,6 +26,14 @@
   justify-content: space-between;
   max-width: 1200px;
   width: 100%;
+}
+
+.loggedin-home{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  height: 100vh;
 }
 
 .home-text {
@@ -37,13 +55,19 @@
   margin-left: 50px;
 }
 
+.logged-in{
+  display: flex;
+  margin-left: 40px;
+  
+}
+
 .home-btn {
   background-color: #00d1ff;
   color: #0e1a3b;
   border: none;
   padding: 10px 20px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 400;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -55,14 +79,13 @@
 }
 
 .home-image {
-  flex: 1 1 45%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .home-image img {
-  width: 100%;
+  width: 300px;
   max-width: 500px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);

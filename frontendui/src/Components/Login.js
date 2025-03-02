@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { Navigate, useNavigate } from "react-router-dom"; 
+import { supabase } from '../supabase';
 import "./Login.css";
 
-const Login = () => {
+const Login = ({setSession}) => {
   const navigate = useNavigate(); 
 
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
+
+  const handleSignupClick = () => {
+    navigate('/signup');
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +23,24 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Login Successful!");
-    navigate("/input");
-  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //using Supabase for login
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+    
+    if (error) {
+      alert(error.message);
+    } else {
+      // Handle successful login, store session, etc.
+      console.log(data);
+      navigate('/');
+    }
+  };
+  
   return (
     <div className="login-page">
       <div className="login-left">
@@ -33,17 +50,18 @@ const Login = () => {
         <h2>LOGIN</h2>
         <form onSubmit={handleSubmit} className="login-form">
           <label>
-            USER NAME
+            Email
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="email"
+              value={formData.email}
+              placeholder="Enter your registered email"
               onChange={handleChange}
               required
             />
           </label>
           <label>
-            PASSWORD
+            Password
             <input
               type="password"
               name="password"
@@ -54,19 +72,19 @@ const Login = () => {
           </label>
           <div className="login-buttons">
             <button type="submit" className="login-btn">
-              LOGIN
+              Login
             </button>
             <button
               type="button"
               className="login-btn secondary"
-              onClick={() => navigate("/signup")}
+              onClick={handleSignupClick}
             >
-              SIGN-UP
+              Sign-up
             </button>
           </div>
           <button type="button" className="google-btn">
             <img src="signup1.svg" alt="Google" className="google-btn-img" />
-            LOGIN WITH GOOGLE
+            Continue with Google
           </button>
         </form>
       </div>

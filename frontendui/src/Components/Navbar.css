@@ -1,12 +1,19 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .navbar {
     display: flex;
+    position: fixed;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     background-color: #0e1a3b;
     color: white;
-    height: 70px;
+    height: 55px;
     font-family: Arial, sans-serif;
+    z-index: 5000;
   }
   
   .navbar-logo {
@@ -21,7 +28,8 @@
   
   .navbar-links {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 60px;
   }
   
   .nav-link {
@@ -52,17 +60,28 @@
     left: 0;
     transition: width 0.3s ease;
   }
+
+  .navbar-right{
+    padding-left: 300px;
+  }
   
   .nav-member-btn {
     background: transparent;
     color: #00d1ff;
     border: 2px solid #00d1ff;
     padding: 8px 20px;
+    margin-right: 60px;
     border-radius: 5px;
     font-size: 1em;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+  }
+
+  .nav-member-icon{
+    border-radius: 50%;
+    padding: 10px 12px;
+    font-size: 20px;
   }
   
   .nav-member-btn:hover {

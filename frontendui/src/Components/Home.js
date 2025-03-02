@@ -1,31 +1,131 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { supabase } from '../supabase';
+import ProjectModal from './ProjectModal';
 import "./Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [userName, setUserName] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch user data from 'user_profiles' table
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('user_name')
+          .eq('user_id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user data:', error);
+          setError('Failed to load user profile');
+        } else {
+          setUserName(data?.user_name || 'User'); // Default to 'User' if name is missing
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        setError('An unexpected error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserName();
+  }, [user]);
+ 
+  const handleCreateProject = () => {
+    // Implement project creation functionality
+    console.log('Create new project');
+    // navigate('/create-project');
+  };
+
+  const handleViewProjects = () => {
+    // Implement view projects functionality
+    console.log('View my projects');
+    // navigate('/my-projects');
+  };
+
+  const handleContactUs = () => {
+    // Implement contact functionality
+    console.log('Let\'s talk clicked');
+    // navigate('/contact');
+  };
+
+  const handleGetStarted = () => {
+    navigate('/signup');
+  };
+
+
 
   return (
     <div className="home-container">
-      <div className="home-content">
-        <div className="home-text">
-          <h1>Take Your First Step To Build Your Dream House With Us</h1>
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : error ? (
+        <div className="error">{error}</div>
+      ) : (
+        <div>
+          {user ? (
+            <div className="loggedin-home">
+              {/* Content for logged-in users */}
+              
+              <h1>Welcome back, {userName}!</h1>
+              
+              <div className="home-buttons logged-in">
+                <button className="home-btn" onClick={openModal}>Create a New Project</button>
+                <button className="home-btn" onClick={handleViewProjects}>View My Projects</button>
+              </div>
 
-          <div className="home-buttons">
+              {/* Modal component (Passes isOpen and onClose props) */}
+              <ProjectModal isOpen={isModalOpen} closeModal={closeModal} />
+            </div>
+          ) : (
+            // Content for non-logged-in users
+            <div className="home-content">
+              <div className="home-text">
+                <h1>Take Your First Step To Build Your Dream House With Us</h1>
 
-            <button className="home-btn">Let's Talk</button>
+                <div className="home-buttons">
+                  <button className="home-btn" onClick={handleContactUs}>
+                    Let's Talk
+                  </button>
 
-            <button className="home-btn" onClick={() => navigate("/signup")}>
-              Let's Begin
-            </button>
-
-          </div>
+                  <button className="home-btn" onClick={handleGetStarted}>
+                    Let's Begin
+                  </button>
+                </div>
+              </div>
+              
+              <div className="home-image">
+                <img src="coverpage-photo.jpg" alt="Construction Worker" />
+              </div>
+            </div>
+          )}
         </div>
-        
-        <div className="home-image">
-          <img src="home1.png" alt="Construction Worker" />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

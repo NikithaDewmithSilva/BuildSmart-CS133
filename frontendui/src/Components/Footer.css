@@ -1,0 +1,30 @@
+.footer{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(173, 173, 173);
+    width: 100%;
+}
+
+.footer-copyright{
+    font-size: 15px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.footer-content ul{
+    display: flex;
+    list-style: none;
+    gap: 6rem;
+    padding-left: 0;
+    justify-content: center;
+}
+
+.footer-content{
+    padding-top: 10px;
+    justify-content: space-around;
+}
+
+.footer-icon a{
+    color: black;
+    font-size: 18px;
+}

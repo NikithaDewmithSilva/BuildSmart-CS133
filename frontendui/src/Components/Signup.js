@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
+import { supabase } from '../supabase';
 import "./Signup.css";
 
 const Signup = () => {
   const navigate = useNavigate(); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     number: "+94 ",
     password: "",
@@ -22,15 +24,52 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    setIsLoading(true);
+
+    const { name, email, number, password, confirmPassword, termsAccepted } = formData;
+
+    // Validate password match
+    if (password !== confirmPassword) {
       alert("Passwords do not match!");
-    } else if (!formData.termsAccepted) {
+      setIsLoading(false);
+      return;
+    }
+    
+    // Validate terms acceptance
+    if (!termsAccepted) {
       alert("You must accept the terms and conditions!");
-    } else {
-      alert("Signup Successful!");
-      navigate("/input"); 
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Create user with metadata that will be used by the database trigger
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            user_name: name,
+            phone_number: number
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      const user = data.user;
+
+      if (user) {
+        alert("Signup successful! Please check your email to verify your account.");
+        navigate('/login'); // Navigate to the login page
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert(error.message); // Show any error messages
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,20 +83,20 @@ const Signup = () => {
         <h2>SIGN UP</h2>
         <form onSubmit={handleSubmit} className="signup-form">
           <label>
-            USER NAME
+            Name
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
           </label>
 
           <label>
-            EMAIL
+            Email
             <input
-              type="text"
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -66,7 +105,7 @@ const Signup = () => {
           </label>
 
           <label>
-            CONTACT NUMBER
+            Contact Number
             <input
               type="text"
               name="number"
@@ -77,18 +116,19 @@ const Signup = () => {
           </label>
 
           <label>
-            PASSWORD
+            Password
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               required
+              minLength="6"
             />
           </label>
 
           <label>
-            RE-TYPE PASSWORD
+            Re-enter the password
             <input
               type="password"
               name="confirmPassword"
@@ -106,27 +146,28 @@ const Signup = () => {
               onChange={handleChange}
             />
             <span>
-              HEREBY I AGREE TO THE <a href="#">TERMS AND CONDITIONS</a>
+              Hereby I agree to the <a href="#">Terms & Conditions</a>
+            </span>
+          </div>
+
+          <div className="already-member">
+            <span>
+              Already a member? <a href="/login">Login</a>
             </span>
           </div>
 
           <div className="signup-buttons">
-            <button type="submit" className="signup-btn">
-              SIGN-UP
-            </button>
-            <button
-              type="button"
-              className="signup-btn secondary"
-              onClick={() => navigate("/login")}
-            >
-              LOGIN
+            <button type="submit" className="signup-btn" disabled={isLoading}>
+              {isLoading ? "SIGNING UP..." : "SIGN-UP"}
             </button>
           </div>
         </form>
 
-        <button type="button" className="google-btn">
+        <div className="signup-or">or</div>
+
+        <button type="button" className="google-btn" disabled={isLoading}>
           <img src="signup1.svg" alt="Google" className="google-btn-img" />
-          LOGIN WITH GOOGLE
+          Continue with Google
         </button>
       </div>
     </div>
@@ -134,3 +175,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
