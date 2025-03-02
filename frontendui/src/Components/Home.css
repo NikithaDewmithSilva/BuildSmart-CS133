@@ -17,6 +17,8 @@
   background-image: url(../../welcomePage.png);
 } */
 
+
+
 .home-content {
   display: flex;
   flex-wrap: wrap;
@@ -24,6 +26,14 @@
   justify-content: space-between;
   max-width: 1200px;
   width: 100%;
+}
+
+.loggedin-home{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  height: 100vh;
 }
 
 .home-text {
@@ -45,13 +55,19 @@
   margin-left: 50px;
 }
 
+.logged-in{
+  display: flex;
+  margin-left: 40px;
+  
+}
+
 .home-btn {
   background-color: #00d1ff;
   color: #0e1a3b;
   border: none;
   padding: 10px 20px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 400;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -74,6 +90,7 @@
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
+
 
 @media (max-width: 1024px) {
   .home-content {

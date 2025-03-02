@@ -7,7 +7,7 @@ import "./Profile.css";
 const Profile = () => { 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-   const [userName, setUserName] = useState('');
+
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
@@ -66,7 +66,7 @@ const Profile = () => {
 
       <div className="profile-container">
         <div className="profile-avatar">
-          <div className="avatar-circle">A</div>
+          <div className="avatar-circle">{formData.user_name.charAt(0)}</div>
           <p className="username">{formData.user_name}</p>
         </div>
 

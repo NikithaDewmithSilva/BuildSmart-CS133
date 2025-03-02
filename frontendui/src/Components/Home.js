@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from '../supabase';
+import ProjectModal from './ProjectModal';
 import "./Home.css";
 
 const Home = () => {
@@ -10,6 +11,15 @@ const Home = () => {
   const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -68,6 +78,8 @@ const Home = () => {
     navigate('/signup');
   };
 
+
+
   return (
     <div className="home-container">
       {loading ? (
@@ -79,17 +91,16 @@ const Home = () => {
           {user ? (
             <div className="loggedin-home">
               {/* Content for logged-in users */}
+              
               <h1>Welcome back, {userName}!</h1>
               
               <div className="home-buttons logged-in">
-                <button className="home-btn" onClick={handleCreateProject}>Create a New Project</button>
+                <button className="home-btn" onClick={openModal}>Create a New Project</button>
                 <button className="home-btn" onClick={handleViewProjects}>View My Projects</button>
               </div>
 
-              {/* You could add recent projects or activity here */}
-              <div className="recent-activity">
-                {/* Recent activity content */}
-              </div>
+              {/* Modal component (Passes isOpen and onClose props) */}
+              <ProjectModal isOpen={isModalOpen} closeModal={closeModal} />
             </div>
           ) : (
             // Content for non-logged-in users
