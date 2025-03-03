@@ -1,3 +1,7 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .aboutus-container {
   display: flex;
   flex-wrap: wrap;
@@ -13,11 +17,11 @@
   flex: 1 1 50%;
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 100px;
 }
 
 .aboutus-image img {
-  max-width: 100%;
+  width: 400px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
@@ -37,6 +41,7 @@
 
 .aboutus-content p {
   font-size: 1rem;
+  font-weight: 300;
   line-height: 1.6;
   margin-bottom: 20px;
 }

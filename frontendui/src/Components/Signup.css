@@ -1,6 +1,10 @@
+*{
+  font-family: "Inter", sans-serif;
+}
+
 .signup-page {
     display: flex;
-    height: 100vh;
+    height: auto;
     font-family: Arial, sans-serif;
   }
   
@@ -45,7 +49,7 @@
     display: block;
     font-size: 14px;
     margin-bottom: 8px;
-    font-weight: bold;
+    font-weight: 500;
     color: #333;
   }
   
@@ -53,20 +57,25 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
-    border: 4px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 15px;
     font-size: 14px;
   }
-  
+
   .signup-terms {
     display: flex;
-    align-items: left;
-    margin-bottom: 20px;
-    font-size: 10px;
+    margin-bottom: 0px;
+    font-size: 13px;
     margin-right: 220px;
+
+  }
+
+  .signup-terms span{
+    white-space: nowrap;
   }
   
   .signup-terms input {
+    margin-top: 1px;
     margin-right: 10px;
   }
   
@@ -74,25 +83,29 @@
     color: #007bff;
     text-decoration: none;
   }
-  
-  .signup-buttons {
-    display: flex;
-    gap: 180px;
+
+  .already-member{
+    text-align: center;
     margin-bottom: 20px;
   }
   
+  .signup-buttons {
+    display: flex;
+    margin-left: 39px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
   .signup-btn {
-    flex: 1;
     background-color: #3e84ce;
     color: white;
-    width: 100px;
+    width: 350px;
     padding: 10px;
     border: none;
     border-radius: 5px;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 300;
     cursor: pointer;
-    text-transform: uppercase;
     transition: background-color 0.3s ease;
   }
   
@@ -110,6 +123,10 @@
     background-color: #314253;
     color: #eaeaea;
   }
+
+  .signup-or{
+    margin-left: 30px;
+  }
   
   .google-btn {
     display: block;
@@ -125,6 +142,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
   }
   
   .google-btn:hover {

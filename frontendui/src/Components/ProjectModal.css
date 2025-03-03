@@ -1,0 +1,119 @@
+.project-modal-background{
+    display: flex;
+    height: 1000px;
+    /* background-color: rgba(213, 213, 213, 0.8); */
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    width: 1000px;
+    padding-left: 500px;
+    right: 0;
+
+}
+
+.project-modal-container{
+    position: absolute;
+    background-color: rgb(111, 121, 137);
+    width: 600px;
+    height: 400px;
+    padding: 40px;
+    z-index: 3000;
+    margin-top: -30px;
+    margin-left: -420px;
+    animation: slideUp 0.5s ease;
+    
+
+}
+
+.project-modal-title h2{
+    text-align: center;
+    font-size: 35px;
+    font-weight: 500;
+    margin-top: -10px;
+}
+
+.project-modal-title h3{
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    color: rgb(29, 42, 47);
+}
+
+.project-modal-form-container{
+
+}
+
+.project-modal-form{
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px;
+    margin-left: 30px;
+}
+
+.project-creation-form-input{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    
+}
+
+.project-creation-form-input label{
+    display: flex;
+    align-items: center;
+}
+
+.project-creation-form-input label input{
+    margin-left: 75px;
+    border: none;
+    padding: 10px;
+    width: 300px;
+}
+
+.project-creation-form-input label textarea{
+    width: 300px;
+    margin-left: 33px;
+    height: 50px;
+    margin-top: 20px;
+    border-radius: 0;
+    font-size: 15px;
+}
+
+.modal-close-icon{
+    display: flex;
+    justify-content: end;
+}
+
+.modal-close-button{
+    cursor: pointer;
+    border: none;
+}
+
+.modal-submit-button{
+    width: 100px;
+    align-self: center;
+    padding: 10px;
+    border: none;
+    margin-bottom: 30px;
+}
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+      transform: translateY(50px);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+}
+
+
