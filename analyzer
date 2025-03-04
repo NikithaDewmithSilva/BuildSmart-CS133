@@ -56,3 +56,7 @@ count_entities()
 print(f"Detected Walls: {walls}")
 print(f"Detected Doors: {doors}")
 print(f"Detected Windows: {windows}")
+
+wall_area = walls * 10  # Assume each wall represents 10 sq ft (adjust as needed)
+bricks_needed = wall_area * 7  # Assume 7 bricks per sq ft
+print(f"Estimated bricks required: {bricks_needed}")
