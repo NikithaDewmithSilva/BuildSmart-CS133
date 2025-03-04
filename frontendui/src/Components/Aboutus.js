@@ -33,7 +33,7 @@ const AboutUs = () => {
           Join us today and start building smarter!
         </p>
         <p>📩 Have any doubts? 
-          Feel free to Contact us at buildsmartlk@gmail.com</p>
+          Feel free to reach us at buildsmartlk@gmail.com</p>
       </div>
     </div>
   );
