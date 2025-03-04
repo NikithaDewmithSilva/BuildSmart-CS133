@@ -1,0 +1,58 @@
+import ezdxf
+
+# Change to your file path
+file_path = r"C:\Users\atcha\OneDrive\Documents\Baticaloa.dxf"
+doc = ezdxf.readfile(file_path)
+msp = doc.modelspace()
+
+# Initialize counters
+walls = 0
+doors = 0
+windows = 0
+
+# Define labels
+door_labels = ["D1", "D2", "RSD", "DOOR"]
+window_labels = ["FW", "W1", "SW", "FL", "WINDOW"]
+
+def count_entities():
+    global walls, doors, windows
+
+    # Count walls
+    for entity in msp.query("LINE LWPOLYLINE"):
+        walls += 1
+
+    # Count doors and windows based on block names
+    for entity in msp.query("INSERT"):
+        block_name = entity.dxf.name.upper()
+        if any(label in block_name for label in door_labels):
+            doors += 1
+        elif any(label in block_name for label in window_labels):
+            windows += 1
+
+    # Count doors and windows based on layer names
+    for entity in msp:
+        layer_name = entity.dxf.layer.upper()
+        if any(label in layer_name for label in door_labels):
+            doors += 1
+        elif any(label in layer_name for label in window_labels):
+            windows += 1
+
+    # Count doors and windows based on text
+    for entity in msp.query("TEXT"):
+        text = entity.dxf.text.upper()
+        if any(label in text for label in door_labels):
+            doors += 1
+        elif any(label in text for label in window_labels):
+            windows += 1
+
+    # Assuming all arcs/circles/hatches are doors (verify if needed)
+    for entity in msp.query("ARC CIRCLE HATCH"):
+        doors += 1
+
+# Call the function to count entities
+count_entities()
+
+# Print the results
+print(f"Detected Walls: {walls}")
+print(f"Detected Doors: {doors}")
+print(f"Detected Windows: {windows}")
