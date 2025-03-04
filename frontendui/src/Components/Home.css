@@ -70,6 +70,7 @@
   font-weight: 400;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bolder;
   transition: all 0.3s ease;
 }
 
