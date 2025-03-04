@@ -13,11 +13,6 @@
   overflow: hidden;
 }
 
-/* .loggedin-home{
-  background-image: url(../../welcomePage.png);
-} */
-
-
 
 .home-content {
   display: flex;
@@ -34,6 +29,8 @@
   position: relative;
   justify-content: center;
   height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
 .home-text {
@@ -57,8 +54,19 @@
 
 .logged-in{
   display: flex;
-  margin-left: 40px;
+  margin-left: 50px;
   
+}
+
+.loggedin-video{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
 }
 
 .home-btn {

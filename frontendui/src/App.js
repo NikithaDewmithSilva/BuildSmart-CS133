@@ -12,7 +12,10 @@ import Input from "./Components/Input";
 import Process from "./Components/Process";
 import Output from "./Components/Output";
 import Profile from "./Components/Profile";
+import MyProjects from "./Components/MyProjects";
+import ProjectPage from "./Components/ProjectPage";
 import Footer from "./Components/Footer";
+
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -57,6 +60,8 @@ const App = () => {
           <Route path="/process" element={<Process />} />
           <Route path="/output" element={<Output />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/myProjects" element={<MyProjects />} />
+          <Route path="/projectPage" element={<ProjectPage />} />
         </Routes>
       </div>
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from '../supabase';
 import ProjectModal from './ProjectModal';
+
 import "./Home.css";
 
 const Home = () => {
@@ -56,22 +57,12 @@ const Home = () => {
     fetchUserName();
   }, [user]);
  
-  const handleCreateProject = () => {
-    // Implement project creation functionality
-    console.log('Create new project');
-    // navigate('/create-project');
-  };
-
   const handleViewProjects = () => {
-    // Implement view projects functionality
-    console.log('View my projects');
-    // navigate('/my-projects');
+    navigate('./MyProjects');
   };
 
   const handleContactUs = () => {
-    // Implement contact functionality
-    console.log('Let\'s talk clicked');
-    // navigate('/contact');
+    navigate('./Contact');
   };
 
   const handleGetStarted = () => {
@@ -91,6 +82,11 @@ const Home = () => {
           {user ? (
             <div className="loggedin-home">
               {/* Content for logged-in users */}
+
+              {/* <video autoPlay loop muted className="loggedin-video">
+                <source src='/loggedinVideo.mp4' type="video/mp4" />
+                Your browser does not support the video tag.
+              </video> */}
               
               <h1>Welcome back, {userName}!</h1>
               

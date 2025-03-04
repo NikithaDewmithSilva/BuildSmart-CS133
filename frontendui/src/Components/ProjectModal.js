@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import "./ProjectModal.css";
 import { supabase } from "../supabase";
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ProjectModal = ({ isOpen, closeModal}) => {
+
+    const navigate = useNavigate();
 
     const [projectName, setProjectName] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
@@ -26,40 +29,35 @@ const ProjectModal = ({ isOpen, closeModal}) => {
 
 
     useEffect(() => {
-        const fetchUser = async () => {
-          const { data: { session } } = await supabase.auth.getSession();
+        const fetchUserProfile = async () => {
+            try{
+                const { data: { session } } = await supabase.auth.getSession();
           
-          if (session && session.user) {
-            setUserId(session.user.id);
-          }
-        };
-        
-        fetchUser();
-        
-        // Set up subscription for auth changes
-        const { data: authListener } = supabase.auth.onAuthStateChange(
-          (event, session) => {
-            if (session && session.user) {
-              setUserId(session.user.id);
-            } else {
-              setUserId(null);
+                if (session && session.user) {
+                    setUserId(session.user.id);
             }
-          }
-        );
-        
-        // Clean up subscription on unmount
-        return () => {
-          if (authListener && authListener.subscription) {
-            authListener.subscription.unsubscribe();
+          
+            }catch(error){
+                console.error("Error occured while fetching the user profile: ", error);
+                setMessage("Failed to retrieve the user profile");
           }
         };
-      }, []);
+        
+        fetchUserProfile();
+        }, []);
+        
+        
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(!formData.projectName){
             setMessage("Please fill out the project name");
+            return;
+        }
+
+        if(!userId) {
+            setMessage("User profile not found. Please try again.");
             return;
         }
     
@@ -81,10 +79,11 @@ const ProjectModal = ({ isOpen, closeModal}) => {
             setMessage("Project creation successful!");
     
     
-            //closes the modal automatically after the submission
-            // setTimeout(() => {
-            //     closeModal();
-            // }, 3000);
+            // closes the modal automatically after the submission
+            setTimeout(() => {
+                closeModal();
+                navigate('/myProjects');
+            }, 2000);
     
         }
         catch(error){
