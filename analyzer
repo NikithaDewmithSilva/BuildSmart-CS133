@@ -1,4 +1,5 @@
 import ezdxf
+import math
 
 # Change to your file path
 file_path = r"C:\Users\atcha\OneDrive\Documents\Baticaloa.dxf"
@@ -9,17 +10,46 @@ msp = doc.modelspace()
 walls = 0
 doors = 0
 windows = 0
+total_area = 0
 
 # Define labels
 door_labels = ["D1", "D2", "RSD", "DOOR"]
 window_labels = ["FW", "W1", "SW", "FL", "WINDOW"]
 
-def count_entities():
-    global walls, doors, windows
+def calculate_area(entity):
+    """Calculate the area of a given entity."""
+    if entity.dxftype() == 'LWPOLYLINE':
+        # Check if the entity has an area method
+        if hasattr(entity, 'get_area'):
+            return entity.get_area()
+        elif hasattr(entity, 'area'):
+            return entity.area()
+        return 0
+    elif entity.dxftype() == 'CIRCLE':
+        radius = entity.dxf.radius
+        return math.pi * (radius ** 2)
+    elif entity.dxftype() == 'ARC':
+        radius = entity.dxf.radius
+        angle = math.radians(entity.dxf.end_angle - entity.dxf.start_angle)
+        return 0.5 * (radius ** 2) * angle
+    elif entity.dxftype() == 'HATCH':
+        # Check if the entity has an area method
+        if hasattr(entity, 'get_area'):
+            return entity.get_area()
+        elif hasattr(entity, 'area'):
+            return entity.area()
+        return 0
+    return 0
 
-    # Count walls
+def count_entities():
+    global walls, doors, windows, total_area
+
+    # Count walls and calculate area
     for entity in msp.query("LINE LWPOLYLINE"):
         walls += 1
+        # LINE entities don't have area, only calculate area for LWPOLYLINE
+        if entity.dxftype() == 'LWPOLYLINE':
+            total_area += calculate_area(entity)
 
     # Count doors and windows based on block names
     for entity in msp.query("INSERT"):
@@ -29,25 +59,34 @@ def count_entities():
         elif any(label in block_name for label in window_labels):
             windows += 1
 
-    # Count doors and windows based on layer names
+    # Avoid double counting by checking layers only for entities not already counted
     for entity in msp:
-        layer_name = entity.dxf.layer.upper()
-        if any(label in layer_name for label in door_labels):
-            doors += 1
-        elif any(label in layer_name for label in window_labels):
-            windows += 1
+        if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'layer'):
+            layer_name = entity.dxf.layer.upper()
+            entity_type = entity.dxftype()
+            
+            # Skip INSERTs which were already counted
+            if entity_type == 'INSERT':
+                continue
+                
+            if any(label in layer_name for label in door_labels):
+                doors += 1
+            elif any(label in layer_name for label in window_labels):
+                windows += 1
 
     # Count doors and windows based on text
-    for entity in msp.query("TEXT"):
-        text = entity.dxf.text.upper()
-        if any(label in text for label in door_labels):
-            doors += 1
-        elif any(label in text for label in window_labels):
-            windows += 1
+    for entity in msp.query("TEXT MTEXT"):
+        if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'text'):
+            text = entity.dxf.text.upper()
+            if any(label in text for label in door_labels):
+                doors += 1
+            elif any(label in text for label in window_labels):
+                windows += 1
 
-    # Assuming all arcs/circles/hatches are doors (verify if needed)
+    # Process arcs/circles/hatches
     for entity in msp.query("ARC CIRCLE HATCH"):
-        doors += 1
+        # Don't automatically assume these are doors
+        total_area += calculate_area(entity)
 
 # Call the function to count entities
 count_entities()
@@ -56,7 +95,12 @@ count_entities()
 print(f"Detected Walls: {walls}")
 print(f"Detected Doors: {doors}")
 print(f"Detected Windows: {windows}")
+print(f"Total Area: {total_area:.2f} sq units")  # Units depend on the drawing
 
-wall_area = walls * 10  # Assume each wall represents 10 sq ft (adjust as needed)
-bricks_needed = wall_area * 7  # Assume 7 bricks per sq ft
-print(f"Estimated bricks required: {bricks_needed}")
+# Calculate estimated materials
+if walls > 0:
+    wall_area = total_area  # Use the calculated area instead of an assumption
+    bricks_needed = int(wall_area * 7)  # Assume 7 bricks per sq unit
+    print(f"Estimated bricks required: {bricks_needed}")
+else:
+    print("No walls detected to calculate brick requirements")
