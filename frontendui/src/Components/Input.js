@@ -10,9 +10,12 @@ const Input = () => {
     // Uploading the CAD Design
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
-        if (file) {
+        if (file && file.name.endsWith(".dxf")) {
             setFileName(file.name);
             setIsFileUploaded(true); // Enable the Submit button when the CAD Design was uploaded
+        } else {
+            alert("Only .dxf files are allowed!");
+            event.target.value = ""; // Reset the file input
         }
     };
 
@@ -25,9 +28,11 @@ const Input = () => {
     const handleDrop = (event) => {
         event.preventDefault();
         const file = event.dataTransfer.files[0];
-        if (file) {
+        if (file && file.name.endsWith(".dxf")) {
             setFileName(file.name);
             setIsFileUploaded(true); // Enable the Submit button when the CAD Design was uploaded by drag and dropping
+        } else {
+            alert("Only .dxf files are allowed!");
         }
     };
 
@@ -65,7 +70,7 @@ const Input = () => {
                         <div className="upload-placeholder">
                             <img src="input2.svg" alt="input_logo" className="upload-logo" /><br /><br />
                             <span>DRAG AND DROP YOUR DESIGN HERE OR CLICK TO UPLOAD</span>
-                            <input type="file" accept=".pdf, .dxf" onChange={handleFileUpload} className="file-input"/>
+                            <input type="file" accept=".dxf" onChange={handleFileUpload} className="file-input" />
                             {fileName && <p className="file-name">{fileName}</p>}
                         </div>
                     </div>
