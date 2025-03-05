@@ -13,6 +13,7 @@ import Process from "./Components/Process";
 import Output from "./Components/Output";
 import Profile from "./Components/Profile";
 import Footer from "./Components/Footer";
+import InviteCustomerForm from "./Components/InviteCustomerForm";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/process" element={<Process />} />
           <Route path="/output" element={<Output />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/invite-customer" element={<InviteCustomerForm />} />
         </Routes>
       </div>
 
