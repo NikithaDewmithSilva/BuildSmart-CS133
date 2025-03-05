@@ -6,8 +6,9 @@
 
 .project-title{
     text-align: center;
-    font-size: 30px;
+    font-size: 36px;
     font-weight: 500;
+    color: rgb(109, 136, 148);
 }
 
 .instruction{
@@ -66,4 +67,8 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) {
     background-color: #ffffff;
+}
+
+.laoding, .error{
+    width: 100%;
 }

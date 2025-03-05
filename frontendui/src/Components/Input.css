@@ -8,6 +8,7 @@ body {
   }
   
   .input-page {
+    padding-top: 100px;
     background: linear-gradient(to bottom, #2d3e6f, #1e2947);
     height: 100vh;
     color: #ffffff;

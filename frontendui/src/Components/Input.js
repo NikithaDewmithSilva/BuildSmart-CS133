@@ -1,8 +1,9 @@
 import React, { useState } from "react";                        // Commented to get an actual idea of the codes/functions
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./Input.css";
                                                   
 const Input = () => {
+
     const navigate = useNavigate();
     const [fileName, setFileName] = useState("");
     const [isFileUploaded, setIsFileUploaded] = useState(false); // The CAD Design upload status
