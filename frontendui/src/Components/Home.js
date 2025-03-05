@@ -82,17 +82,14 @@ const Home = () => {
           {user ? (
             <div className="loggedin-home">
               {/* Content for logged-in users */}
-
-              {/* <video autoPlay loop muted className="loggedin-video">
-                <source src='/loggedinVideo.mp4' type="video/mp4" />
-                Your browser does not support the video tag.
-              </video> */}
               
-              <h1>Welcome back, {userName}!</h1>
-              
-              <div className="home-buttons logged-in">
-                <button className="home-btn" onClick={openModal}>Create a New Project</button>
-                <button className="home-btn" onClick={handleViewProjects}>View My Projects</button>
+              <div className="logged-in-content">
+                <h1>Welcome back, {userName}!</h1>
+                
+                <div className="home-buttons logged-in">
+                  <button className="home-btn" onClick={openModal}>Create a New Project</button>
+                  <button className="home-btn" onClick={handleViewProjects}>View My Projects</button>
+                </div>
               </div>
 
               {/* Modal component (Passes isOpen and onClose props) */}

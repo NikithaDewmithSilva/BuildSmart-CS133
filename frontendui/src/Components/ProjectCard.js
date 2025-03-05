@@ -1,12 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './ProjectCard.css';
 
 const ProjectCard = ({ project }) => {
   const navigate = useNavigate();
+
+  const { project_id } = useParams();
+
+  
   
   const handleViewProject = () => {
-    navigate(`/project/${project.id}`);
+    navigate(`/project/${project.project_id}`);
   };
   
   return (

@@ -45,6 +45,7 @@ const App = () => {
     setUser(null);
   };
 
+
   return (
     <Router>
       <div>
@@ -61,7 +62,7 @@ const App = () => {
           <Route path="/output" element={<Output />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/myProjects" element={<MyProjects />} />
-          <Route path="/projectPage" element={<ProjectPage />} />
+          <Route path="/project/:project_id" element={<ProjectPage />} />
         </Routes>
       </div>
 
