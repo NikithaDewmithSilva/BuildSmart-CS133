@@ -1,0 +1,50 @@
+.project-card{
+    width: 400px;
+    height: 200px;
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+}
+
+.project-card:hover{
+    box-shadow: 15px 15px 30px 1px rgb(85, 85, 85);
+    transition: all 0.5s ease;
+}
+
+.project-card-details{
+    
+}
+
+.project-name h2{
+    font-weight: 500;
+    font-size: 23px;
+}
+
+.project-description{
+    margin-bottom: 30px;
+    color: rgb(118, 117, 117);
+}
+
+.project-footer{
+
+}
+
+.project-date{
+    margin-bottom: 10px;
+    color: rgb(179, 179, 179);
+}
+
+.view-project-button{
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgb(88, 88, 88);
+    color: rgb(131, 211, 235);
+}
+
+.view-project-button:hover{
+    cursor: pointer;
+    background-color: rgb(133, 133, 133);
+    transition: background-color 0.4s ease;
+}

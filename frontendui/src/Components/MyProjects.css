@@ -1,0 +1,22 @@
+*{
+    font-family: "Inter", sans-serif;
+}
+
+.projects-container{
+    height: auto;
+    padding: 90px 200px 40px 200px;
+    background-color: rgb(196, 199, 201);
+}
+
+.projects-title{
+    text-align: center;
+    font-weight: 700;
+    padding-bottom: 30px;
+    color: #286271;
+    font-size: 40px;
+}
+
+.projects-row{
+    display: flex;
+    justify-content: space-between;
+}

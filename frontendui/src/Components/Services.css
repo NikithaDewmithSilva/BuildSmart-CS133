@@ -8,6 +8,7 @@
     background: linear-gradient(to bottom, #2d3e6f, #1e2947);
     color: white;
     font-family: Arial, sans-serif;
+    height: auto;
   }
   
   .services-subtitle {
