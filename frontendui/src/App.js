@@ -15,6 +15,7 @@ import Profile from "./Components/Profile";
 import MyProjects from "./Components/MyProjects";
 import ProjectPage from "./Components/ProjectPage";
 import Footer from "./Components/Footer";
+import InviteCustomerForm from "./Components/InviteCustomerForm";
 
 
 const App = () => {
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="/process" element={<Process />} />
           <Route path="/output" element={<Output />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/invite-customer" element={<InviteCustomerForm />} />
           <Route path="/myProjects" element={<MyProjects />} />
           <Route path="/project/:project_id" element={<ProjectPage />} />
         </Routes>
