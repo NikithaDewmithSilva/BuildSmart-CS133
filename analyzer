@@ -2,7 +2,7 @@ import ezdxf
 import math
 
 # Change to your file path
-file_path = r"C:\Users\atcha\OneDrive\Documents\Baticaloa.dxf"
+file_path = r"C:\Users\atcha\OneDrive\Desktop\Floor plan\Floor plan.dxf"
 doc = ezdxf.readfile(file_path)
 msp = doc.modelspace()
 
@@ -16,76 +16,68 @@ total_area = 0
 door_labels = ["D1", "D2", "RSD", "DOOR"]
 window_labels = ["FW", "W1", "SW", "FL", "WINDOW"]
 
+def infer_material(entity):
+    """Infer the material or component type based on layer, block name, or text."""
+    if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'layer'):
+        layer_name = entity.dxf.layer.upper()
+        if "WALL" in layer_name:
+            return "WALL"
+        elif any(label in layer_name for label in door_labels):
+            return "DOOR"
+        elif any(label in layer_name for label in window_labels):
+            return "WINDOW"
+    
+    if entity.dxftype() == 'INSERT':
+        block_name = entity.dxf.name.upper()
+        if any(label in block_name for label in door_labels):
+            return "DOOR"
+        elif any(label in block_name for label in window_labels):
+            return "WINDOW"
+    
+    if entity.dxftype() in ['TEXT', 'MTEXT']:
+        text = entity.dxf.text.upper()
+        if any(label in text for label in door_labels):
+            return "DOOR"
+        elif any(label in text for label in window_labels):
+            return "WINDOW"
+    
+    return None
+
 def calculate_area(entity):
     """Calculate the area of a given entity."""
-    if entity.dxftype() == 'LWPOLYLINE':
-        # Check if the entity has an area method
-        if hasattr(entity, 'get_area'):
-            return entity.get_area()
-        elif hasattr(entity, 'area'):
-            return entity.area()
+    try:
+        if entity.dxftype() == 'LWPOLYLINE':
+            return entity.get_area() if hasattr(entity, 'get_area') else 0
+        elif entity.dxftype() == 'CIRCLE':
+            radius = entity.dxf.radius
+            return math.pi * (radius ** 2)
+        elif entity.dxftype() == 'ARC':
+            radius = entity.dxf.radius
+            angle = math.radians(entity.dxf.end_angle - entity.dxf.start_angle)
+            return 0.5 * (radius ** 2) * angle
+        elif entity.dxftype() == 'HATCH':
+            return sum(path.area for path in entity.paths if hasattr(path, 'area'))
         return 0
-    elif entity.dxftype() == 'CIRCLE':
-        radius = entity.dxf.radius
-        return math.pi * (radius ** 2)
-    elif entity.dxftype() == 'ARC':
-        radius = entity.dxf.radius
-        angle = math.radians(entity.dxf.end_angle - entity.dxf.start_angle)
-        return 0.5 * (radius ** 2) * angle
-    elif entity.dxftype() == 'HATCH':
-        # Check if the entity has an area method
-        if hasattr(entity, 'get_area'):
-            return entity.get_area()
-        elif hasattr(entity, 'area'):
-            return entity.area()
+    except Exception as e:
+        print(f"Error calculating area for {entity.dxftype()}: {e}")
         return 0
-    return 0
 
 def count_entities():
     global walls, doors, windows, total_area
 
-    # Count walls and calculate area
-    for entity in msp.query("LINE LWPOLYLINE"):
-        walls += 1
-        # LINE entities don't have area, only calculate area for LWPOLYLINE
-        if entity.dxftype() == 'LWPOLYLINE':
-            total_area += calculate_area(entity)
-
-    # Count doors and windows based on block names
-    for entity in msp.query("INSERT"):
-        block_name = entity.dxf.name.upper()
-        if any(label in block_name for label in door_labels):
-            doors += 1
-        elif any(label in block_name for label in window_labels):
-            windows += 1
-
-    # Avoid double counting by checking layers only for entities not already counted
     for entity in msp:
-        if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'layer'):
-            layer_name = entity.dxf.layer.upper()
-            entity_type = entity.dxftype()
-            
-            # Skip INSERTs which were already counted
-            if entity_type == 'INSERT':
-                continue
-                
-            if any(label in layer_name for label in door_labels):
-                doors += 1
-            elif any(label in layer_name for label in window_labels):
-                windows += 1
-
-    # Count doors and windows based on text
-    for entity in msp.query("TEXT MTEXT"):
-        if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'text'):
-            text = entity.dxf.text.upper()
-            if any(label in text for label in door_labels):
-                doors += 1
-            elif any(label in text for label in window_labels):
-                windows += 1
+        material = infer_material(entity)
+        if material == "WALL":
+            walls += 1
+            if entity.dxftype() == 'LWPOLYLINE' and hasattr(entity, 'get_area'):
+                total_area += calculate_area(entity)
+        elif material == "DOOR":
+            doors += 1
+        elif material == "WINDOW":
+            windows += 1
 
     # Process arcs/circles/hatches
     for entity in msp.query("ARC CIRCLE HATCH"):
-        # Don't automatically assume these are doors
         total_area += calculate_area(entity)
 
 # Call the function to count entities
@@ -99,8 +91,28 @@ print(f"Total Area: {total_area:.2f} sq units")  # Units depend on the drawing
 
 # Calculate estimated materials
 if walls > 0:
-    wall_area = total_area  # Use the calculated area instead of an assumption
+    wall_area = total_area
     bricks_needed = int(wall_area * 7)  # Assume 7 bricks per sq unit
+    
+    # Cement calculation
+    cement_for_mortar = bricks_needed * 0.25  # 0.25 kg of cement per brick
+    concrete_volume = wall_area * 0.1  # Assume 0.1 cubic meters of concrete per sq unit
+    cement_for_concrete = concrete_volume * 350  # 350 kg of cement per cubic meter
+    cement_needed_kg = cement_for_mortar + cement_for_concrete
+    cement_needed_bags = cement_needed_kg / 50  # Assume 50 kg per bag of cement
+    
+    # Gravel calculation
+    gravel_needed_kg = concrete_volume * 1000  # 1,000 kg of gravel per cubic meter
+    
+    # Sand calculation
+    sand_for_mortar = bricks_needed * 0.15  # 0.15 kg of sand per brick
+    sand_for_concrete = concrete_volume * 600  # 600 kg of sand per cubic meter
+    sand_needed_kg = sand_for_mortar + sand_for_concrete
+    
+    # Print material requirements
     print(f"Estimated bricks required: {bricks_needed}")
+    print(f"Estimated cement required: {cement_needed_bags:.2f} bags ({cement_needed_kg:.2f} kg)")
+    print(f"Estimated gravel required: {gravel_needed_kg:.2f} kg")
+    print(f"Estimated sand required: {sand_needed_kg:.2f} kg")
 else:
-    print("No walls detected to calculate brick requirements")
+    print("No walls detected to calculate material requirements")
