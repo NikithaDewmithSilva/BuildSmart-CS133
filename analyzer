@@ -2,20 +2,24 @@ import ezdxf
 import math
 
 # Change to your file path
-file_path = r"C:\Users\atcha\OneDrive\Desktop\Floor plan\Floor plan.dxf"
+file_path = r"C:\Users\atcha\OneDrive\Desktop\Floor plan\Floor plan.dxf"  # Update as needed
 doc = ezdxf.readfile(file_path)
 msp = doc.modelspace()
 
 # Initialize counters
-walls = 0
+wall_count = 0
 doors = 0
 windows = 0
+total_wall_area = 0
+total_floor_area = 0
 total_area = 0
 
 # Define labels
 door_labels = ["D1", "D2", "RSD", "DOOR"]
 window_labels = ["FW", "W1", "SW", "FL", "WINDOW"]
+floor_labels = ["FLOOR", "AREA"]  # Common layer names for floor areas
 
+# Function to infer material or component type
 def infer_material(entity):
     """Infer the material or component type based on layer, block name, or text."""
     if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'layer'):
@@ -26,6 +30,8 @@ def infer_material(entity):
             return "DOOR"
         elif any(label in layer_name for label in window_labels):
             return "WINDOW"
+        elif any(label in layer_name for label in floor_labels):
+            return "FLOOR"
     
     if entity.dxftype() == 'INSERT':
         block_name = entity.dxf.name.upper()
@@ -43,11 +49,47 @@ def infer_material(entity):
     
     return None
 
+# Function to calculate the area of a closed polyline
+def polyline_area(entity):
+    """Calculate the area of a closed polyline."""
+    if entity.is_closed:
+        try:
+            return entity.area  # Directly supported in ezdxf
+        except Exception as e:
+            print(f"Error calculating polyline area: {e}")
+            return 0
+    return 0
+
+# Function to estimate the area of a wall represented by lines
+def estimate_wall_area(line1, line2):
+    """Estimate the area of a wall from two parallel lines."""
+    try:
+        x1, y1 = line1.dxf.start.x, line1.dxf.start.y
+        x2, y2 = line1.dxf.end.x, line1.dxf.end.y
+        x3, y3 = line2.dxf.start.x, line2.dxf.start.y
+        x4, y4 = line2.dxf.end.x, line2.dxf.end.y
+
+        # Calculate lengths of the lines
+        length1 = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        length2 = math.sqrt((x4 - x3) ** 2 + (y4 - y3) ** 2)
+        
+        # Assume walls are rectangular: take the shorter length as width
+        wall_length = min(length1, length2)
+        
+        # Calculate the perpendicular distance (wall thickness)
+        wall_thickness = abs(x1 - x3) + abs(y1 - y3)
+        
+        return wall_length * wall_thickness  # Approximate area
+    except Exception as e:
+        print(f"Error estimating wall area: {e}")
+        return 0
+
+# Function to calculate area of entities
 def calculate_area(entity):
     """Calculate the area of a given entity."""
     try:
         if entity.dxftype() == 'LWPOLYLINE':
-            return entity.get_area() if hasattr(entity, 'get_area') else 0
+            return polyline_area(entity)
         elif entity.dxftype() == 'CIRCLE':
             radius = entity.dxf.radius
             return math.pi * (radius ** 2)
@@ -62,36 +104,63 @@ def calculate_area(entity):
         print(f"Error calculating area for {entity.dxftype()}: {e}")
         return 0
 
+# Function to count entities and calculate areas
 def count_entities():
-    global walls, doors, windows, total_area
+    global wall_count, doors, windows, total_wall_area, total_floor_area, total_area
+    wall_lines = []  # Store line entities for estimating wall thickness
 
     for entity in msp:
         material = infer_material(entity)
         if material == "WALL":
-            walls += 1
-            if entity.dxftype() == 'LWPOLYLINE' and hasattr(entity, 'get_area'):
-                total_area += calculate_area(entity)
+            wall_count += 1
+            if entity.dxftype() in ['LWPOLYLINE', 'HATCH']:
+                area = calculate_area(entity)
+                total_wall_area += area
+                total_area += area  # Add to total area
+                print(f"Wall {wall_count}: Area = {area:.2f} sq units")
+            elif entity.dxftype() == 'LINE':
+                wall_lines.append(entity)  # Collect line entities for later area estimation
         elif material == "DOOR":
             doors += 1
         elif material == "WINDOW":
             windows += 1
+        elif material == "FLOOR":
+            if entity.dxftype() in ['LWPOLYLINE', 'HATCH']:
+                area = calculate_area(entity)
+                total_floor_area += area
+                total_area += area  # Add to total area
+                print(f"Floor Area Contribution: {area:.2f} sq units")
 
-    # Process arcs/circles/hatches
+    # Pair up line entities to estimate wall area
+    while len(wall_lines) >= 2:
+        line1 = wall_lines.pop(0)
+        line2 = wall_lines.pop(0)
+        area = estimate_wall_area(line1, line2)
+        total_wall_area += area
+        total_area += area  # Add to total area
+        print(f"Estimated Wall Area from Lines: {area:.2f} sq units")
+
+    # Process additional arcs/circles/hatches not already counted
     for entity in msp.query("ARC CIRCLE HATCH"):
-        total_area += calculate_area(entity)
+        if not infer_material(entity):  # Only add if not already counted as wall or floor
+            area = calculate_area(entity)
+            total_area += area
+            print(f"Additional Area from {entity.dxftype()}: {area:.2f} sq units")
 
 # Call the function to count entities
 count_entities()
 
 # Print the results
-print(f"Detected Walls: {walls}")
+print(f"Detected Walls: {wall_count}")
 print(f"Detected Doors: {doors}")
 print(f"Detected Windows: {windows}")
+print(f"Total Wall Area: {total_wall_area:.2f} sq units")
+print(f"Total Floor Area: {total_floor_area:.2f} sq units")
 print(f"Total Area: {total_area:.2f} sq units")  # Units depend on the drawing
 
-# Calculate estimated materials
-if walls > 0:
-    wall_area = total_area
+# Calculate estimated materials based on wall area
+if wall_count > 0:
+    wall_area = total_wall_area
     bricks_needed = int(wall_area * 7)  # Assume 7 bricks per sq unit
     
     # Cement calculation
