@@ -2,29 +2,64 @@ import ezdxf
 import math
 
 # File path to the DXF file (update as needed)
-FILE_PATH = r"C:\Users\atcha\OneDrive\Documents\Baticaloa.dxf"
+FILE_PATH = r"C:\Users\atcha\OneDrive\Desktop\DXF FILE\Floor plan.dxf"
 
-# Load the DXF file and access the modelspace
-try:
-    doc = ezdxf.readfile(FILE_PATH)
-    msp = doc.modelspace()
-except FileNotFoundError:
-    print(f"Error: File '{FILE_PATH}' not found.")
-    exit(1)
-except ezdxf.DXFStructureError as e:
-    print(f"Error: Invalid DXF file structure - {e}")
-    exit(1)
+# Layer names for detection
+WALL_LAYER = "xref-Bishop-Overland-08$0$A-WALL"
+FOUNDATION_LAYERS = ["xref-Bishop-Overland-08$0$S-FOOTER", "xref-Bishop-Overland-08$0$S-STEM-WALL"]
+SLAB_LAYER = "xref-Bishop-Overland-08$0$S-SLAB"
 
-# Initialize counters and accumulators
-walls = 0
-doors = 0
-windows = 0
-total_area = 0.0
-total_wall_area = 0.0
-
-# Define labels for identifying components
+# Labels for identifying components
 DOOR_LABELS = ["D1", "D2", "RSD", "DOOR"]
 WINDOW_LABELS = ["FW", "W1", "SW", "FL", "WINDOW"]
+
+# Configurable parameters
+WALL_HEIGHT = 2.4  # meters, configurable wall height
+CONCRETE_CEMENT_RATIO = 350  # kg/m³ for concrete
+CONCRETE_GRAVEL_RATIO = 1000  # kg/m³
+CONCRETE_SAND_RATIO = 600  # kg/m³
+STEEL_SLAB_RATIO = 65  # kg/m³ for slabs
+STEEL_FOUNDATION_RATIO = 100  # kg/m³ for foundations
+BRICKS_PER_SQ_UNIT = 7  # bricks per square unit
+CEMENT_PER_BRICK = 0.25  # kg cement per brick
+
+def calculate_area(entity):
+    """Calculate the area of a given entity with extended entity type support."""
+    try:
+        if entity.dxftype() == 'LWPOLYLINE' and hasattr(entity, 'get_area'):
+            return entity.get_area()
+        elif entity.dxftype() == 'CIRCLE' and hasattr(entity.dxf, 'radius'):
+            return math.pi * (entity.dxf.radius ** 2)
+        elif entity.dxftype() == 'HATCH' and hasattr(entity, 'paths'):
+            return sum(path.area for path in entity.paths if hasattr(path, 'area'))
+        elif entity.dxftype() == 'LINE':
+            start = entity.dxf.start
+            end = entity.dxf.end
+            length = math.sqrt((end[0] - start[0])**2 + (end[1] - start[1])**2)
+            return length * WALL_HEIGHT  # Use configurable wall height
+        elif entity.dxftype() == 'POLYLINE' and entity.is_closed:
+            points = [pt[:2] for pt in entity.points()]  # Get 2D points
+            area = 0.5 * abs(sum(
+                points[i][0] * points[(i + 1) % len(points)][1] -
+                points[(i + 1) % len(points)][0] * points[i][1]
+                for i in range(len(points))
+            ))
+            return area
+        elif entity.dxftype() == 'SPLINE':
+            # Approximate area for closed splines (simplified)
+            if entity.closed:
+                points = [pt[:2] for pt in entity.control_points]
+                area = 0.5 * abs(sum(
+                    points[i][0] * points[(i + 1) % len(points)][1] -
+                    points[(i + 1) % len(points)][0] * points[i][1]
+                    for i in range(len(points))
+                ))
+                return area
+            return 0.0
+        return 0.0
+    except Exception as e:
+        print(f"Error calculating area for entity {entity}: {e}")
+        return 0.0
 
 def infer_material(entity):
     """Infer the material or component type based on layer, block name, or text."""
@@ -37,129 +72,108 @@ def infer_material(entity):
                 return "DOOR"
             elif any(label in layer_name for label in WINDOW_LABELS):
                 return "WINDOW"
-        
-        if entity.dxftype() == 'INSERT':
-            block_name = entity.dxf.name.upper()
-            if any(label in block_name for label in DOOR_LABELS):
-                return "DOOR"
-            elif any(label in block_name for label in WINDOW_LABELS):
-                return "WINDOW"
-        
         if entity.dxftype() in ['TEXT', 'MTEXT']:
             text = entity.dxf.text.upper()
             if any(label in text for label in DOOR_LABELS):
                 return "DOOR"
             elif any(label in text for label in WINDOW_LABELS):
                 return "WINDOW"
-        
         return None
     except AttributeError:
         return None
 
-def calculate_area(entity):
-    """Calculate the area of a given entity."""
+def process_dxf_file(file_path):
+    """Process the DXF file and calculate material estimates."""
     try:
-        if entity.dxftype() == 'LWPOLYLINE' and hasattr(entity, 'get_area'):
-            return entity.get_area()
-        elif entity.dxftype() == 'CIRCLE':
-            return math.pi * (entity.dxf.radius ** 2)
-        elif entity.dxftype() == 'ARC':
-            radius = entity.dxf.radius
-            angle = math.radians(entity.dxf.end_angle - entity.dxf.start_angle)
-            return 0.5 * (radius ** 2) * angle
-        elif entity.dxftype() == 'HATCH':
-            return sum(path.area for path in entity.paths if hasattr(path, 'area'))
-        return 0.0
-    except Exception as e:
-        print(f"Error calculating area for {entity.dxftype()}: {e}")
-        return 0.0
-
-def estimate_wall_area(line1, line2):
-    """Estimate the area of a wall from two parallel lines."""
-    try:
-        x1, y1 = line1.dxf.start.x, line1.dxf.start.y
-        x2, y2 = line1.dxf.end.x, line1.dxf.end.y
-        x3, y3 = line2.dxf.start.x, line2.dxf.start.y
-        x4, y4 = line2.dxf.end.x, line2.dxf.end.y
-
-        # Calculate line lengths
-        length1 = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-        length2 = math.sqrt((x4 - x3) ** 2 + (y4 - y3) ** 2)
-        wall_length = min(length1, length2)  # Use shorter length as wall length
-        
-        # Approximate wall thickness (perpendicular distance)
-        wall_thickness = abs(x1 - x3) + abs(y1 - y3)
-        
-        return wall_length * wall_thickness
-    except Exception as e:
-        print(f"Error estimating wall area: {e}")
-        return 0.0
-
-def count_entities():
-    """Count entities and calculate areas from the DXF modelspace."""
-    global walls, doors, windows, total_area, total_wall_area
-    wall_lines = []
-
-    # First pass: Identify and count entities
+        doc = ezdxf.readfile(file_path)
+        msp = doc.modelspace()
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        return
+    except ezdxf.DXFStructureError as e:
+        print(f"Error: Invalid DXF file structure - {e}")
+        return
+    
+    walls = 0
+    doors = 0
+    windows = 0
+    total_area = 0.0
+    total_wall_area = 0.0
+    foundations = 0
+    total_foundation_area = 0.0
+    slabs = 0
+    total_slab_area = 0.0
+    
     for entity in msp:
+        layer = entity.dxf.layer
+        area = calculate_area(entity)
         material = infer_material(entity)
-        if material == "WALL":
+        
+        if material == "WALL" or layer == WALL_LAYER:
             walls += 1
-            if entity.dxftype() in ['LWPOLYLINE', 'HATCH']:
-                total_wall_area += calculate_area(entity)
-            elif entity.dxftype() == 'LINE':
-                wall_lines.append(entity)
+            total_wall_area += area
         elif material == "DOOR":
             doors += 1
         elif material == "WINDOW":
             windows += 1
-
-    # Estimate wall areas from pairs of lines
-    while len(wall_lines) >= 2:
-        line1 = wall_lines.pop(0)
-        line2 = wall_lines.pop(0)
-        total_wall_area += estimate_wall_area(line1, line2)
-
-    # Calculate total area from arcs, circles, and hatches
-    for entity in msp.query("ARC CIRCLE HATCH"):
-        total_area += calculate_area(entity)
-
-# Execute the counting and area calculation
-count_entities()
-
-# Output Summary
-print("Summary:")
-print(f"Detected Walls: {walls}")
-print(f"Detected Doors: {doors}")
-print(f"Detected Windows: {windows}")
-print(f"Total Area: {total_area:.2f} sq units")
-print(f"Total Wall Area: {total_wall_area:.2f} sq units")
-print()  # Blank line for separation
-
-# Estimate material requirements if walls are detected
-if walls > 0:
-    bricks_needed = int(total_wall_area * 7)  # 7 bricks per sq unit
+        elif layer in FOUNDATION_LAYERS:
+            foundations += 1
+            total_foundation_area += area
+        elif layer == SLAB_LAYER:
+            slabs += 1
+            total_slab_area += area
     
-    # Cement: mortar (0.25 kg/brick) + concrete (350 kg/m³)
-    cement_for_mortar = bricks_needed * 0.25
-    concrete_volume = total_wall_area * 0.1  # 0.1 m³ per sq unit
-    cement_for_concrete = concrete_volume * 350
-    cement_needed_kg = cement_for_mortar + cement_for_concrete
-    cement_needed_bags = cement_needed_kg / 50  # 50 kg per bag
+    # Calculate total area
+    total_area = total_wall_area + total_foundation_area + total_slab_area
     
-    # Gravel: 1,000 kg per m³ of concrete
-    gravel_needed_kg = concrete_volume * 1000
+    # Output Summary (Removed Total Door/Window Area)
+    print("Summary:")
+    print(f"Walls: {walls}, Total Wall Area: {total_wall_area:.2f} sq units")
+    print(f"Detected Doors: {doors}")
+    print(f"Detected Windows: {windows}")
+    print(f"Total Area (Walls + Foundations + Slabs): {total_area:.2f} sq units")
+    print(f"Foundations: {foundations}, Total Foundation Area: {total_foundation_area:.2f} sq units")
+    print(f"Slabs: {slabs}, Total Slab Area: {total_slab_area:.2f} sq units")
     
-    # Sand: mortar (0.15 kg/brick) + concrete (600 kg/m³)
-    sand_for_mortar = bricks_needed * 0.15
-    sand_for_concrete = concrete_volume * 600
-    sand_needed_kg = sand_for_mortar + sand_for_concrete
+    # Wall Material Estimate
+    bricks_needed = int(total_wall_area * BRICKS_PER_SQ_UNIT)
+    cement_needed_wall_kg = (total_wall_area * 0.1) * CONCRETE_CEMENT_RATIO + bricks_needed * CEMENT_PER_BRICK
+    cement_needed_wall_bags = cement_needed_wall_kg / 50
+    sand_needed_wall = (total_wall_area * 0.1) * CONCRETE_SAND_RATIO + bricks_needed * 0.15
     
-    # Output Estimated Material
-    print("Estimated Material Output:")
+    print("\nWall Material Estimate:")
     print(f"Estimated bricks required: {bricks_needed}")
-    print(f"Estimated cement required: {cement_needed_bags:.2f} bags ({cement_needed_kg:.2f} kg)")
-    print(f"Estimated gravel required: {gravel_needed_kg:.2f} kg")
-    print(f"Estimated sand required: {sand_needed_kg:.2f} kg")
-else:
-    print("No walls detected to calculate material requirements.")
+    print(f"Estimated cement required: {cement_needed_wall_bags:.2f} bags ({cement_needed_wall_kg:.2f} kg)")
+    print(f"Estimated sand required: {sand_needed_wall:.2f} kg")
+    
+    # Foundation Material Estimate
+    foundation_volume = total_foundation_area * 0.2
+    cement_needed_foundation = foundation_volume * CONCRETE_CEMENT_RATIO
+    cement_needed_foundation_bags = cement_needed_foundation / 50
+    gravel_needed_foundation = foundation_volume * CONCRETE_GRAVEL_RATIO
+    sand_needed_foundation = foundation_volume * CONCRETE_SAND_RATIO
+    steel_needed_foundation = foundation_volume * STEEL_FOUNDATION_RATIO
+    
+    print("\nFoundation Material Estimate:")
+    print(f"Estimated concrete volume: {foundation_volume:.2f} cubic meters")
+    print(f"Estimated cement required: {cement_needed_foundation_bags:.2f} bags ({cement_needed_foundation:.2f} kg)")
+    print(f"Estimated gravel required: {gravel_needed_foundation:.2f} kg")
+    print(f"Estimated sand required: {sand_needed_foundation:.2f} kg")
+    print(f"Estimated steel required: {steel_needed_foundation:.2f} kg")
+    
+    # Slab Material Estimate
+    slab_volume = total_slab_area * 0.15
+    cement_needed_slab = slab_volume * CONCRETE_CEMENT_RATIO
+    cement_needed_slab_bags = cement_needed_slab / 50
+    gravel_needed_slab = slab_volume * CONCRETE_GRAVEL_RATIO
+    sand_needed_slab = slab_volume * CONCRETE_SAND_RATIO
+    steel_needed_slab = slab_volume * STEEL_SLAB_RATIO
+    
+    print("\nSlab Material Estimate:")
+    print(f"Estimated concrete volume: {slab_volume:.2f} cubic meters")
+    print(f"Estimated cement required: {cement_needed_slab_bags:.2f} bags ({cement_needed_slab:.2f} kg)")
+    print(f"Estimated gravel required: {gravel_needed_slab:.2f} kg")
+    print(f"Estimated sand required: {sand_needed_slab:.2f} kg")
+    print(f"Estimated steel required: {steel_needed_slab:.2f} kg")
+
+process_dxf_file(FILE_PATH)
