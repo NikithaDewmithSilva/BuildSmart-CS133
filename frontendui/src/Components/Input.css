@@ -87,7 +87,7 @@ body {
     background-color: aliceblue;
     height: 40px;
     width: 40px;
-    margin-left: 350px;
+    margin-left: 360px;
   }
   
   .upload-container {
@@ -132,8 +132,8 @@ body {
   }
   
   .upload-logo {
-    height: 30px;
-    width: 30px;
+    height: 33px;
+    width: 33px;
     align-items: center;
   }
   
