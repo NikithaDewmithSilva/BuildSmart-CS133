@@ -36,7 +36,7 @@ def calculate_area(entity):
             start = entity.dxf.start
             end = entity.dxf.end
             length = math.sqrt((end[0] - start[0])**2 + (end[1] - start[1])**2)
-            return length * WALL_HEIGHT  # Use configurable wall height
+            return length * WALL_HEIGHT  # Using configurable wall height
         elif entity.dxftype() == 'POLYLINE' and entity.is_closed:
             points = [pt[:2] for pt in entity.points()]  # Get 2D points
             area = 0.5 * abs(sum(
@@ -62,25 +62,26 @@ def calculate_area(entity):
         return 0.0
 
 def infer_material(entity):
-    """Infer the material or component type based on layer, block name, or text."""
     try:
-        if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'layer'):
-            layer_name = entity.dxf.layer.upper()
-            if "WALL" in layer_name:
+        if hasattr(entity, 'dxf'):
+            layer_name = getattr(entity.dxf, 'layer', "").lower()
+            if "wall" in layer_name:
                 return "WALL"
-            elif any(label in layer_name for label in DOOR_LABELS):
+            elif any(label.lower() in layer_name for label in DOOR_LABELS):
                 return "DOOR"
-            elif any(label in layer_name for label in WINDOW_LABELS):
+            elif any(label.lower() in layer_name for label in WINDOW_LABELS):
                 return "WINDOW"
+        # Additional checks for TEXT / MTEXT
         if entity.dxftype() in ['TEXT', 'MTEXT']:
-            text = entity.dxf.text.upper()
-            if any(label in text for label in DOOR_LABELS):
+            text = getattr(entity.dxf, 'text', "").lower()
+            if any(label.lower() in text for label in DOOR_LABELS):
                 return "DOOR"
-            elif any(label in text for label in WINDOW_LABELS):
+            elif any(label.lower() in text for label in WINDOW_LABELS):
                 return "WINDOW"
         return None
     except AttributeError:
         return None
+
 
 def process_dxf_file(file_path):
     """Process the DXF file and calculate material estimates."""
@@ -97,7 +98,6 @@ def process_dxf_file(file_path):
     walls = 0
     doors = 0
     windows = 0
-    total_area = 0.0
     total_wall_area = 0.0
     foundations = 0
     total_foundation_area = 0.0
@@ -123,7 +123,7 @@ def process_dxf_file(file_path):
             slabs += 1
             total_slab_area += area
     
-    # Calculate total area
+    # Calculate total area (for reporting purposes)
     total_area = total_wall_area + total_foundation_area + total_slab_area
     
     # Output Summary (Removed Total Door/Window Area)
@@ -175,5 +175,6 @@ def process_dxf_file(file_path):
     print(f"Estimated gravel required: {gravel_needed_slab:.2f} kg")
     print(f"Estimated sand required: {sand_needed_slab:.2f} kg")
     print(f"Estimated steel required: {steel_needed_slab:.2f} kg")
+
 
 process_dxf_file(FILE_PATH)
