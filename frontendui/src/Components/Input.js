@@ -61,7 +61,7 @@ const Input = () => {
                         <br />COMPLETION OF YOUR <br />DREAM<span className="highlight"> HOUSE</span> 
                     </h1>
                     <br /><br /><br />
-                    <img src="input1.svg" alt="arrow" className="input-img" />
+                    <img src="/input1.svg" alt="arrow" className="input-img" />
                     <p>
                         <span className="highlight">ENTER</span> YOUR <span className="highlight">CAD DESIGN</span> OR <span className="highlight">BLUEPRINT ABOVE</span>
                     </p>
@@ -69,7 +69,7 @@ const Input = () => {
                 <div className="upload-container">
                     <div className="upload-box" onDragOver={handleDragOver} onDrop={handleDrop}>
                         <div className="upload-placeholder">
-                            <img src="input2.svg" alt="input_logo" className="upload-logo" /><br /><br />
+                            <img src="/input2.svg" alt="input_logo" className="upload-logo" /><br /><br />
                             <span>DRAG AND DROP YOUR DESIGN HERE OR CLICK TO UPLOAD</span>
                             <input type="file" accept=".dxf" onChange={handleFileUpload} className="file-input" />
                             {fileName && <p className="file-name">{fileName}</p>}
