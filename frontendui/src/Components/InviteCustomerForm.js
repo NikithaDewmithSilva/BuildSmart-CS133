@@ -64,7 +64,7 @@ const InviteCustomerForm = ({ onClose }) => {
           
         </form>
 
-        {message && <p>{message}</p>}
+        {message && <p className='failed-meesage'>{message}</p>}
       </div>
     </div>
   );

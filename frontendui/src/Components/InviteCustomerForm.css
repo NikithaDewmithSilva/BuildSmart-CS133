@@ -1,71 +1,61 @@
 .invite-form-heading{
-    /* display: grid; */
     display: flex;
     justify-content:space-between;
 }
 
 .invite-form-heading h2{
-    /* margin-left: -100px; */
+    margin-top: 0;
     margin-left: 200px;
 
 }
 
 .invite-form{
-    justify-content: left;
-    /* padding: 20px; */
+  padding-top: 20px;
+  justify-content: left;
 }
 
 .invite-input{
-    padding: 10px;
-    /* margin-left: 80px; */
     margin-bottom: 20px;
-    margin-left: 150px;
 }
 
 .invite-textarea{
-    padding: 20px;
-    margin-left: 150px;
+    height: 50px;
+}
+
+.invite-input, .invite-textarea{
+  width: 250px;
+  padding: 10px;
+  margin-left: 160px;
 }
 
 .invite-label{
     position: absolute;
-    /* padding: 20px; */
     padding: 10px;
-    margin-left: -50px;
+    margin-left: -30px;
     justify-content: left;
-    /* background-color: aqua; */
 }
 
-/* Modal container */
 .invite-modal {
     border: 2px solid;
     color: black;
     background: white;
-    /* padding: 20px; */
-    /* border-radius: 10px; */
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
     width: 600px;
-    height: 300px;
-    /* text-align: center; */
+    height: 325px;
     z-index: 1001;
   }
   
-  /* Close button styling */
   .close-btn {
-    background: red;
-    color: white;
     cursor: pointer;
+    background: rgb(186, 9, 9);
+    color: white;
     font-weight: bolder;
     font-size: larger;
-    /* margin-left: 650px; */
-    /* margin-top: -100px; */
     padding: 1px 3px;
     height: 26px;
   }
   
   .close-btn:hover {
-    background: darkred;
-
+    background: rgb(229, 14, 14);
   }
   
   .invite-btn{
@@ -76,10 +66,11 @@
     font-size: larger;
     background: #5ce1e6;
     border-color: white;
+    cursor: pointer;
   }
 
   .invite-btn:hover{
-    background: white;
+    background: rgba(154, 208, 226, 0.512);
     border-color: black;
   }
   

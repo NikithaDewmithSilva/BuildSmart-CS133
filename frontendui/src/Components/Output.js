@@ -77,9 +77,10 @@ const Output = () => {
             <p className="completion-time">THE ESTIMATED TIME FOR COMPLETION IS:<br /> XX MONTHS</p>
             
             <div className="output-buttons">
-              <button className="download-btn">DOWNLOAD</button>
-              <button className="submit-btn">SUBMIT CAD DESIGN / BLUEPRINT</button>
-              <button onClick={() => setShowInviteForm(true)}>Invite Customer</button>
+              <button className="download-btn">Download</button>
+              {/* <button className="submit-btn">Submit CAD Design / Blueprint</button> */}
+              <button className="customize-btn">Customize the BOQ</button>
+              <button className='share-boq-btn' onClick={() => setShowInviteForm(true)}>Share the BOQ</button>
             </div>
           </div>
         </div>
