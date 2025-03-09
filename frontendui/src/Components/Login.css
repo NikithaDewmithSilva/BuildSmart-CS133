@@ -96,10 +96,10 @@
     color: white;
     width: 100px;
     padding: 10px;
-    border: none;
-    border-radius: 5px;
+    border: 6px;
+    border-radius: 6px;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: bolder;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
