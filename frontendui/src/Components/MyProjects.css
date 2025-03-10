@@ -4,6 +4,7 @@
 
 .projects-container{
     height: auto;
+    min-height: 100vh;
     padding: 90px 200px 40px 200px;
     background-color: rgb(196, 199, 201);
 }
@@ -19,4 +20,9 @@
 .projects-row{
     display: flex;
     justify-content: space-between;
+}
+
+.no-projects p{
+    padding-top: 200px;
+    text-align: center;
 }
