@@ -14,7 +14,7 @@
   .contact-title {
     font-size: 2em;
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     color: #ffffff;
   }
   
@@ -31,6 +31,7 @@
 
   .contact-form1{
     font-size: 18px;
+    height: 30px;
   }
   
   .contact-input, .contact-textarea {

@@ -14,6 +14,7 @@ const Footer = () => {
                         <li className="footer-icon"><a href="https://buildsmart9.odoo.com/"><FontAwesomeIcon icon={faGlobe} /></a></li>
                     </ul>
             </div>
+            <br />
 
             <div className="footer-copyright">
                 &copy; 2025 BuildSmart. All rights reserved
