@@ -82,7 +82,6 @@ def infer_material(entity):
     except AttributeError:
         return None
 
-
 def process_dxf_file(file_path):
     """Process the DXF file and calculate material estimates."""
     try:
@@ -177,7 +176,6 @@ def process_dxf_file(file_path):
     print(f"Estimated steel required: {steel_needed_slab:.2f} kg")
     
     # Plaster Material Estimate for walls
-    # Assumed consumption rate: 6 kg of cement per square unit area of wall
     PLASTER_CEMENT_RATE = 6  # kg per square unit (this can be adjusted)
     plaster_cement_needed_kg = total_wall_area * PLASTER_CEMENT_RATE
     plaster_bags = plaster_cement_needed_kg / 25  # Each bag is 25 kg
@@ -186,7 +184,6 @@ def process_dxf_file(file_path):
     print(f"Estimated Number of Plaster Bags (25kg Per Bag): {plaster_bags:.2f}")
     
     # Primer Material Estimate for walls
-    # Define a primer rate: liters per square unit (adjust based on manufacturer's specifications)
     PRIMER_RATE = 0.4  # liters per square unit
     primer_needed = total_wall_area * PRIMER_RATE
 
@@ -194,7 +191,6 @@ def process_dxf_file(file_path):
     print(f"Estimated Amount of Primer  : {primer_needed:.2f} liters")
     
     # Paint Material Estimate for walls
-    # Define a paint rate: liters per square unit per coat (adjust based on manufacturer's specifications)
     PAINT_RATE = 0.3  # liters per square unit per coat
     double_coat_multiplier = 2  # For double coat
     paint_needed = total_wall_area * PAINT_RATE * double_coat_multiplier
