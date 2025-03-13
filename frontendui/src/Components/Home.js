@@ -65,7 +65,7 @@ const Home = () => {
           {user ? (
             <div className="loggedin-home">
               <div className="logged-in-content">
-                <h1>Welcome back, {userName}!</h1>
+                <h1>Welcome back, {userName}!</h1><br />
                 <div className="home-buttons logged-in">
                   <button className="home-btn" onClick={openModal}>
                     Create a New Project
@@ -98,6 +98,13 @@ const Home = () => {
               </div>
             </div>
           )}
+
+          <div className="fullscreen-background-video">
+            <video autoPlay loop muted playsInline>
+              <source src="Homev2.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       )}
     </div>

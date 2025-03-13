@@ -3,6 +3,7 @@
     flex-direction: column;
     background-color: rgb(173, 173, 173);
     width: 100%;
+    height: auto;
 }
 
 .footer-copyright{
