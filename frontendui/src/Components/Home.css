@@ -310,3 +310,8 @@
     max-width: 350px;
   }
 }
+
+footer {
+  position: relative;
+  z-index: 2;               /* Getting the footer top of the video */
+}
