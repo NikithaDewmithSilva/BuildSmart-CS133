@@ -32,7 +32,7 @@ const Output = () => {
         </div>
   
         <div className="output-content">
-          <h2 className="output-title">HERE'S YOUR BILL OF QUANTITIES FOR YOUR DREAM HOME</h2>
+          <h2 className="output-title">Here's your bill of quantities for your dream house</h2>
   
           <div className={`boq-table ${fileProcessed ? "processed" : ""}`} onClick={processFile}>
             {fileProcessed ? (
@@ -64,6 +64,91 @@ const Output = () => {
                   </tr>
                 </tbody>
               </table>
+
+              //           <div className="App">
+              //   <h1>Bill of Quantities (BOQ)</h1>
+
+              //   {/* Wall Material Estimate Section */}
+              //   <section className="material-estimates">
+              //     <h2>Wall Material Estimate</h2>
+              //     <table>
+              //       <tbody>
+              //         <tr>
+              //           <td>Estimated Bricks Required</td>
+              //           <td>{data.WallMaterialEstimate.EstimatedBricksRequired}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Cement Required (bags)</td>
+              //           <td>{data.WallMaterialEstimate.EstimatedCementRequiredBags}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Cement Required (kg)</td>
+              //           <td>{data.WallMaterialEstimate.EstimatedCementRequiredKg}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Sand Required (kg)</td>
+              //           <td>{data.WallMaterialEstimate.EstimatedSandRequiredKg}</td>
+              //         </tr>
+              //       </tbody>
+              //     </table>
+              //   </section>
+
+              //   {/* Foundation Material Estimate Section */}
+              //   <section className="material-estimates">
+              //     <h2>Foundation Material Estimate</h2>
+              //     <table>
+              //       <tbody>
+              //         <tr>
+              //           <td>Estimated Concrete Volume (m³)</td>
+              //           <td>{data.FoundationMaterialEstimate.EstimatedConcreteVolumeM3}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Cement Required (bags)</td>
+              //           <td>{data.FoundationMaterialEstimate.EstimatedCementRequiredBags}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Cement Required (kg)</td>
+              //           <td>{data.FoundationMaterialEstimate.EstimatedCementRequiredKg}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Gravel Required (kg)</td>
+              //           <td>{data.FoundationMaterialEstimate.EstimatedGravelRequiredKg}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Sand Required (kg)</td>
+              //           <td>{data.FoundationMaterialEstimate.EstimatedSandRequiredKg}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Estimated Steel Required (kg)</td>
+              //           <td>{data.FoundationMaterialEstimate.EstimatedSteelRequiredKg}</td>
+              //         </tr>
+              //       </tbody>
+              //     </table>
+              //   </section>
+
+              //   {/* Add other sections like Slab, Plaster, Paint, etc. */}
+
+              //   <section className="summary">
+              //     <h2>Summary</h2>
+              //     <table>
+              //       <tbody>
+              //         <tr>
+              //           <td>Total Walls</td>
+              //           <td>{data.Summary.TotalWalls}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Total Wall Area (m²)</td>
+              //           <td>{data.Summary.TotalWallArea}</td>
+              //         </tr>
+              //         <tr>
+              //           <td>Detected Doors</td>
+              //           <td>{data.Summary.DetectedDoors}</td>
+              //         </tr>
+              //         {/* More summary fields */}
+              //       </tbody>
+              //     </table>
+              //   </section>
+              // </div>
             ) : (
               <p className="processing-text">Click here to process and display your BOQ</p>
             )}
@@ -71,14 +156,14 @@ const Output = () => {
   
           <div className="output-summary">
             <p className="grand-total">
-              YOUR GRAND TOTAL IS:<br />
+              Your estimated cost is: <br />
               ${boqData ? boqData.reduce((total, item) => total + item.amount, 0).toFixed(2) : "Processing..."}
             </p>
-            <p className="completion-time">THE ESTIMATED TIME FOR COMPLETION IS:<br /> XX MONTHS</p>
+            {/* <p className="completion-time">THE ESTIMATED TIME FOR COMPLETION IS:<br /> XX MONTHS</p> */}
             
             <div className="output-buttons">
-              <button className="download-btn">DOWNLOAD</button>
-              <button className="submit-btn">SUBMIT CAD DESIGN / BLUEPRINT</button>
+              <button className="download-btn">Download</button>
+              <button className="submit-btn">Sumbit another cad</button>
               <button onClick={() => setShowInviteForm(true)}>Invite Customer</button>
             </div>
           </div>
