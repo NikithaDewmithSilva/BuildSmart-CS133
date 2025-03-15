@@ -89,6 +89,7 @@ const Signup = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Enter your full name"
               required
             />
           </label>
@@ -101,6 +102,7 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              placeholder="abc@gmail.com"
             />
           </label>
 
@@ -124,6 +126,7 @@ const Signup = () => {
               onChange={handleChange}
               required
               minLength="6"
+              placeholder="Abc@123"
             />
           </label>
 
@@ -135,6 +138,7 @@ const Signup = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              placeholder="Retype your password"
             />
           </label>
 
