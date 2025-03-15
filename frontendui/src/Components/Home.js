@@ -90,18 +90,18 @@ const Home = () => {
                   </button>
                 </div>
               </div>
-              <div className="home-video">
+              {/* <div className="home-video">
                 <video autoPlay loop muted playsInline>
                   <source src="Homev1.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-              </div>
+              </div> */}
             </div>
           )}
 
           <div className="fullscreen-background-video">
             <video autoPlay loop muted playsInline>
-              <source src="Homev2.mp4" type="video/mp4" />
+              <source src="HomeVideo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
