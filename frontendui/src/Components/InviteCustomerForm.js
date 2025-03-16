@@ -13,6 +13,7 @@ const InviteCustomerForm = ({ onClose }) => {
     setLoading(true);
     setMessage('');
 
+    // Basic validation
     if (!email) {
       setMessage('Email is required!');
       setLoading(false);
@@ -20,15 +21,19 @@ const InviteCustomerForm = ({ onClose }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/invite-customer', {
-        email,
-        description,
+      // Sending POST request to FastAPI endpoint
+      const response = await axios.post('http://localhost:8000/send-invite', {
+        invitee_email: email,   // Correct field name (this should match with FastAPI model)
+        project_id: '123e4567-e89b-12d3-a456-426614174000',  // Example project ID (you should replace this with actual logic)
+        invited_by: '123e4567-e89b-12d3-a456-426614174000',  // Example inviter UUID (you should replace this too)
       });
 
+      // Display success or failure message
       setMessage(response.data.message || 'Invitation sent successfully!');
       setEmail('');
       setDescription('');
     } catch (error) {
+      console.error('Error:', error);
       setMessage('Failed to send invite. Please try again.');
     } finally {
       setLoading(false);
@@ -36,9 +41,7 @@ const InviteCustomerForm = ({ onClose }) => {
   };
 
   return (
-    
     <div className="invite-modal">
-      
       <div className="invite-form-container">
         <div className='invite-form-heading'>
           <h2>Share this BOQ</h2>
@@ -53,18 +56,21 @@ const InviteCustomerForm = ({ onClose }) => {
             required
             className="invite-input"
           />
-          <br></br>
+          <br />
           <label className="invite-label">Description (optional):</label>
-          <textarea className='invite-textarea'
+          <textarea 
+            className='invite-textarea'
             value={description} 
             onChange={(e) => setDescription(e.target.value)} 
           />
-          <br></br>
-          <button className = "invite-btn" type="submit" disabled={loading}>{loading ? 'Sending...' : 'Share'}</button>
-          
+          <br />
+          <button className="invite-btn" type="submit" disabled={loading}>
+            {loading ? 'Sending...' : 'Share'}
+          </button>
         </form>
 
-        {message && <p className='failed-meesage'>{message}</p>}
+        {/* Display success or error message */}
+        {message && <p className={loading ? 'loading-message' : 'message'}>{message}</p>}
       </div>
     </div>
   );
