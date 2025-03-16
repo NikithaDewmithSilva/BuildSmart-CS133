@@ -12,13 +12,10 @@
     transition: all 0.5s ease;
 }
 
-.project-card-details{
-    
-}
-
 .project-name h2{
-    font-weight: 500;
+    font-weight: bold;
     font-size: 23px;
+    color: #0e1a3b;
 }
 
 .project-description{
@@ -26,25 +23,98 @@
     color: rgb(118, 117, 117);
 }
 
-.project-footer{
-
+.project-card-buttons{
+    display: flex;
+    justify-content: space-between;
 }
 
 .project-date{
     margin-bottom: 10px;
-    color: rgb(179, 179, 179);
+    color: rgb(208, 208, 208);
 }
 
 .view-project-button{
     border: none;
     padding: 10px;
     border-radius: 4px;
-    background-color: rgb(88, 88, 88);
-    color: rgb(131, 211, 235);
+    font-weight: bold;
+    background-color: rgb(208, 208, 208);
+    color: #0e1a3b;
 }
 
 .view-project-button:hover{
     cursor: pointer;
     background-color: rgb(133, 133, 133);
     transition: background-color 0.4s ease;
+}
+
+.delete-project-button{
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: white;
+    color: rgb(133, 133, 133);
+    font-size: 20px;
+}
+
+.delete-project-button:hover{
+    cursor: pointer;
+    color: #0e1a3b;
+    transition: color 0.4s ease;
+}
+
+.delete-modal-background {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.delete-modal{
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.delete-modal-buttons{
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 50px;
+}
+
+.delete-modal-buttons button{
+    padding: 5px 15px;
+    border: none;
+    border-radius: 3px;
+}
+
+.delete-modal-delete-button{
+    background-color: rgb(157, 46, 46);
+    color: white;
+    
+}
+
+.delete-modal-delete-button:hover{
+    background-color: rgba(157, 46, 46, 0.757);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    
+}
+
+.delete-modal-cancel-button{
+    background-color: rgb(145, 145, 145);
+    color: white;
+}
+
+.delete-modal-cancel-button:hover{
+    background-color: rgb(165, 165, 165);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
 }

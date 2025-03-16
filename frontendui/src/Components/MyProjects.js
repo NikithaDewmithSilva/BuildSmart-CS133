@@ -14,7 +14,11 @@ const MyProjects = () => {
         result.push(arr.slice(i, i + size));
     }
     return result;
-};
+  };
+
+  const handleProjectDeletion = (deletedProjectId) => {
+    setProjects(projects.filter(project => project.project_id !== deletedProjectId))
+  }
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -67,11 +71,6 @@ const MyProjects = () => {
           <p>You haven't created any projects yet.</p>
         </div>
       ) : (
-        // <div className="projects-grid">
-        //   {projects.map(project => (
-        //     <ProjectCard key={project.id} project={project} />
-        //   ))}
-        // </div>
 
         rows.map((rows, rowIndex) => (
           <div className="projects-row" key={rowIndex}>
@@ -79,12 +78,14 @@ const MyProjects = () => {
                   <ProjectCard
                   key={project.id}
                   project={project}
+                  onDelete={handleProjectDeletion}
                   >
                   </ProjectCard>
               ))}
           </div>
       ))
       )}
+
     </div>
   );
 };
