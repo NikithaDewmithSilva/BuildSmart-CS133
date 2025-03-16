@@ -169,7 +169,7 @@ body {
 .output-summary {
     margin-top: 20px;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 500;
     text-align: right;
 }
 
@@ -184,7 +184,7 @@ body {
     margin-bottom: 40px;
 }
 
-.download-btn, .submit-btn {
+.download-btn, .submit-btn, .share-btn, .customize-btn {
     background: #5ce1e6;
     color: #1e2947;
     font-size: 16px;
@@ -193,10 +193,10 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    font-weight: bold;
+    font-weight: 500;
 }
 
-.download-btn:hover, .submit-btn:hover {
+.download-btn:hover, .submit-btn:hover, .share-btn:hover, .customize-btn:hover {
     background: white;
     color: #1e2947;
 }
