@@ -261,9 +261,8 @@ const Output = () => {
               <button className="download-btn">Download</button>
               {/* <button className="submit-btn">Submit CAD Design / Blueprint</button> */}
               <button className="customize-btn">Customize the BOQ</button>
-              <button className='share-boq-btn' onClick={() => setShowInviteForm(true)}>Share the BOQ</button>
+              <button className='share-btn' onClick={() => setShowInviteForm(true)}>Share</button>
               <button className="submit-btn">Sumbit another cad</button>
-              <button onClick={() => setShowInviteForm(true)}>Invite Customer</button>
             </div>
           </div>
         </div>
