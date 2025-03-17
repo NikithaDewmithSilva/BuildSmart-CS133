@@ -1,0 +1,34 @@
+{
+    "Cement - 50Kg bag": {
+        "price": 2260.0,
+        "unit": "No."
+    },
+    "gravel": {
+        "price": 8000.0,
+        "unit": "Cube"
+    },
+    "steel": {
+        "price": "Price not found",
+        "unit": "Unit not found"
+    },
+    "River sand": {
+        "price": 26500.0,
+        "unit": "Cube"
+    },
+    "brick": {
+        "price": 24200.0,
+        "unit": "1000 Nos."
+    },
+    "Floor Tile - Homogeneous Porcelain semi - Glazed": {
+        "price": 466.0,
+        "unit": "No."
+    },
+    "Emulsion Paint": {
+        "price": 616.0,
+        "unit": "1 Lt."
+    },
+    "Wall filler Primer external": {
+        "price": 597.0,
+        "unit": "1 Lt."
+    }
+}

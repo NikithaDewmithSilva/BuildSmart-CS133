@@ -1,5 +1,15 @@
 {
-
+    "Summary": {
+        "Walls": 203,
+        "Total Wall Area": 21053.08149383691,
+        "Detected Doors": 4,
+        "Detected Windows": 2,
+        "Total Area": 27013.11641763136,
+        "Foundations": 87,
+        "Total Foundation Area": 5753.634923794448,
+        "Slabs": 1,
+        "Total Slab Area": 206.39999999999992
+    },
     "Wall Material Estimate": {
         "Estimated bricks required": 147371,
         "Estimated cement required (bags)": 15474.012045685837,
@@ -35,16 +45,5 @@
         "Total floor (slab) area": 206.39999999999992,
         "Each tile area": 0.09,
         "Tiles needed (with waste factor)": 2523
-    },
-     "Summary": {
-        "Walls": 203,
-        "Total Wall Area": 21053.08149383691,
-        "Detected Doors": 4,
-        "Detected Windows": 2,
-        "Total Area": 27013.11641763136,
-        "Foundations": 87,
-        "Total Foundation Area": 5753.634923794448,
-        "Slabs": 1,
-        "Total Slab Area": 206.39999999999992
     }
 }

@@ -20,7 +20,7 @@ body {
 }
 
 .App {
-    padding-top: 1300px;
+    padding-top: 1150px;
 }
 
 .App h1{
@@ -128,6 +128,10 @@ body {
     border-right: 2px solid black;
     border-top: 2px solid black;
     
+}
+
+.table-header-row .table-header{
+    background-color: red;
 }
 
 .boq-table th{

@@ -7,111 +7,144 @@ const Output = () => {
   const [fileProcessed, setFileProcessed] = useState(false);
   const [boqData, setBoqData] = useState(null);
   const [showInviteForm, setShowInviteForm] = useState(false); // State for popup
-  const [marketPrices, setMarketPrices] = useState(null);
+  const [marketPrices, setMarketPrices] = useState(null)
   const [data, setData] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch JSON data
+const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
+
   useEffect(() => {
-    // Fetch the output.json data
-    fetch("/output.json")
+    // Fetch the market prices from the JSON file
+    fetch("/marketPrices.json")
       .then((response) => response.json())
-      .then((jsonData) => setData(jsonData))
-      .catch((error) => console.error("Error loading JSON:", error));
+      .then((jsonData) => {
+        console.log("Market prices loaded:", jsonData);
+        setMarketPrices(jsonData); // Update marketPrices with the data from the JSON file
+      })
+      .catch((error) => {
+        console.error("Error loading market prices:", error);
+      });
 
-    // Fetch the market prices data
-    fetch("/all_products_data.json")
-      .then((response) => response.json())
-      .then((pricesData) => setMarketPrices(pricesData))
-      .catch((error) => console.error("Error loading market prices:", error));
-  }, []);
-
-  // If data is not loaded, show a loading message
-  if (!data || !marketPrices) return <p>Loading...</p>;
-
-  
-  const getPriceForMaterial = (materialKey, materialValue) => {
-    let price = "N/A";
-    const key = materialKey.toLowerCase();
-    
-  
-    if (key.includes("brick")) {
-      const brickPrices = marketPrices.filter(item => 
-        item.name.toLowerCase().includes("brick"));
-      
-      if (brickPrices.length > 0) {
-        const cementBrick = brickPrices.find(item => 
-          item.name.toLowerCase().includes("cement"));
-        if (cementBrick) {
-          return cementBrick.price.replace("රු", "");
-        }
-        return brickPrices[0].price.replace("රු", "");
-      }
-    } 
-    else if (key.includes("cement") && !key.includes("bag")) {
-      const cementPrices = marketPrices.filter(item => 
-        item.name.toLowerCase().includes("cement") && 
-        item.name.toLowerCase().includes("50kg"));
-      
-      if (cementPrices.length > 0) {
-        const inseeCement = cementPrices.find(item => 
-          item.name.toLowerCase().includes("insee"));
-        if (inseeCement) {
-          return inseeCement.price.replace("රු", "");
-        }
-        return cementPrices[0].price.replace("රු", "");
-      }
-    }
-    else if (key.includes("sand")) {
-      const sandPrices = marketPrices.filter(item => 
-        item.name.toLowerCase().includes("sand"));
-      
-      if (sandPrices.length > 0) {
-        return sandPrices[0].price.replace("රු", "");
-      }
-    }
-    else if (key.includes("gravel") || key.includes("metal")) {
-      const gravelPrices = marketPrices.filter(item => 
-        item.name.toLowerCase().includes("metal") || 
-        item.name.toLowerCase().includes("gal kudu"));
-      
-      if (gravelPrices.length > 0) {
-        const cheapestMetal = gravelPrices.reduce((prev, curr) => {
-          const prevPrice = parseFloat(prev.price.replace("රු", "").replace(",", ""));
-          const currPrice = parseFloat(curr.price.replace("රු", "").replace(",", ""));
-          return prevPrice < currPrice ? prev : curr;
+    if (fileProcessed) {
+      // Load the output data
+      fetch('/output.json')
+        .then(response => response.json())
+        .then(jsonData => {
+          setData(jsonData);
+        })
+        .catch(error => {
+          console.error("Error loading output data:", error);
         });
-        return cheapestMetal.price.replace("රු", "");
-      }
     }
-    else if (key.includes("plaster")) {
-      const plasterPrices = marketPrices.filter(item => 
-        item.name.toLowerCase().includes("plaster"));
+  }, [fileProcessed]);
+
+
+  useEffect(() => {
+    if (fileProcessed) {
+      // Load the output data
+      fetch('output.json')
+        .then(response => response.json())
+        .then(jsonData => {
+          setData(jsonData);
+        })
+        .catch(error => {
+          console.error("Error loading output data:", error);
+        });
+
       
-      if (plasterPrices.length > 0) {
-        return plasterPrices[0].price.replace("රු", "");
-      }
     }
-    
-    return price;
-  };
-
-
-  const calculateCost = (quantity, priceStr) => {
-    if (!priceStr) return "";
-    const price = parseFloat(priceStr.replace(",", ""));
-    return (quantity * price).toLocaleString();
-  };
+  }, [fileProcessed]);
 
   const processFile = () => {
     setTimeout(() => {
-      setBoqData([
-        { description: "Concrete Work", unit: "sqm", quantity: 158.63, rate: 50, amount: 7931.50 },
-        { description: "Brick Laying", unit: "sqm", quantity: 225.00, rate: 35, amount: 7875.00 },
-        { description: "Roofing", unit: "sqm", quantity: 180.00, rate: 80, amount: 14400.00 },
-      ]);
       setFileProcessed(true);
     }, 2000);
+  };
+
+  // Helper function to get price and unit for a material
+  // const getMaterialInfo = (materialKey) => {
+  //   if (!marketPrices) return { price: "N/A", unit: "N/A" };
+    
+  //   if (materialKey.toLowerCase().includes("brick")) {
+  //     return marketPrices["brick"];
+  //   } else if (materialKey.toLowerCase().includes("cement")) {
+  //     return marketPrices["Cement - 50Kg bag"];
+  //   } else if (materialKey.toLowerCase().includes("sand")) {
+  //     return marketPrices["River sand"];
+  //   } else if (materialKey.toLowerCase().includes("gravel")) {
+  //     return marketPrices["gravel"];
+  //   } else if (materialKey.toLowerCase().includes("steel")) {
+  //     return marketPrices["steel"];
+  //   } else if (materialKey.toLowerCase().includes("primer")) {
+  //     return marketPrices["Wall filler Primer external"];
+  //   } else if (materialKey.toLowerCase().includes("paint")) {
+  //     return marketPrices["Emulsion Paint"];
+  //   }else if (materialKey.toLowerCase().includes("Tiles needed (with waste factor)")) {
+  //     return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
+  //   }
+
+  // };
+
+  const getMaterialInfo = (materialKey) => {
+    if (!marketPrices) return { price: "N/A", unit: "N/A" };
+
+    if (materialKey.toLowerCase().includes("brick")) {
+      return marketPrices["brick"];
+    } else if (materialKey.toLowerCase().includes("cement")) {
+      return marketPrices["Cement - 50Kg bag"];
+    } else if (materialKey.toLowerCase().includes("sand")) {
+      return marketPrices["River sand"];
+    } else if (materialKey.toLowerCase().includes("gravel")) {
+      return marketPrices["gravel"];
+    } else if (materialKey.toLowerCase().includes("steel")) {
+      return marketPrices["steel"];
+    } else if (materialKey.toLowerCase().includes("primer")) {
+      return marketPrices["Wall filler Primer external"];
+    } else if (materialKey.toLowerCase().includes("paint")) {
+      return marketPrices["Emulsion Paint"];
+    }else if (materialKey.includes("Tiles needed (with waste factor)")) {
+      return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
+    }
+    
+    // Check if material exists in marketPrices
+    let material = marketPrices[materialKey];
+    if (!material) {
+      console.warn(`Material ${materialKey} not found in market prices`);
+      return { price: "Price not found", unit: "N/A" };
+    }
+  
+    // Check for price in the found material object
+    if (!material.price) {
+      console.warn(`Price for ${materialKey} not found in market prices`);
+      return { price: "Price not found", unit: "N/A" };
+    }
+  
+    return material;
+  };
+
+  // Helper function to calculate the cost
+  const calculateCost = (quantity, price) => {
+    if (!price || price === "Price not found") return "N/A";
+    return (quantity * price).toLocaleString();
+  };
+
+  // Helper function to format large numbers
+  const formatNumber = (num) => {
+    if (typeof num === 'number') {
+      return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    }
+    return num;
+  };
+
+  // Helper function to determine unit from the material key
+  const getUnitFromKey = (key) => {
+    if (key.toLowerCase().includes("cubic meters")) return "m³";
+    if (key.toLowerCase().includes("meters") || key.toLowerCase().includes("area")) return "m²";
+    if (key.toLowerCase().includes("kg")) return "kg";
+    if (key.toLowerCase().includes("liters")) return "liter";
+    if (key.toLowerCase().includes("bags")) return "bags";
+    if (key.toLowerCase().includes("tiles")) return "pcs";
+    return "";
   };
 
   return (
@@ -134,43 +167,49 @@ const Output = () => {
           
                 <section className="material-estimates">
                   <h2>Construction Material Estimation</h2>
-                  <h4>Note: This BOQ is made using prices for budget-frinedly brands<br></br>Feel free to customize</h4>
-                  
+                  <h4>Note: These prices are given according to the BSR 2024<br></br>Feel free to customize</h4>
                   <table>
                     <thead>
                       <tr>
                         <th>Materials</th>
                         <th>Quantities</th>
+                        <th>Units</th>
                         <th>Price per unit</th>
                         <th>Cost</th>
                       </tr>
                     </thead>
                     <tbody>
-
-                      {Object.keys(data).map((category) => (
-                        <React.Fragment key={category}>
-
-                          <tr className="table-header-row">
-                            <th className="table-header" colSpan="4">{category}</th>
-                          </tr>
-
-                          {Object.entries(data[category]).map(([key, value]) => {
-                            const pricePerUnit = getPriceForMaterial(key, value);
-                            const totalCost = calculateCost(value, pricePerUnit);
-                            
-                            return (
-                              <tr key={key}>
-                                <td>{key}</td>
-                                <td>{value.toLocaleString()}</td>
-                                <td>
-                                {pricePerUnit}
-                                </td>
-                                <td>{totalCost}</td>
+                    {data && (
+                      <>
+                        {Object.keys(data).map((category) => {
+                          
+                          return (
+                            <React.Fragment key={category}>
+                              <tr className="table-header-row">
+                                <td colSpan="5" className="table-header">{formatTitle(category)}</td>
                               </tr>
-                            );
-                          })}
-                        </React.Fragment>
-                      ))}
+                              {Object.entries(data[category] || {}).map(([key, value]) => {
+                                const materialInfo = getMaterialInfo(key) || {};
+                                const unit = getUnitFromKey(key) || materialInfo.unit || "";
+                                const price = materialInfo.price !== "Price not found" ? materialInfo.price : "N/A";
+                                const cost = materialInfo.price !== "Price not found" ? calculateCost(value, materialInfo.price) : "N/A";
+
+                                return (
+                                  <tr key={key}>
+                                    <td>{key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                                    <td>{formatNumber(value)}</td>
+                                    <td>{unit}</td>
+                                    <td>{price !== "N/A" ? formatNumber(price) : "N/A"}</td>
+                                    <td>{cost !== "N/A" ? cost : "N/A"}</td>
+                                  </tr>
+                                );
+                              })}
+                            </React.Fragment>
+                          );
+                        })}
+                      </>
+                    )}
+
                     </tbody>
                   </table>
                 </section>
@@ -207,3 +246,5 @@ const Output = () => {
 };
 
 export default Output;
+
+
