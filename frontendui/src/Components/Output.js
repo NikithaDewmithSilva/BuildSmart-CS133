@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./Output.css";
+import { supabase } from "../supabase";
 import InviteCustomerForm from "./InviteCustomerForm";
 
 const Output = () => {
   const [fileProcessed, setFileProcessed] = useState(false);
-  const [boqData, setBoqData] = useState(null);
+
   const [showInviteForm, setShowInviteForm] = useState(false); // State for popup
   const [marketPrices, setMarketPrices] = useState(null)
   const [data, setData] = useState(null);
+  const [boqs, setBoqs] = useState([]);
+  const [boqData, setBoqData] = useState([]);
   const navigate = useNavigate();
 
 const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
 
+const { id } = useParams();
+
   useEffect(() => {
     // Fetch the market prices from the JSON file
-    fetch("/marketPrices.json")
+    fetch("/api/market-prices")
       .then((response) => response.json())
       .then((jsonData) => {
         console.log("Market prices loaded:", jsonData);
@@ -27,31 +32,15 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
 
     if (fileProcessed) {
       // Load the output data
-      fetch('/output.json')
+      fetch("/api/output")
         .then(response => response.json())
         .then(jsonData => {
+          console.log("output data loaded:", jsonData);
           setData(jsonData);
         })
         .catch(error => {
           console.error("Error loading output data:", error);
         });
-    }
-  }, [fileProcessed]);
-
-
-  useEffect(() => {
-    if (fileProcessed) {
-      // Load the output data
-      fetch('output.json')
-        .then(response => response.json())
-        .then(jsonData => {
-          setData(jsonData);
-        })
-        .catch(error => {
-          console.error("Error loading output data:", error);
-        });
-
-      
     }
   }, [fileProcessed]);
 
@@ -61,29 +50,86 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
     }, 2000);
   };
 
-  // Helper function to get price and unit for a material
-  // const getMaterialInfo = (materialKey) => {
-  //   if (!marketPrices) return { price: "N/A", unit: "N/A" };
-    
-  //   if (materialKey.toLowerCase().includes("brick")) {
-  //     return marketPrices["brick"];
-  //   } else if (materialKey.toLowerCase().includes("cement")) {
-  //     return marketPrices["Cement - 50Kg bag"];
-  //   } else if (materialKey.toLowerCase().includes("sand")) {
-  //     return marketPrices["River sand"];
-  //   } else if (materialKey.toLowerCase().includes("gravel")) {
-  //     return marketPrices["gravel"];
-  //   } else if (materialKey.toLowerCase().includes("steel")) {
-  //     return marketPrices["steel"];
-  //   } else if (materialKey.toLowerCase().includes("primer")) {
-  //     return marketPrices["Wall filler Primer external"];
-  //   } else if (materialKey.toLowerCase().includes("paint")) {
-  //     return marketPrices["Emulsion Paint"];
-  //   }else if (materialKey.toLowerCase().includes("Tiles needed (with waste factor)")) {
-  //     return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
-  //   }
+  //Left this part commented because the 404 that occurs when running this couldn't be resolved. 
 
+  // const fetchAllBOQs = async () => {
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("generated_boq")
+  //       .select("*")
+  //       .eq("project_id", id);
+  
+  //     if (error) throw error;
+  //     setBoqs(data);
+  //   } catch (err) {
+  //     console.error("Error fetching BOQs:", err.message);
+  //   }
   // };
+
+  //   useEffect(() => {
+  //     if (id) {
+  //       fetchAllBOQs();
+  //     }
+  //   }, [id]); 
+
+
+
+
+  // const saveBOQAsPDF = async () => {
+  //   const projectId = id;
+  //   const cadFileId = "your_cad_file_id";
+  //   const boqName = prompt("Enter a name for this BOQ:", "Default BOQ Name");
+  
+  //   if (!boqName) {
+  //     alert("BOQ Name is required!");
+  //     return;
+  //   }
+  
+  //   const materials = Object.entries(data || {}).flatMap(([category, items]) =>
+  //     Object.entries(items).map(([material, quantity]) => ({
+  //       material,
+  //       estimated: quantity,
+  //       unit: getUnitFromKey(material),
+  //     }))
+  //   );
+  
+  //   const boqData = materials.reduce((acc, material) => {
+  //     acc[material.material] = {
+  //       quantity: material.estimated,
+  //       unit: material.unit,
+  //       price: "N/A",
+  //       cost: "N/A",
+  //     };
+  //     return acc;
+  //   }, {});
+
+
+  
+  //   const payload = {
+  //     project_id: projectId,
+  //     cad_file_id: cadFileId,
+  //     boq_name: boqName,
+  //     boq_data: boqData
+  //   };
+
+  //   console.log("reached payload")
+  
+  //   const response = await fetch("/api/boqPdf", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(payload),
+  //   });
+  
+  //   const jsondata = await response.json();
+  //   if (jsondata.status === "success") {
+  //     alert("BOQ PDF saved successfully!");
+  //     fetchAllBOQs(); // Refresh the list of BOQs
+  //   } else {
+  //     alert("Error saving BOQ PDF.");
+  //   }
+  // }
+  
+
 
   const getMaterialInfo = (materialKey) => {
     if (!marketPrices) return { price: "N/A", unit: "N/A" };
@@ -109,26 +155,22 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
     // Check if material exists in marketPrices
     let material = marketPrices[materialKey];
     if (!material) {
-      console.warn(`Material ${materialKey} not found in market prices`);
       return { price: "Price not found", unit: "N/A" };
     }
   
     // Check for price in the found material object
     if (!material.price) {
-      console.warn(`Price for ${materialKey} not found in market prices`);
       return { price: "Price not found", unit: "N/A" };
     }
   
     return material;
   };
 
-  // Helper function to calculate the cost
   const calculateCost = (quantity, price) => {
     if (!price || price === "Price not found") return "N/A";
     return (quantity * price).toLocaleString();
   };
 
-  // Helper function to format large numbers
   const formatNumber = (num) => {
     if (typeof num === 'number') {
       return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
@@ -230,6 +272,7 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
               <button className="customize-btn">Customize the BOQ</button>
               <button className='share-btn' onClick={() => setShowInviteForm(true)}>Share</button>
               <button className="submit-btn">Submit another cad</button>
+              <button className="submit-btn">Track in real time</button>
             </div>
           </div>
         </div>

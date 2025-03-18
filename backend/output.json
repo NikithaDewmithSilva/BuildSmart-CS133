@@ -13,8 +13,7 @@
     "Wall Material Estimate": {
         "Estimated bricks required": 147371,
         "Estimated cement required (bags)": 15474.012045685837,
-        "Estimated cement required (kg)": 773700.6022842919,
-        "Estimated sand required (kg)": 1285290.5396302147
+        "Estimated sand required (cubic meters)": 1285290.5396302147
     },
     "Foundation Material Estimate": {
         "Estimated concrete volume (cubic meters)": 1150.7269847588896,
