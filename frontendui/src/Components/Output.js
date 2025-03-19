@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./Output.css";
+import { supabase } from "../supabase";
 import InviteCustomerForm from "./InviteCustomerForm";
 
 const Output = () => {
   const [fileProcessed, setFileProcessed] = useState(false);
-  const [boqData, setBoqData] = useState(null);
-  const [showInviteForm, setShowInviteForm] = useState(false); // State for popup
-  const [marketPrices, setMarketPrices] = useState(null)
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [marketPrices, setMarketPrices] = useState(null);
   const [data, setData] = useState(null);
+  const [boqs, setBoqs] = useState([]);
+  const [boqData, setBoqData] = useState([]);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
+  const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
 
   useEffect(() => {
     // Fetch the market prices from the JSON file
-    fetch("/marketPrices.json")
+    fetch("/api/market-prices")
       .then((response) => response.json())
       .then((jsonData) => {
         console.log("Market prices loaded:", jsonData);
-        setMarketPrices(jsonData); // Update marketPrices with the data from the JSON file
+        setMarketPrices(jsonData);
       })
       .catch((error) => {
         console.error("Error loading market prices:", error);
@@ -27,31 +30,15 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
 
     if (fileProcessed) {
       // Load the output data
-      fetch('/output.json')
+      fetch("/api/output")
         .then(response => response.json())
         .then(jsonData => {
+          console.log("output data loaded:", jsonData);
           setData(jsonData);
         })
         .catch(error => {
           console.error("Error loading output data:", error);
         });
-    }
-  }, [fileProcessed]);
-
-
-  useEffect(() => {
-    if (fileProcessed) {
-      // Load the output data
-      fetch('output.json')
-        .then(response => response.json())
-        .then(jsonData => {
-          setData(jsonData);
-        })
-        .catch(error => {
-          console.error("Error loading output data:", error);
-        });
-
-      
     }
   }, [fileProcessed]);
 
@@ -61,30 +48,28 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
     }, 2000);
   };
 
-  // Helper function to get price and unit for a material
-  // const getMaterialInfo = (materialKey) => {
-  //   if (!marketPrices) return { price: "N/A", unit: "N/A" };
-    
-  //   if (materialKey.toLowerCase().includes("brick")) {
-  //     return marketPrices["brick"];
-  //   } else if (materialKey.toLowerCase().includes("cement")) {
-  //     return marketPrices["Cement - 50Kg bag"];
-  //   } else if (materialKey.toLowerCase().includes("sand")) {
-  //     return marketPrices["River sand"];
-  //   } else if (materialKey.toLowerCase().includes("gravel")) {
-  //     return marketPrices["gravel"];
-  //   } else if (materialKey.toLowerCase().includes("steel")) {
-  //     return marketPrices["steel"];
-  //   } else if (materialKey.toLowerCase().includes("primer")) {
-  //     return marketPrices["Wall filler Primer external"];
-  //   } else if (materialKey.toLowerCase().includes("paint")) {
-  //     return marketPrices["Emulsion Paint"];
-  //   }else if (materialKey.toLowerCase().includes("Tiles needed (with waste factor)")) {
-  //     return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
-  //   }
+  // Function to handle download of BOQ
+  const handleDownload = () => {
+    alert("Download functionality will be implemented here");
+    // This would typically generate a PDF or Excel file and trigger a download
+  };
 
-  // };
+  // Function to handle customization of BOQ
+  const handleCustomize = () => {
+    navigate(`/customize-boq/${id}`);
+  };
 
+  // Function to handle submission of another CAD
+  const handleSubmitAnother = () => {
+    navigate('/upload');
+  };
+
+  // Function to handle real-time tracking
+  const handleTrackRealTime = () => {
+    navigate(`/track/${id}`);
+  };
+
+  // Helper functions for material pricing and formatting
   const getMaterialInfo = (materialKey) => {
     if (!marketPrices) return { price: "N/A", unit: "N/A" };
 
@@ -102,33 +87,29 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
       return marketPrices["Wall filler Primer external"];
     } else if (materialKey.toLowerCase().includes("paint")) {
       return marketPrices["Emulsion Paint"];
-    }else if (materialKey.includes("Tiles needed (with waste factor)")) {
+    } else if (materialKey.includes("Tiles needed (with waste factor)")) {
       return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
     }
     
     // Check if material exists in marketPrices
     let material = marketPrices[materialKey];
     if (!material) {
-      console.warn(`Material ${materialKey} not found in market prices`);
       return { price: "Price not found", unit: "N/A" };
     }
   
     // Check for price in the found material object
     if (!material.price) {
-      console.warn(`Price for ${materialKey} not found in market prices`);
       return { price: "Price not found", unit: "N/A" };
     }
   
     return material;
   };
 
-  // Helper function to calculate the cost
   const calculateCost = (quantity, price) => {
     if (!price || price === "Price not found") return "N/A";
     return (quantity * price).toLocaleString();
   };
 
-  // Helper function to format large numbers
   const formatNumber = (num) => {
     if (typeof num === 'number') {
       return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
@@ -145,6 +126,24 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
     if (key.toLowerCase().includes("bags")) return "bags";
     if (key.toLowerCase().includes("tiles")) return "pcs";
     return "";
+  };
+
+  // Calculate total cost for display
+  const calculateTotalCost = () => {
+    if (!data || !marketPrices) return "Processing...";
+    
+    let totalCost = 0;
+    
+    Object.keys(data).forEach((category) => {
+      Object.entries(data[category] || {}).forEach(([key, value]) => {
+        const materialInfo = getMaterialInfo(key);
+        if (materialInfo.price && materialInfo.price !== "Price not found") {
+          totalCost += value * materialInfo.price;
+        }
+      });
+    });
+    
+    return totalCost.toLocaleString();
   };
 
   return (
@@ -167,7 +166,7 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
           
                 <section className="material-estimates">
                   <h2>Construction Material Estimation</h2>
-                  <h4>Note: These prices are given according to the BSR 2024<br></br>Feel free to customize</h4>
+                  <h4>Note: These prices are given according to the BSR 2024<br />Feel free to customize</h4>
                   <table>
                     <thead>
                       <tr>
@@ -209,7 +208,6 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
                         })}
                       </>
                     )}
-
                     </tbody>
                   </table>
                 </section>
@@ -222,14 +220,15 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
           <div className="output-summary">
             <p className="grand-total">
               Your estimated cost is: <br />
-              ${boqData ? boqData.reduce((total, item) => total + item.amount, 0).toFixed(2) : "Processing..."}
+              ${calculateTotalCost()}
             </p>
             
             <div className="output-buttons">
-              <button className="download-btn">Download</button>
-              <button className="customize-btn">Customize the BOQ</button>
-              <button className='share-btn' onClick={() => setShowInviteForm(true)}>Share</button>
-              <button className="submit-btn">Submit another cad</button>
+              <button className="download-btn" onClick={handleDownload}>Download</button>
+              <button className="customize-btn" onClick={handleCustomize}>Customize the BOQ</button>
+              <button className="share-btn" onClick={() => setShowInviteForm(true)}>Share</button>
+              <button className="submit-btn" onClick={handleSubmitAnother}>Submit another CAD</button>
+              <button className="submit-btn" onClick={handleTrackRealTime}>Track in real time</button>
             </div>
           </div>
         </div>
@@ -238,7 +237,10 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
       {/* Show InviteCustomerForm in popup */}
       {showInviteForm && (
         <div className="popup-overlay">
-          <InviteCustomerForm onClose={() => setShowInviteForm(false)} />
+          <InviteCustomerForm 
+            onClose={() => setShowInviteForm(false)} 
+            projectId={id}  // Pass the project ID to the form
+          />
         </div>
       )}
     </div>
@@ -246,5 +248,3 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
 };
 
 export default Output;
-
-

@@ -65,7 +65,7 @@ for material, details in final_details.items():
     print(f"{material.capitalize()}: Price = {details['price']}, Unit = {details['unit']}")
 
 # Save final details to a JSON file
-json_file_path = r"C:\Users\Yesmi\OneDrive\Desktop\SDGP\GitHub\BuildSmart-CS133\frontendui\public\marketPrices.json"
+json_file_path = r"C:\Users\Yesmi\OneDrive\Desktop\SDGP\GitHub\BuildSmart-CS133\backend\marketPrices.json"
 with open(json_file_path, 'w') as json_file:
     json.dump(final_details, json_file, indent=4)
 

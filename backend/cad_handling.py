@@ -13,11 +13,11 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 def get_db_connection():
     conn = psycopg2.connect(
-        dbname="your_db_name",
-        user="your_db_user",
-        password="your_db_password",
-        host="your_db_host",
-        port="your_db_port"
+        dbname="postgres",
+        user="postgres",
+        password="6V2lKRQ9texQnId6",
+        host="ufernctpquewhxmrjyjr.supabase.co",
+        port="5432"
     )
     return conn
 

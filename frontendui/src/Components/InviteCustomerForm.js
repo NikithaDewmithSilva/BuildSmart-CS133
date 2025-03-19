@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import "./InviteCustomerForm.css";
 
-const InviteCustomerForm = ({ onClose }) => {
+const InviteCustomerForm = ({ onClose, projectId }) => {
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
   const [message, setMessage] = useState('');
@@ -21,20 +21,26 @@ const InviteCustomerForm = ({ onClose }) => {
     }
 
     try {
-      // Sending POST request to FastAPI endpoint
-      const response = await axios.post('http://localhost:8000/send-invite', {
-        invitee_email: email,   // Correct field name (this should match with FastAPI model)
-        project_id: '123e4567-e89b-12d3-a456-426614174000',  // Example project ID (you should replace this with actual logic)
-        invited_by: '123e4567-e89b-12d3-a456-426614174000',  // Example inviter UUID (you should replace this too)
+      // Sending POST request to Flask endpoint
+      const response = await axios.post('http://localhost:5000/send-invite', {
+        invitee_email: email,
+        project_id: projectId || '123e4567-e89b-12d3-a456-426614174000', // Use the actual project ID from props
+        invited_by: localStorage.getItem('userId') || '123e4567-e89b-12d3-a456-426614174000', // Get user ID from localStorage
+        description: description // Include the optional description
       });
 
-      // Display success or failure message
+      // Display success message
       setMessage(response.data.message || 'Invitation sent successfully!');
       setEmail('');
       setDescription('');
+      
+      // Close the form after 3 seconds on success
+      setTimeout(() => {
+        onClose();
+      }, 3000);
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Failed to send invite. Please try again.');
+      setMessage(error.response?.data?.error || 'Failed to send invite. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -49,19 +55,21 @@ const InviteCustomerForm = ({ onClose }) => {
         </div>
         <form onSubmit={handleSubmit} className="invite-form">
           <label className="invite-label">Email:</label>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter recipient's email"
             required
             className="invite-input"
           />
           <br />
           <label className="invite-label">Description (optional):</label>
-          <textarea 
+          <textarea
             className='invite-textarea'
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)} 
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Add a personal message"
           />
           <br />
           <button className="invite-btn" type="submit" disabled={loading}>

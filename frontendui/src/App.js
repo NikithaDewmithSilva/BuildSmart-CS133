@@ -59,8 +59,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/project/:id/input" element={<Input />} />
-          <Route path="/process" element={<Process />} />
-          <Route path="/output" element={<Output />} />
+          <Route path="/project/:id/input/process" element={<Process />} />
+          <Route path="/project/:id/input/process/output" element={<Output />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/invite-customer" element={<InviteCustomerForm />} />
           <Route path="/myProjects" element={<MyProjects />} />

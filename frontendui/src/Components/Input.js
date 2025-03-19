@@ -78,7 +78,7 @@ const Input = () => {
                     <div className="input-buttons">
                         <button 
                             className={`action-btn ${!isFileUploaded ? "disabled-btn" : ""}`} 
-                            onClick={() => navigate("/process")}
+                            onClick={() => navigate("./process")}
                             disabled={!isFileUploaded} // Disable the button when the CAD Design was not there
                         >
                             SUBMIT
