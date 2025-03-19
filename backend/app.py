@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from cad_handling import handle_cad_upload
+# Import the function from file_upload.py
+from file_upload import handle_cad_upload
 
 app = Flask(__name__)
 CORS(app)
