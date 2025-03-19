@@ -6,17 +6,15 @@ import InviteCustomerForm from "./InviteCustomerForm";
 
 const Output = () => {
   const [fileProcessed, setFileProcessed] = useState(false);
-
-  const [showInviteForm, setShowInviteForm] = useState(false); // State for popup
-  const [marketPrices, setMarketPrices] = useState(null)
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [marketPrices, setMarketPrices] = useState(null);
   const [data, setData] = useState(null);
   const [boqs, setBoqs] = useState([]);
   const [boqData, setBoqData] = useState([]);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
-
-const { id } = useParams();
+  const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
 
   useEffect(() => {
     // Fetch the market prices from the JSON file
@@ -24,7 +22,7 @@ const { id } = useParams();
       .then((response) => response.json())
       .then((jsonData) => {
         console.log("Market prices loaded:", jsonData);
-        setMarketPrices(jsonData); // Update marketPrices with the data from the JSON file
+        setMarketPrices(jsonData);
       })
       .catch((error) => {
         console.error("Error loading market prices:", error);
@@ -50,87 +48,28 @@ const { id } = useParams();
     }, 2000);
   };
 
-  //Left this part commented because the 404 that occurs when running this couldn't be resolved. 
+  // Function to handle download of BOQ
+  const handleDownload = () => {
+    alert("Download functionality will be implemented here");
+    // This would typically generate a PDF or Excel file and trigger a download
+  };
 
-  // const fetchAllBOQs = async () => {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("generated_boq")
-  //       .select("*")
-  //       .eq("project_id", id);
-  
-  //     if (error) throw error;
-  //     setBoqs(data);
-  //   } catch (err) {
-  //     console.error("Error fetching BOQs:", err.message);
-  //   }
-  // };
+  // Function to handle customization of BOQ
+  const handleCustomize = () => {
+    navigate(`/customize-boq/${id}`);
+  };
 
-  //   useEffect(() => {
-  //     if (id) {
-  //       fetchAllBOQs();
-  //     }
-  //   }, [id]); 
+  // Function to handle submission of another CAD
+  const handleSubmitAnother = () => {
+    navigate('/upload');
+  };
 
+  // Function to handle real-time tracking
+  const handleTrackRealTime = () => {
+    navigate(`/track/${id}`);
+  };
 
-
-
-  // const saveBOQAsPDF = async () => {
-  //   const projectId = id;
-  //   const cadFileId = "your_cad_file_id";
-  //   const boqName = prompt("Enter a name for this BOQ:", "Default BOQ Name");
-  
-  //   if (!boqName) {
-  //     alert("BOQ Name is required!");
-  //     return;
-  //   }
-  
-  //   const materials = Object.entries(data || {}).flatMap(([category, items]) =>
-  //     Object.entries(items).map(([material, quantity]) => ({
-  //       material,
-  //       estimated: quantity,
-  //       unit: getUnitFromKey(material),
-  //     }))
-  //   );
-  
-  //   const boqData = materials.reduce((acc, material) => {
-  //     acc[material.material] = {
-  //       quantity: material.estimated,
-  //       unit: material.unit,
-  //       price: "N/A",
-  //       cost: "N/A",
-  //     };
-  //     return acc;
-  //   }, {});
-
-
-  
-  //   const payload = {
-  //     project_id: projectId,
-  //     cad_file_id: cadFileId,
-  //     boq_name: boqName,
-  //     boq_data: boqData
-  //   };
-
-  //   console.log("reached payload")
-  
-  //   const response = await fetch("/api/boqPdf", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(payload),
-  //   });
-  
-  //   const jsondata = await response.json();
-  //   if (jsondata.status === "success") {
-  //     alert("BOQ PDF saved successfully!");
-  //     fetchAllBOQs(); // Refresh the list of BOQs
-  //   } else {
-  //     alert("Error saving BOQ PDF.");
-  //   }
-  // }
-  
-
-
+  // Helper functions for material pricing and formatting
   const getMaterialInfo = (materialKey) => {
     if (!marketPrices) return { price: "N/A", unit: "N/A" };
 
@@ -148,7 +87,7 @@ const { id } = useParams();
       return marketPrices["Wall filler Primer external"];
     } else if (materialKey.toLowerCase().includes("paint")) {
       return marketPrices["Emulsion Paint"];
-    }else if (materialKey.includes("Tiles needed (with waste factor)")) {
+    } else if (materialKey.includes("Tiles needed (with waste factor)")) {
       return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
     }
     
@@ -189,6 +128,24 @@ const { id } = useParams();
     return "";
   };
 
+  // Calculate total cost for display
+  const calculateTotalCost = () => {
+    if (!data || !marketPrices) return "Processing...";
+    
+    let totalCost = 0;
+    
+    Object.keys(data).forEach((category) => {
+      Object.entries(data[category] || {}).forEach(([key, value]) => {
+        const materialInfo = getMaterialInfo(key);
+        if (materialInfo.price && materialInfo.price !== "Price not found") {
+          totalCost += value * materialInfo.price;
+        }
+      });
+    });
+    
+    return totalCost.toLocaleString();
+  };
+
   return (
     <div className="output-page">
       {/* Background blurs when form is open */}
@@ -209,7 +166,7 @@ const { id } = useParams();
           
                 <section className="material-estimates">
                   <h2>Construction Material Estimation</h2>
-                  <h4>Note: These prices are given according to the BSR 2024<br></br>Feel free to customize</h4>
+                  <h4>Note: These prices are given according to the BSR 2024<br />Feel free to customize</h4>
                   <table>
                     <thead>
                       <tr>
@@ -251,7 +208,6 @@ const { id } = useParams();
                         })}
                       </>
                     )}
-
                     </tbody>
                   </table>
                 </section>
@@ -264,15 +220,15 @@ const { id } = useParams();
           <div className="output-summary">
             <p className="grand-total">
               Your estimated cost is: <br />
-              ${boqData ? boqData.reduce((total, item) => total + item.amount, 0).toFixed(2) : "Processing..."}
+              ${calculateTotalCost()}
             </p>
             
             <div className="output-buttons">
-              <button className="download-btn">Download</button>
-              <button className="customize-btn">Customize the BOQ</button>
-              <button className='share-btn' onClick={() => setShowInviteForm(true)}>Share</button>
-              <button className="submit-btn">Submit another cad</button>
-              <button className="submit-btn">Track in real time</button>
+              <button className="download-btn" onClick={handleDownload}>Download</button>
+              <button className="customize-btn" onClick={handleCustomize}>Customize the BOQ</button>
+              <button className="share-btn" onClick={() => setShowInviteForm(true)}>Share</button>
+              <button className="submit-btn" onClick={handleSubmitAnother}>Submit another CAD</button>
+              <button className="submit-btn" onClick={handleTrackRealTime}>Track in real time</button>
             </div>
           </div>
         </div>
@@ -281,7 +237,10 @@ const { id } = useParams();
       {/* Show InviteCustomerForm in popup */}
       {showInviteForm && (
         <div className="popup-overlay">
-          <InviteCustomerForm onClose={() => setShowInviteForm(false)} />
+          <InviteCustomerForm 
+            onClose={() => setShowInviteForm(false)} 
+            projectId={id}  // Pass the project ID to the form
+          />
         </div>
       )}
     </div>
@@ -289,5 +248,3 @@ const { id } = useParams();
 };
 
 export default Output;
-
-
