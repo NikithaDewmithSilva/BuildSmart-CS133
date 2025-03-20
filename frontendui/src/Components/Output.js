@@ -56,8 +56,8 @@ const Output = () => {
 
   // Function to handle customization of BOQ
   const handleCustomize = () => {
-    navigate(`/customize-boq/${id}`);
-  };
+    navigate(`/customize-boq/${id}`, { state: { marketPrices, data } });
+  };  
 
   // Function to handle submission of another CAD
   const handleSubmitAnother = () => {
