@@ -34,9 +34,9 @@ def send_invite_email(to_email, invite_link, description=""):
             <style>
                 body {{ font-family: Arial, sans-serif; }}
                 .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                .header {{ background-color: #4CAF50; color: white; padding: 10px; text-align: center; }}
+                .header {{ background-color: #130683  ; color: white; padding: 10px; text-align: center; }}
                 .content {{ padding: 20px; }}
-                .button {{ background-color: #4CAF50; color: white; padding: 10px 20px; 
+                .button {{ background-color: #130683; padding: 10px 20px; color: white;
                           text-decoration: none; display: inline-block; margin-top: 20px; }}
             </style>
         </head>

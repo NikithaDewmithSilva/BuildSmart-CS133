@@ -14,7 +14,12 @@ const Output = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
+  const handleMaterialChart = () => {
+    navigate('./material-usage-chart')
+  }
+
+const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
+
 
   useEffect(() => {
     // Fetch the market prices from the JSON file
@@ -228,7 +233,7 @@ const Output = () => {
               <button className="customize-btn" onClick={handleCustomize}>Customize the BOQ</button>
               <button className="share-btn" onClick={() => setShowInviteForm(true)}>Share</button>
               <button className="submit-btn" onClick={handleSubmitAnother}>Submit another CAD</button>
-              <button className="submit-btn" onClick={handleTrackRealTime}>Track in real time</button>
+              <button className="submit-btn" onClick={handleMaterialChart}>Track in real time</button>
             </div>
           </div>
         </div>
