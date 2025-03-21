@@ -42,6 +42,7 @@
   height: 120px;
   margin-left: 70%;
   object-fit: cover;
+  border-radius: 10px;
   z-index: 0; /* Ensure video is above the background but below content */
   opacity: 0.6; /* Slightly visible by default */
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -104,14 +105,15 @@
 }
 
 .project-date {
-  color: rgb(208, 208, 208);
+  color: rgb(104, 104, 104);
   font-size: 12px;
   transition: color 0.3s ease;
+  font-weight: 600;
 }
 
 .project-card:hover .project-date {
-  color: rgb(48, 48, 48);
-  font-weight: 600;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
 }
 
 .project-card-buttons {
