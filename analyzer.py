@@ -235,9 +235,21 @@ def infer_material(entity):
 
     return None
 
-def get_layer_stats(msp):   
-
-
+def get_layer_stats(msp):
+    """Get statistics about layers to help with auto-detection."""
+    layer_stats = {}
+    for entity in msp:
+        if hasattr(entity, 'dxf') and hasattr(entity.dxf, 'layer'):
+            layer = entity.dxf.layer
+            if layer not in layer_stats:
+                layer_stats[layer] = {'count': 0, 'types': {}}
+            layer_stats[layer]['count'] += 1
+            dxftype = entity.dxftype()
+            if dxftype not in layer_stats[layer]['types']:
+                layer_stats[layer]['types'][dxftype] = 0
+            layer_stats[layer]['types'][dxftype] += 1
+    return layer_stats
+    
 def auto_detect_layers(msp): 
     
 def save_results_to_json(results, output_path="output.json"):  
