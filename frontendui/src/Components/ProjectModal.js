@@ -118,6 +118,7 @@ const ProjectModal = ({ isOpen, closeModal}) => {
                                     name="projectName"
                                     value={formData.projectName}
                                     onChange={handleChange}
+                                    placeholder='Enter the project name'
                                     required
                                 />
                             </label>
@@ -130,6 +131,7 @@ const ProjectModal = ({ isOpen, closeModal}) => {
                                     id='projectDescription'
                                     name='projectDescription'
                                     value={formData.projectDescription}
+                                    placeholder='Enter a brief description'
                                     onChange={handleChange}
                                 ></textarea>
                             </label>

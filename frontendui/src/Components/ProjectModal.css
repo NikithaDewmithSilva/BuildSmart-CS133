@@ -72,6 +72,8 @@
     margin-top: 20px;
     border-radius: 4px;
     font-size: 15px;
+    background-color: rgba(142, 142, 142, 0.8);
+    color: rgb(255, 255, 255);
 }
 
 .modal-close-icon{
@@ -82,6 +84,14 @@
 .modal-close-button{
     cursor: pointer;
     border: none;
+    background-color: rgb(215, 215, 215);
+    font-weight: bold;
+    width: 15px;
+}
+
+.modal-close-button:hover{
+    background-color: rgb(171, 171, 171);
+    color: rgb(45, 45, 45);
 }
 
 .modal-submit-button{
