@@ -23,7 +23,7 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
 
   useEffect(() => {
     // Fetch the market prices from the JSON file
-    fetch("/api/market-prices")
+    fetch("http://127.0.0.1:5000/api/market-prices")
       .then((response) => response.json())
       .then((jsonData) => {
         console.log("Market prices loaded:", jsonData);
@@ -35,7 +35,7 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
 
     if (fileProcessed) {
       // Load the output data
-      fetch("/api/output")
+      fetch("http://127.0.0.1:5000/api/output")
         .then(response => response.json())
         .then(jsonData => {
           console.log("output data loaded:", jsonData);
