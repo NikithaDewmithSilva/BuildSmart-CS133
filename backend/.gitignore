@@ -25,3 +25,6 @@ yarn-error.log*
 .env
 
 __pycache__/
+
+# Uploads folder and its contents
+uploads/
