@@ -17,6 +17,7 @@ import MyProjects from "./Components/MyProjects";
 import ProjectPage from "./Components/ProjectPage";
 import Footer from "./Components/Footer";
 import InviteCustomerForm from "./Components/InviteCustomerForm";
+import MaterialChart from "./Components/MaterialChart";
 
 
 const App = () => {
@@ -67,9 +68,9 @@ const App = () => {
           <Route path="/invite-customer" element={<InviteCustomerForm />} />
           <Route path="/myProjects" element={<MyProjects />} />
           <Route path="/project/:id" element={<ProjectPage />} />
+          <Route path="/project/:id/input/process/output/material-usage-chart" element={<MaterialChart/>} />
         </Routes>
       </div>
-
       <Footer/>
     </Router>
   );
