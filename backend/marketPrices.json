@@ -19,8 +19,12 @@
         "price": 24200.0,
         "unit": "1000 Nos."
     },
-    "Floor Tile - Homogeneous Porcelain semi - Glazed": {
-        "price": 466.0,
+    "Floor Tile - Homogeneous Porcelain semi - Glazed 12\" x 24\"": {
+        "price": 636.0,
+        "unit": "No."
+    },
+    "Floor Tile - Homogeneous Porcelain semi -Glazed 24\" x 24\"": {
+        "price": 1525.0,
         "unit": "No."
     },
     "Emulsion Paint": {

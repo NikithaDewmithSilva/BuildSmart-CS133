@@ -108,7 +108,7 @@ def send_invite():
         invite_token = str(uuid.uuid4())
 
         # Generate invite link (this would typically link to a frontend page that handles the invitation)
-        invite_link = f"http://localhost:3000/view-boq/{project_id}?token={invite_token}"
+        invite_link = f"http://localhost:3000/output/{project_id}?token={invite_token}"
 
         # Send the invitation email with the optional description
         if send_invite_email(invitee_email, invite_link, description):

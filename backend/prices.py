@@ -16,7 +16,8 @@ for i, sheet in enumerate(xls.sheet_names, 1):
 
 # List of materials
 materials = ["Cement - 50Kg bag", "gravel", "steel", 
-             "Floor Tile - Homogeneous Porcelain semi - Glazed", 
+             'Floor Tile - Homogeneous Porcelain semi - Glazed 12" x 24"', 
+             'Floor Tile - Homogeneous Porcelain semi -Glazed 24" x 24"',
              "Emulsion Paint", "River sand", "brick", "Wall filler Primer external"]
 
 

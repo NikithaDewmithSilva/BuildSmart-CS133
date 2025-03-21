@@ -98,8 +98,10 @@ const handleCustomize = () => {
       return marketPrices["Wall filler Primer external"];
     } else if (materialKey.toLowerCase().includes("paint")) {
       return marketPrices["Emulsion Paint"];
-    } else if (materialKey.includes("Tiles needed (with waste factor)")) {
-      return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed"];
+    } else if (materialKey.includes("24 x 24 inches")) {
+      return marketPrices["Floor Tile - Homogeneous Porcelain semi -Glazed 24\" x 24\""];
+    }else if (materialKey.includes("12 x 24 inches")) {
+      return marketPrices["Floor Tile - Homogeneous Porcelain semi - Glazed 12\" x 24\""];
     }
     
     // Check if material exists in marketPrices
@@ -200,7 +202,7 @@ const handleCustomize = () => {
                               </tr>
                               {Object.entries(data[category] || {}).map(([key, value]) => {
                                 const materialInfo = getMaterialInfo(key) || {};
-                                const unit = getUnitFromKey(key) || materialInfo.unit || "";
+                                const unit = materialInfo.unit || "";
                                 const price = materialInfo.price !== "Price not found" ? materialInfo.price : "N/A";
                                 const cost = materialInfo.price !== "Price not found" ? calculateCost(value, materialInfo.price) : "N/A";
 

@@ -1,51 +1,50 @@
 {
     "Summary": {
-        "Walls": 203,
-        "Total Wall Area": 21053.08149383691,
-        "Detected Doors": 4,
-        "Detected Windows": 2,
-        "Total Area": 27013.11641763136,
-        "Foundations": 87,
-        "Total Foundation Area": 5753.634923794448,
-        "Slabs": 1,
-        "Total Slab Area": 206.39999999999992
+        "Walls": 427,
+        "Total Wall Area": 37256.8845336533,
+        "Detected Doors": 415,
+        "Detected Windows": 1,
+        "Foundations": 92,
+        "Total Foundation Area": 340377.33304589003,
+        "Slabs": 0,
+        "Total Slab Area": 124.59414869496163,
+        "Total Floor Area": 124.59414869496163,
+        "Roofing Area": 137.05356356445782,
+        "Total Area (Walls + Foundations + Slabs)": 377758.8117282383
     },
-    "Wall Material Estimate": {
-        "Estimated bricks required": 147371,
-        "Estimated cement required (bags)": 15474.012045685837,
-        "Estimated sand required (cubic meters)": 1285290.5396302147
+    "Wall Material Estimate (Including 30% Waste)": {
+        "Estimated bricks required": 2421697,
+        "Estimated cement required (50kg bags)": 9686.789978749859,
+        "Estimated sand required": 1210.8487473437324
     },
-    "Foundation Material Estimate": {
-        "Estimated concrete volume (cubic meters)": 1150.7269847588896,
-        "Estimated cement required (bags)": 8055.088893312228,
-        "Estimated cement required (kg)": 402754.4446656114,
-        "Estimated gravel required (kg)": 1150726.9847588895,
-        "Estimated sand required (kg)": 690436.1908553337,
-        "Estimated steel required (kg)": 115072.69847588896
+    "Foundation Material Estimate (Including 30% Waste)": {
+        "Estimated cement required (50kg bags)": 849581.8232825415,
+        "Estimated gravel required": 84958.18232825416,
+        "Estimated sand required": 53098.86395515885,
+        "Estimated steel required": 13274715.988789711
     },
-    "Slab Material Estimate": {
-        "Estimated concrete volume (cubic meters)": 30.959999999999987,
-        "Estimated cement required (bags)": 216.71999999999989,
-        "Estimated cement required (kg)": 10835.999999999995,
-        "Estimated gravel required (kg)": 30959.999999999985,
-        "Estimated sand required (kg)": 18575.999999999993,
-        "Estimated steel required (kg)": 2012.3999999999992
+    "Slab Material Estimate (Including 30% Waste)": {
+        "Estimated cement required (50kg bags)": 155.4934975713121,
+        "Estimated gravel required": 15.54934975713121,
+        "Estimated sand required": 9.718343598207007,
+        "Estimated steel required": 1579.2308347086387
     },
-    "Plaster Material Estimate": {
-        "Estimated Number of Plaster Bags (25kg Per Bag)": 5052.739558520859
+    "Plaster Material Estimate (Including 30% Waste)": {
+        "Estimated cement required (25kg bags)": 8718.110980874872
     },
-    "Primer Material Estimate": {
-        "Estimated Amount of Primer (liters)": 8421.232597534765
+    "Primer Material Estimate (Including 30% Waste)": {
+        "Estimated Amount of Primer": 11624.147974499829
     },
-    "Paint Material Estimate": {
-        "Estimated Amount of Paint (liters)": 12631.848896302146
+    "Paint Material Estimate (Including 30% Waste)": {
+        "Estimated Amount of Paint": 9686.789978749859
     },
-    "Floor Material Estimate": {
-        "Total floor (slab) area": 206.39999999999992,
-        "Each tile area": 0.09,
-        "Tiles needed (with waste factor)": 2523
+    "Roofing Material Estimate (Including 30% Waste)": {
+        "Roofing Area": 137.05356356445782
     },
-    "Foundation Usage Tracking": {
-        "Estimated cement required (bags) Used": 3000.0
+    "Floor Tiling Estimate (Including 30% Waste)": {
+        "12 x 12 inches": 1800,
+        "24 x 24 inches": 450,
+        "12 x 24 inches": 900,
+        "18 x 18 inches": 800
     }
 }
