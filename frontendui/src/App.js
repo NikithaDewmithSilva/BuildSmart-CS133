@@ -11,7 +11,7 @@ import Signup from "./Components/Signup";
 import Input from "./Components/Input";
 import Process from "./Components/Process";
 import Output from "./Components/Output";
-import CustomizeBOQ from "./Components/CustomizeBOQ";
+import CustomizeBoq from "./Components/CustomizeBoq";
 import Profile from "./Components/Profile";
 import MyProjects from "./Components/MyProjects";
 import ProjectPage from "./Components/ProjectPage";
@@ -63,7 +63,7 @@ const App = () => {
           <Route path="/project/:id/input" element={<Input />} />
           <Route path="/project/:id/input/process" element={<Process />} />
           <Route path="/project/:id/input/process/output" element={<Output />} />
-          <Route path="/project/:id/input/process/output/customize-boq" element={<CustomizeBOQ />} />
+          <Route path="/customize-boq/:id" element={<CustomizeBoq />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/invite-customer" element={<InviteCustomerForm />} />
           <Route path="/myProjects" element={<MyProjects />} />
