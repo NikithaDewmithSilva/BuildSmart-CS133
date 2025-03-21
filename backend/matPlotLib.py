@@ -18,6 +18,7 @@ CORS(app)
 
 BACKEND_FOLDER = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BACKEND_FOLDER, "output.json")
+TRACKING_FILE = os.path.join(BACKEND_FOLDER, "tracking_info.json")
 
 supabase_url = os.environ.get("SUPABASE_URL")
 supabase_key = os.environ.get("SUPABASE_KEY")
@@ -61,14 +62,14 @@ def save_data(data):
         }).execute()
 
         print("Saving data to local file")
-        with open(DATA_FILE, 'w') as file:
+        with open(TRACKING_FILE, 'w') as file:
             json.dump(data, file, indent=4)
         return True
     except Exception as e:
         print(f"Error saving data: {str(e)}")
         # Try to save locally if Supabase fails
         try:
-            with open(DATA_FILE, 'w') as file:
+            with open(TRACKING_FILE, 'w') as file:
                 json.dump(data, file, indent=4)
             return True
         except:

@@ -80,7 +80,7 @@ const MaterialChart = () => {
       .on(
         'postgres_changes',
         {
-          event: '*', // Listen for all events (INSERT, UPDATE, DELETE)
+          event: '*',
           schema: 'public',
           table: 'materials_data'
         },
@@ -128,7 +128,6 @@ const MaterialChart = () => {
       )
       .subscribe();
 
-    // Clean up subscription when component unmounts
     return () => {
       supabase.removeChannel(subscription);
     };
