@@ -19,20 +19,7 @@ SMTP_PASSWORD = os.getenv("GMAIL_PASSWORD")
 
 # Flask app
 app = Flask(__name__)
-
-# More specific CORS configuration
-CORS(app, resources={
-    r"/*": {
-        "origins": "http://localhost:3000",
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
-
-# Add a home route for testing
-@app.route("/", methods=["GET"])
-def home():
-    return "Server is running!"
+CORS(app)  # Enable CORS for all routes
 
 # Function to send an invitation email via Gmail SMTP
 def send_invite_email(to_email, invite_link, description=""):
@@ -47,9 +34,9 @@ def send_invite_email(to_email, invite_link, description=""):
             <style>
                 body {{ font-family: Arial, sans-serif; }}
                 .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                .header {{ background-color: #000080  ; color: white; padding: 10px; text-align: center; }}
+                .header {{ background-color: #130683  ; color: white; padding: 10px; text-align: center; }}
                 .content {{ padding: 20px; }}
-                .button {{ color: white; background-color: #000080; padding: 10px 20px;
+                 .button {{ background-color: #130683; padding: 10px 20px; color: white;
                           text-decoration: none; display: inline-block; margin-top: 20px; }}
             </style>
         </head>
@@ -94,33 +81,15 @@ def send_invite_email(to_email, invite_link, description=""):
         print(f"Failed to send email: {e}")
         return False
 
-# Handle OPTIONS request for CORS preflight
-@app.route("/send-invite", methods=["OPTIONS"])
-def handle_options():
-    response = jsonify({})
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-    return response
-
 # API: Send Invitation
 @app.route("/send-invite", methods=["POST"])
 def send_invite():
     try:
         data = request.get_json()
-        
-        # Check if data is None, which can happen with malformed JSON
-        if data is None:
-            return jsonify({"error": "Invalid JSON or Content-Type header not set to application/json"}), 400
-            
         invitee_email = data.get("invitee_email")
         project_id = data.get("project_id")
         invited_by = data.get("invited_by")
         description = data.get("description", "")  # Optional description
-        
-        # Check if required fields are present
-        if not invitee_email or not project_id or not invited_by:
-            return jsonify({"error": "Missing required fields: invitee_email, project_id, or invited_by"}), 400
 
         # Validate email format
         try:
@@ -152,12 +121,9 @@ def send_invite():
             return jsonify({"error": "Failed to send invitation email."}), 500
     
     except Exception as e:
-        print(f"Error in send_invite: {e}")  # Add debug logging
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     if not SMTP_USER or not SMTP_PASSWORD:
         print("WARNING: Email credentials not set. Please set GMAIL_USER and GMAIL_PASSWORD in .env file.")
-    # Add debug output when starting the server
-    print(f"Server starting on http://localhost:5000")
     app.run(debug=True, port=5000)
