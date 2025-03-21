@@ -438,9 +438,15 @@ def process_dxf_file(file_path):
         # Roofing Material Estimate
         print("\nRoofing Material Estimate (Including 30% Waste):")
 
-        # Floor Tiling Estimate      #nikitha
+        # Floor Tiling Estimate     
         floor_area = total_slab_area
-        
+        floor_tiling_estimate = {}  # Define the dictionary here
+        print("\nFloor Tiling Estimate (Including 30% Waste):")
+        for tile_desc, tile_area in TILE_SIZES.items():
+            adjusted_floor_area = floor_area * WASTE_FACTOR
+            num_tiles = math.ceil(adjusted_floor_area / tile_area)
+            floor_tiling_estimate[tile_desc] = num_tiles
+            print(f"{tile_desc}: {num_tiles} tiles")
 
         # Collect all results in a dictionary
         results = {
