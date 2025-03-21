@@ -200,7 +200,40 @@ def calculate_area(entity, unit_factor=1.0):
         return 0.0
 
 def infer_material(entity): 
-    
+    """Infer material type with more flexible detection."""
+    try:
+        layer_name = getattr(getattr(entity, 'dxf', None), 'layer', '').lower()
+
+        if any(keyword in layer_name for keyword in ['wall', 'partition']):
+            return "WALL"
+        elif any(door in layer_name for door in [d.lower() for d in DOOR_LABELS]):
+            return "DOOR"
+        elif any(window in layer_name for window in [w.lower() for w in WINDOW_LABELS]):
+            return "WINDOW"
+        elif any(keyword in layer_name for keyword in ['found', 'footer', 'footing']):
+            return "FOUNDATION"
+        elif any(keyword in layer_name for keyword in ['slab', 'floor']):
+            return "SLAB"
+        elif any(keyword in layer_name for keyword in ['roof', 'ceiling']):
+            return "ROOF"
+
+        if entity.dxftype() in ['TEXT', 'MTEXT']:
+            text = get_entity_text(entity).lower()
+            if any(door.lower() in text for door in DOOR_LABELS):
+                return "DOOR"
+            elif any(window.lower() in text for window in WINDOW_LABELS):
+                return "WINDOW"
+
+        if entity.dxftype() == 'LINE' or (entity.dxftype() == 'LWPOLYLINE' and not entity.is_closed):
+            return "WALL"
+        elif entity.dxftype() == 'CIRCLE' and hasattr(entity.dxf, 'radius'):
+            if entity.dxf.radius < 0.5:
+                return "COLUMN"
+
+    except Exception:
+        pass
+
+    return None
 
 def get_layer_stats(msp):   
 
