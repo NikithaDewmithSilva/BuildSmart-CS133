@@ -512,8 +512,12 @@ def process_dxf_file(file_path):
         output_path = "output.json"
         save_results_to_json(results, output_path)
         
-    except FileNotFoundError:  #nikitha
-        
+    except FileNotFoundError:  
+        print(f"Error: File '{file_path}' not found.")
+    except ezdxf.DXFStructureError as e:
+        print(f"Error: Invalid DXF file structure - {e}")
+    except Exception as e:
+        print(f"Error processing file: {e}")
         
 # Main execution point
 if __name__ == "__main__":
