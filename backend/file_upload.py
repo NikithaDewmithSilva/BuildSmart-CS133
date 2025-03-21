@@ -1,6 +1,6 @@
 import os
 from flask import request, jsonify
-from analyzer import process_dxf_file  # Import the analyzer function
+# from analyzer import process_dxf_file  # Import the analyzer function
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the 'uploads' folder exists
@@ -18,6 +18,10 @@ def handle_cad_upload():
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
 
+    return jsonify({"message": "File uploaded successfully", "file_path": file_path}), 200
+
+
+"""
     try:
         # Call the analyzer function on the uploaded file
         process_dxf_file(file_path)
@@ -32,3 +36,4 @@ def handle_cad_upload():
             "error": str(e),
             "file_path": file_path
         }), 500
+"""
