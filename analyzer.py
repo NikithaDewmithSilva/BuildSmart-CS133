@@ -4,25 +4,19 @@ import logging
 import json
 import re
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # File path to the DXF file
 FILE_PATH = r"C:\Users\atcha\OneDrive\Desktop\DXF FILE\Floor plan.dxf"
 
 # Layer names for detection
-WALL_LAYER = "xref-Bishop-Overland-08$0$A-WALL"
-FOUNDATION_LAYERS = ["xref-Bishop-Overland-08$0$S-FOOTER", "xref-Bishop-Overland-08$0$S-STEM-WALL"]
-SLAB_LAYER = "xref-Bishop-Overland-08$0$S-SLAB"
 WALL_PATTERNS = [r'.wall.', r'.partition.', r'.a-wall.', r'.walls.']
 FOUNDATION_PATTERNS = [r'.foot.', r'.found.', r'.stem.', r'.footer.', r'.foundation.']
 SLAB_PATTERNS = [r'.slab.', r'.floor.', r'.concrete.']
 ROOF_PATTERNS = [r'.roof.', r'.ceiling.']
 
 # Labels for identifying components
-DOOR_LABELS = ["D", "DOOR", "DR", "RSD", "D1", "D2"]
-WINDOW_LABELS = ["W", "WINDOW", "FW", "SW", "FL", "W1", "W2"]
+DOOR_LABELS = ["D1", "D2", "RSD", "DOOR"]
+WINDOW_LABELS = ["FW", "W1", "SW", "FL", "WINDOW"]
 
 # Configurable parameters
 WALL_HEIGHT = 2.4  # meters
@@ -465,37 +459,23 @@ def process_dxf_file(file_path):
             },
             "Wall Material Estimate (Including 30% Waste)": {
                 "Estimated bricks required": bricks_needed,
-                "Estimated cement required": {
-                    "bags": cement_needed_wall_bags,
-                    "kg": cement_needed_wall_kg
-                },
+                "Estimated cement required (50kg bags)": cement_needed_wall_bags,
                 "Estimated sand required": sand_needed_wall_cubic_m
             },
             "Foundation Material Estimate (Including 30% Waste)": {
-                "Estimated concrete volume": foundation_volume,
-                "Estimated cement required": {
-                    "bags": cement_needed_foundation_bags,
-                    "kg": cement_needed_foundation
-                },
+                "Estimated cement required (bags)": cement_needed_foundation_bags,
                 "Estimated gravel required": gravel_needed_foundation_cubic_m,
                 "Estimated sand required": sand_needed_foundation_cubic_m,
                 "Estimated steel required": steel_needed_foundation
             },
             "Slab Material Estimate (Including 30% Waste)": {
-                "Estimated concrete volume": slab_volume,
-                "Estimated cement required": {
-                    "bags": cement_needed_slab_bags,
-                    "kg": cement_needed_slab
-                },
+                "Estimated cement required (50kg bags)": cement_needed_slab_bags,
                 "Estimated gravel required": gravel_needed_slab_cubic_m,
                 "Estimated sand required": sand_needed_slab_cubic_m,
                 "Estimated steel required": steel_needed_slab
             },
             "Plaster Material Estimate (Including 30% Waste)": {
-                "Estimated cement required": {
-                    "bags": plaster_cement_bags,
-                    "kg": plaster_cement_needed_kg
-                }
+                "Estimated cement required (25kg bags)": plaster_cement_bags
             },
             "Primer Material Estimate (Including 30% Waste)": {
                 "Estimated Amount of Primer": primer_needed
