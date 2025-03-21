@@ -39,6 +39,11 @@ const CustomizeBoq = () => {
   ];
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+  
+  useEffect(() => {
     if (data) {
       setOriginalData(JSON.parse(JSON.stringify(data)));
       setCustomizedData(JSON.parse(JSON.stringify(data)));
