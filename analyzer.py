@@ -290,7 +290,14 @@ def auto_detect_layers(msp):
 
     return detected_layers 
     
-def save_results_to_json(results, output_path="output.json"):  
+def save_results_to_json(results, output_path="output.json"):
+    """Save material estimation results to a JSON file."""
+    try:
+        with open(output_path, 'w') as f:
+            json.dump(results, f, indent=4)
+        print(f"\nResults successfully saved to {output_path}")
+    except Exception as e:
+        print(f"Error saving results to JSON: {e}")  
  
 
 def process_dxf_file(file_path):
