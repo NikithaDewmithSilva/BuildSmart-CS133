@@ -48,6 +48,28 @@ PAINT_RATE = 0.1  # L/m² per coat
 PAINT_COATS = 2
 
 # Tile parameters
+TILE_SIZES = {
+    "12 x 12 inches": 0.3 * 0.3,   # 0.09 m²
+    "24 x 24 inches": 0.6 * 0.6,   # 0.36 m²
+    "12 x 24 inches": 0.3 * 0.6,   # 0.18 m²
+    "18 x 18 inches": 0.45 * 0.45  # ~0.2025 m²
+}
+
+# Roof parameters
+ROOF_PITCH_FACTOR = 1.1  # 10% increase for pitch/slope
+
+def matches_any_pattern(text, patterns):
+    """Check if the text matches any of the regex patterns."""
+    text = text.lower()
+    return any(re.search(pattern, text) for pattern in patterns)
+
+def get_entity_text(entity):
+    """Extract text content from text entities."""
+    if entity.dxftype() == 'TEXT':
+        return entity.dxf.text
+    elif entity.dxftype() == 'MTEXT':
+        return entity.text
+    return ""
 
 def calculate_area(entity, unit_factor=1.0):
     """Calculate the area of a given entity with improved error handling."""
