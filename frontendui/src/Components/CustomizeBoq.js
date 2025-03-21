@@ -302,7 +302,7 @@ const CustomizeBoq = () => {
         <span className="customize-logo">
           BUILD<span className="customize-highlight">SMART</span>
         </span>
-        <h2>Customize Bill of Quantities</h2>
+        <h1>Customize Bill of Quantities</h1>
       </div>
 
       <div className="global-customization">
