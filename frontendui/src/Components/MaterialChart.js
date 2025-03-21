@@ -20,7 +20,7 @@ const MaterialChart = () => {
     // Fetch materials data
     const fetchMaterials = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/materials");
+        const response = await fetch("http://127.0.0.1:5000/api/materials");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -55,7 +55,7 @@ const MaterialChart = () => {
     // Fetch available material types for chart options
     const fetchMaterialTypes = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/material-types");
+        const response = await fetch("http://127.0.0.1:5000/api//material-types");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -143,7 +143,7 @@ const MaterialChart = () => {
       try {
         // Add timestamp to URL to prevent caching when data changes
         const timestamp = new Date().getTime();
-        const response = await fetch(`http://localhost:5000/api/material-chart?type=${chartType}&_=${timestamp}`);
+        const response = await fetch(`http://127.0.0.1:5000/api//material-chart?type=${chartType}&_=${timestamp}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -201,7 +201,7 @@ const MaterialChart = () => {
     try {
       const usedAmount = usageData[category]?.[material] || 0;
       
-      const response = await fetch("http://localhost:5000/api/update-usage", {
+      const response = await fetch("http://127.0.0.1:5000/api/update-usage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
