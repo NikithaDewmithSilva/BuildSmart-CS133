@@ -249,8 +249,46 @@ def get_layer_stats(msp):
                 layer_stats[layer]['types'][dxftype] = 0
             layer_stats[layer]['types'][dxftype] += 1
     return layer_stats
-    
-def auto_detect_layers(msp): 
+
+def auto_detect_layers(msp):
+    """Auto-detect which layers contain walls, doors, etc."""
+    layer_stats = get_layer_stats(msp)
+    sorted_layers = sorted(layer_stats.items(), key=lambda x: x[1]['count'], reverse=True)
+
+    detected_layers = {
+        'WALL': [],
+        'DOOR': [],
+        'WINDOW': [],
+        'FOUNDATION': [],
+        'SLAB': [],
+        'ROOF': []
+    }
+
+    for layer, stats in layer_stats.items():
+        layer_lower = layer.lower()
+        if matches_any_pattern(layer_lower, WALL_PATTERNS):
+            detected_layers['WALL'].append(layer)
+        elif matches_any_pattern(layer_lower, FOUNDATION_PATTERNS):
+            detected_layers['FOUNDATION'].append(layer)
+        elif matches_any_pattern(layer_lower, SLAB_PATTERNS):
+            detected_layers['SLAB'].append(layer)
+        elif matches_any_pattern(layer_lower, ROOF_PATTERNS):
+            detected_layers['ROOF'].append(layer)
+        elif any(door.lower() in layer_lower for door in DOOR_LABELS):
+            detected_layers['DOOR'].append(layer)
+        elif any(window.lower() in layer_lower for window in WINDOW_LABELS):
+            detected_layers['WINDOW'].append(layer)
+
+    if not detected_layers['WALL']:
+        for layer, stats in sorted_layers:
+            if 'LINE' in stats['types'] and stats['types']['LINE'] > 10:
+                detected_layers['WALL'].append(layer)
+                break
+            elif 'LWPOLYLINE' in stats['types'] and stats['types']['LWPOLYLINE'] > 5:
+                detected_layers['WALL'].append(layer)
+                break
+
+    return detected_layers 
     
 def save_results_to_json(results, output_path="output.json"):  
  
