@@ -22,20 +22,20 @@ const CustomizeBoq = () => {
   // Available options for customization
   const cementOptions = [
     { name: "Standard Cement", price: marketPrices?.["Cement - 50Kg bag"]?.price || 0 },
-    { name: "Premium Cement", price: (marketPrices?.["Cement - 50Kg bag"]?.price || 0) * 1.2 },
-    { name: "Ultra Cement", price: (marketPrices?.["Cement - 50Kg bag"]?.price || 0) * 1.5 }
+    { name: "Tokyo Super", price: 1950.00 },
+    { name: "Ultratech Cement", price: 2625.00 }
   ];
 
   const paintOptions = [
     { name: "Standard Emulsion", price: marketPrices?.["Emulsion Paint"]?.price || 0 },
-    { name: "Premium Emulsion", price: (marketPrices?.["Emulsion Paint"]?.price || 0) * 1.25 },
-    { name: "Luxury Emulsion", price: (marketPrices?.["Emulsion Paint"]?.price || 0) * 1.8 }
+    { name: "Multilac Emulsion", price: 1982.00 },
+    { name: "Causeway Emultion Luxury", price: 3050.00 }
   ];
 
   const tileOptions = [
     { name: "Standard Porcelain", price: marketPrices?.["Floor Tile - Homogeneous Porcelain semi - Glazed"]?.price || 0 },
-    { name: "Premium Ceramic", price: (marketPrices?.["Floor Tile - Homogeneous Porcelain semi - Glazed"]?.price || 0) * 1.4 },
-    { name: "Luxury Marble", price: (marketPrices?.["Floor Tile - Homogeneous Porcelain semi - Glazed"]?.price || 0) * 2.5 }
+    { name: "Lanka tiles", price: 200.00 },
+    { name: "Mack Floor Tile", price: 310.00 }
   ];
 
   useEffect(() => {
@@ -273,7 +273,7 @@ const CustomizeBoq = () => {
         >
           {paintOptions.map((option, index) => (
             <option key={index} value={option.name}>
-              {option.name} (${formatNumber(option.price)})
+              {option.name} ({formatNumber(option.price)})
             </option>
           ))}
         </select>
@@ -287,7 +287,7 @@ const CustomizeBoq = () => {
         >
           {tileOptions.map((option, index) => (
             <option key={index} value={option.name}>
-              {option.name} (${formatNumber(option.price)})
+              {option.name} ({formatNumber(option.price)})
             </option>
           ))}
         </select>
@@ -316,7 +316,7 @@ const CustomizeBoq = () => {
           >
             {cementOptions.map((option, index) => (
               <option key={index} value={option.name}>
-                {option.name} (${formatNumber(option.price)}/bag)
+                {option.name} ({formatNumber(option.price)}/bag)
               </option>
             ))}
           </select>
@@ -362,11 +362,11 @@ const CustomizeBoq = () => {
                             <td>{key.charAt(0).toUpperCase() + key.slice(1)}</td>
                             <td>{formatNumber(value)}</td>
                             <td>{unit}</td>
-                            <td>${formatNumber(originalPrice)}</td>
+                            <td>{formatNumber(originalPrice)}</td>
                             <td className={isChanged ? "price-changed" : ""}>
-                              ${formatNumber(customizedPrice)}
+                              {formatNumber(customizedPrice)}
                             </td>
-                            <td>${customizedCost !== "N/A" ? customizedCost : "N/A"}</td>
+                            <td>{customizedCost !== "N/A" ? customizedCost : "N/A"}</td>
                             <td>
                               {renderMaterialDropdown(key, value)}
                             </td>
@@ -385,8 +385,8 @@ const CustomizeBoq = () => {
       <div className="customization-summary">
         <h3>Customization Summary</h3>
         <div className="summary-details">
-          <p>Original Total Cost: <span className="cost">${formatNumber(summary.originalCost)}</span></p>
-          <p>Customized Total Cost: <span className="cost">${formatNumber(summary.customizedCost)}</span></p>
+          <p>Original Total Cost: <span className="cost">Rs.{formatNumber(summary.originalCost)}</span></p>
+          <p>Customized Total Cost: <span className="cost">Rs.{formatNumber(summary.customizedCost)}</span></p>
           <p>Difference: 
             <span className={`cost ${summary.difference > 0 ? 'increased' : 'decreased'}`}>
               {summary.difference > 0 ? '+' : ''}{formatNumber(summary.difference)}
