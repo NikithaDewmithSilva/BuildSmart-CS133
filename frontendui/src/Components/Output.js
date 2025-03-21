@@ -14,6 +14,10 @@ const Output = () => {
   const [boqData, setBoqData] = useState([]);
   const navigate = useNavigate();
 
+  const handleMaterialChart = () => {
+    navigate('./material-usage-chart')
+  }
+
 const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estimation");
 
 const { id } = useParams();
@@ -272,7 +276,7 @@ const { id } = useParams();
               <button className="customize-btn">Customize the BOQ</button>
               <button className='share-btn' onClick={() => setShowInviteForm(true)}>Share</button>
               <button className="submit-btn">Submit another cad</button>
-              <button className="submit-btn">Track in real time</button>
+              <button className="submit-btn" onClick={handleMaterialChart}>Track in real time</button>
             </div>
           </div>
         </div>

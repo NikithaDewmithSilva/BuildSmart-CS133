@@ -44,5 +44,8 @@
         "Total floor (slab) area": 206.39999999999992,
         "Each tile area": 0.09,
         "Tiles needed (with waste factor)": 2523
+    },
+    "Foundation Usage Tracking": {
+        "Estimated cement required (bags) Used": 3000.0
     }
 }
