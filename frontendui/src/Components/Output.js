@@ -130,16 +130,6 @@ const handleCustomize = () => {
     return num;
   };
 
-  // Helper function to determine unit from the material key
-  const getUnitFromKey = (key) => {
-    if (key.toLowerCase().includes("cubic meters")) return "m³";
-    if (key.toLowerCase().includes("meters") || key.toLowerCase().includes("area")) return "m²";
-    if (key.toLowerCase().includes("kg")) return "kg";
-    if (key.toLowerCase().includes("liters")) return "liter";
-    if (key.toLowerCase().includes("bags")) return "bags";
-    if (key.toLowerCase().includes("tiles")) return "pcs";
-    return "";
-  };
 
   // Calculate total cost for display
   const calculateTotalCost = () => {

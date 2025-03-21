@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import "./InviteCustomerForm.css";
 
@@ -40,7 +41,7 @@ const InviteCustomerForm = ({ onClose, projectId }) => {
       }, 3000);
     } catch (error) {
       console.error('Error:', error);
-      setMessage(error.response?.data?.error || 'Failed to send invite. Please try again.');
+      setMessage(error.response?.data?.error || 'Failed to send invitation. Please try again.');
     } finally {
       setLoading(false);
     }
