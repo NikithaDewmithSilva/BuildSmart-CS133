@@ -2,7 +2,7 @@ import os
 import uuid
 import smtplib
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify
+from flask import Blueprint, request, jsonify
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email_validator import validate_email, EmailNotValidError
@@ -17,16 +17,17 @@ SMTP_PORT = 587
 SMTP_USER = os.getenv("GMAIL_USER")
 SMTP_PASSWORD = os.getenv("GMAIL_PASSWORD")
 
-# Flask app
-app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+app = Blueprint("share_access", __name__)  # Convert to Blueprint
+CORS(app)
 
 # Function to send an invitation email via Gmail SMTP
+
+
 def send_invite_email(to_email, invite_link, description=""):
     try:
         # Create the email content
         subject = "BuildSmart BOQ Project Invitation"
-        
+
         # HTML body with styling
         html_body = f"""
         <html>
@@ -56,15 +57,15 @@ def send_invite_email(to_email, invite_link, description=""):
         </body>
         </html>
         """
-        
+
         # Plain text body as fallback
         text_body = f"You have been invited to access a BOQ project. Click the link below to accept the invite:\n\n{invite_link}"
-        
+
         msg = MIMEMultipart('alternative')
         msg['From'] = SMTP_USER
         msg['To'] = to_email
         msg['Subject'] = subject
-        
+
         # Attach both plain text and HTML versions
         msg.attach(MIMEText(text_body, 'plain'))
         msg.attach(MIMEText(html_body, 'html'))
@@ -73,8 +74,9 @@ def send_invite_email(to_email, invite_link, description=""):
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.starttls()  # Secure the connection using TLS
             server.login(SMTP_USER, SMTP_PASSWORD)  # Log in to Gmail
-            server.sendmail(SMTP_USER, to_email, msg.as_string())  # Send the email
-        
+            server.sendmail(SMTP_USER, to_email,
+                            msg.as_string())  # Send the email
+
         print(f"Email sent to {to_email}")
         return True
     except Exception as e:
@@ -82,6 +84,8 @@ def send_invite_email(to_email, invite_link, description=""):
         return False
 
 # API: Send Invitation
+
+
 @app.route("/send-invite", methods=["POST"])
 def send_invite():
     try:
@@ -119,11 +123,6 @@ def send_invite():
             })
         else:
             return jsonify({"error": "Failed to send invitation email."}), 500
-    
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-if __name__ == "__main__":
-    if not SMTP_USER or not SMTP_PASSWORD:
-        print("WARNING: Email credentials not set. Please set GMAIL_USER and GMAIL_PASSWORD in .env file.")
-    app.run(debug=True, port=5000)
