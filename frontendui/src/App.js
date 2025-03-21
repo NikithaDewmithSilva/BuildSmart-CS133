@@ -63,7 +63,7 @@ const App = () => {
           <Route path="/project/:id/input" element={<Input />} />
           <Route path="/project/:id/input/process" element={<Process />} />
           <Route path="/project/:id/input/process/output" element={<Output />} />
-          <Route path="/customize-boq/:id" element={<CustomizeBoq />} />
+          <Route path="/project/:id/input/process/output/customize" element={<CustomizeBoq />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/invite-customer" element={<InviteCustomerForm />} />
           <Route path="/myProjects" element={<MyProjects />} />

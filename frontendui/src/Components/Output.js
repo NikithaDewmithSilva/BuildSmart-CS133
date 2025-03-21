@@ -62,7 +62,7 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
   // Function to handle customization of BOQ
 const handleCustomize = () => {
   // Make sure we pass both the marketPrices and data as state
-  navigate(`/customize-boq/${id}`, { 
+  navigate(`/project/${id}/input/process/output/customize`, { 
     state: { 
       marketPrices, 
       data 

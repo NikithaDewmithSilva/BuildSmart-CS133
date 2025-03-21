@@ -247,7 +247,7 @@ const CustomizeBoq = () => {
       if (error) throw error;
       
       alert("Customizations saved successfully!");
-      navigate(`/output/${id}`);
+      navigate(`/project/${id}/input/process/output`);
     } catch (error) {
       console.error("Error saving customizations:", error);
       alert("There was an error saving your customizations.");
@@ -256,7 +256,7 @@ const CustomizeBoq = () => {
 
   // Handle cancel button click
   const handleCancel = () => {
-    navigate(`/output/${id}`);
+    navigate(`/project/${id}/input/process/output`);
   };
 
   // Render the material dropdown if it's customizable
