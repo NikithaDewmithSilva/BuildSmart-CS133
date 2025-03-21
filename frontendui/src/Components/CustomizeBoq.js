@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { supabase } from "../supabase";
 import "./CustomizeBoq.css";
+import { generateBoqPdf } from "../utils/pdfUtils";
 
 const CustomizeBoq = () => {
   const location = useLocation();
@@ -42,7 +42,7 @@ const CustomizeBoq = () => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
-  
+
   useEffect(() => {
     if (data) {
       setOriginalData(JSON.parse(JSON.stringify(data)));
@@ -230,32 +230,26 @@ const CustomizeBoq = () => {
     }));
   };
 
-  // Handle save button click
-  const handleSave = async () => {
-    try {
-      // Create object to save to database
-      const customizationData = {
-        project_id: id,
-        cement_brand: cementBrand,
-        paint_types: paintTypes,
-        tile_types: tileTypes,
-        original_cost: summary.originalCost,
-        customized_cost: summary.customizedCost,
-        created_at: new Date()
-      };
-      
-      // Save to Supabase
-      const { data, error } = await supabase
-        .from('customizations')
-        .insert([customizationData]);
-        
-      if (error) throw error;
-      
-      alert("Customizations saved successfully!");
+  // Handle save and download button click
+  const handleSaveAndDownload = () => {
+    const success = generateBoqPdf(
+      data,
+      marketPrices, 
+      id, 
+      summary, 
+      cementBrand, 
+      paintTypes, 
+      tileTypes, 
+      formatNumber, 
+      getMaterialInfo, 
+      getUnitFromKey, 
+      formatTitle
+    );
+    
+    if (success) {
       navigate(`/project/${id}/input/process/output`);
-    } catch (error) {
-      console.error("Error saving customizations:", error);
-      alert("There was an error saving your customizations.");
+    } else {
+      alert("There was an error generating your PDF. Please try again.");
     }
   };
 
@@ -401,7 +395,7 @@ const CustomizeBoq = () => {
       </div>
 
       <div className="action-buttons">
-        <button className="save-btn" onClick={handleSave}>Save Customizations</button>
+        <button className="save-btn" onClick={handleSaveAndDownload}>Save and Download</button>
         <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
       </div>
     </div>
