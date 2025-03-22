@@ -88,30 +88,6 @@ const ProjectPage = () => {
                                 This is a genearated BOQ
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                This an uploaded cad
-                            </td>
-                            <td>
-                                This is a genearated BOQ
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                This an uploaded cad
-                            </td>
-                            <td>
-                                This is a genearated BOQ
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                This an uploaded cad
-                            </td>
-                            <td>
-                                This is a genearated BOQ
-                            </td>
-                        </tr>
                     </thead>
                     
                 </table>
