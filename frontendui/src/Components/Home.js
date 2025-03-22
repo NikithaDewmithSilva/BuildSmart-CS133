@@ -13,13 +13,8 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
-  }
-
-  const closeModal = () => {
-    setModalOpen(false);
-  }
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -31,8 +26,7 @@ const Home = () => {
       try {
         setLoading(true);
         setError(null);
-        
-        // Fetch user data from 'user_profiles' table
+
         const { data, error } = await supabase
           .from('user_profiles')
           .select('user_name')
@@ -43,7 +37,7 @@ const Home = () => {
           console.error('Error fetching user data:', error);
           setError('Failed to load user profile');
         } else {
-          setUserName(data?.user_name || 'User'); // Default to 'User' if name is missing
+          setUserName(data?.user_name || 'User');
         }
       } catch (err) {
         console.error('Unexpected error:', err);
@@ -55,30 +49,10 @@ const Home = () => {
 
     fetchUserName();
   }, [user]);
- 
-  const handleCreateProject = () => {
-    // Implement project creation functionality
-    console.log('Create new project');
-    // navigate('/create-project');
-  };
 
-  const handleViewProjects = () => {
-    // Implement view projects functionality
-    console.log('View my projects');
-    // navigate('/my-projects');
-  };
-
-  const handleContactUs = () => {
-    // Implement contact functionality
-    console.log('Let\'s talk clicked');
-    // navigate('/contact');
-  };
-
-  const handleGetStarted = () => {
-    navigate('/signup');
-  };
-
-
+  const handleViewProjects = () => navigate('./MyProjects');
+  const handleContactUs = () => navigate('./Contact');
+  const handleGetStarted = () => navigate('/signup');
 
   return (
     <div className="home-container">
@@ -90,40 +64,47 @@ const Home = () => {
         <div>
           {user ? (
             <div className="loggedin-home">
-              {/* Content for logged-in users */}
-              
-              <h1>Welcome back, {userName}!</h1>
-              
-              <div className="home-buttons logged-in">
-                <button className="home-btn" onClick={openModal}>Create a New Project</button>
-                <button className="home-btn" onClick={handleViewProjects}>View My Projects</button>
+              <div className="logged-in-content">
+                <h1>Welcome back, {userName}!</h1><br />
+                <div className="home-buttons logged-in">
+                  <button className="home-btn" onClick={openModal}>
+                    Create a New Project
+                  </button>
+                  <button className="home-btn" onClick={handleViewProjects}>
+                    View My Projects
+                  </button>
+                </div>
               </div>
-
-              {/* Modal component (Passes isOpen and onClose props) */}
               <ProjectModal isOpen={isModalOpen} closeModal={closeModal} />
             </div>
           ) : (
-            // Content for non-logged-in users
             <div className="home-content">
               <div className="home-text">
                 <h1>Take Your First Step To Build Your Dream House With Us</h1>
-
                 <div className="home-buttons">
                   <button className="home-btn" onClick={handleContactUs}>
                     Let's Talk
                   </button>
-
                   <button className="home-btn" onClick={handleGetStarted}>
                     Let's Begin
                   </button>
                 </div>
               </div>
-              
-              <div className="home-image">
-                <img src="coverpage-photo.jpg" alt="Construction Worker" />
-              </div>
+              {/* <div className="home-video">
+                <video autoPlay loop muted playsInline>
+                  <source src="Homev1.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div> */}
             </div>
           )}
+
+          <div className="fullscreen-background-video">
+            <video autoPlay loop muted playsInline>
+              <source src="HomeVideo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       )}
     </div>

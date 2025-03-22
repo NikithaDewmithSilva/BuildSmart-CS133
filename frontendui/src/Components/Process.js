@@ -7,7 +7,7 @@ const Process = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/output");
+      navigate("./output");
     }, 5000);
                                                          // temporarily set to 5 seconds
     return () => clearTimeout(timer); 
@@ -24,14 +24,14 @@ const Process = () => {
 
       <div className="process-content">
         <p className="loading-text">
-          PLEASE WAIT A WHILE <br /> WE CUSTOMIZE YOUR <br /> BILL OF QUANTITIES
+          Please wait a while we customize your <br /> Bill of Quantities
         </p>
 
         <div className="coffee-icon">
-          <img src="process1.png" alt="Coffee Break" />
+          <img src="/process1.png" alt="Coffee Break" />
         </div>
 
-        <p className="break-text">HAVE A COFFEE <br /> AND TAKE A BREAK</p>
+        <p className="break-text">Have a coffee <br /> and take a break</p>
 
         <div className="loading-spinner"></div>
       </div>

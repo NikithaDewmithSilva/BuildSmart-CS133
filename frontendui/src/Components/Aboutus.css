@@ -11,32 +11,25 @@
   color: white;
   padding: 40px;
   min-height: 100vh;
-}
-
-.aboutus-image {
-  flex: 1 1 50%;
-  display: flex;
-  justify-content: center;
-  padding: 100px;
-}
-
-.aboutus-image img {
-  width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background-image: url(../../public/aboutus-background.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
 .aboutus-content {
   flex: 1 1 50%;
   padding: 20px;
   max-width: 600px;
+  text-align: center;
 }
 
 .aboutus-title {
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 20px;
   color: #00d1ff;
+  text-align: center;
+  padding-top: 40px;
 }
 
 .aboutus-content p {

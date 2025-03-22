@@ -4,49 +4,54 @@ import "./Services.css";
 const Services = () => {
   return (
     <div className="services">
-      <img src="/logo.png" alt="Logo" className="logo-image" />
       
-       <br />
+      <video autoPlay loop muted className="background-video">
+        <source src="/Servicesv1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-      <h2 className="services-subtitle">WHAT WE CAN DO FOR YOU</h2> 
-      
-      <br />
-      <br />
+      {/* Made the background dark / easy access to read*/}
+      <div className="services-overlay"></div>
 
-      <div className="services-container">
+      <div className="services-content">
+        <img src="/logo.png" alt="Logo" className="logo-image" />
+        <h2 className="services-subtitle">WHAT WE CAN DO FOR YOU</h2>
 
-        {/* 1st service Square */}
-        <div className="service-card1">
-          <div className="service-icon">
-            <img src="services1.svg" alt="CAD Design" className="icon-svg" />
+        <div className="services-container">
+          {/* 1st Service Card */}
+          <div className="service-card">
+            <div className="service-icon">
+              <img src="services1.svg" alt="CAD Design" className="icon-svg" />
+            </div>
+            <h3 className="service-title">CAD Design Analysis</h3>
+            <p className="service-text">
+              Analyze your CAD design and generate a quick and accurate BOQ.
+            </p>
           </div>
-          <p className="service-text"><br />
-            ANALYZE YOUR CAD DESIGN AND GENERATE A QUICK AND ACCURATE BOQ
-          </p>
-        </div>
 
-        {/* 2nd service Square */}
-        <div className="service-card2">
-          <div className="service-icon">
-            <img src="services2.svg" alt="Estimation" className="icon-svg" />
+          {/* 2nd Service Card */}
+          <div className="service-card">
+            <div className="service-icon">
+              <img src="services2.svg" alt="Estimation" className="icon-svg" />
+            </div>
+            <h3 className="service-title">Material & Cost Estimation</h3>
+            <p className="service-text">
+              Get total material, cost, and time estimation with trackability.
+            </p>
           </div>
-          <p className="service-text"><br />
-            GIVES THE USER A TOTAL MATERIAL, COST, AND TIME ESTIMATION WITH A
-            TRACKABILITY FEATURE
-          </p>
-        </div>
 
-        {/* 3rd service Square */}
-        <div className="service-card3">
-          <div className="service-icon">
-            <img src="services3.svg" alt="Customization" className="icon-svg" />
+          {/* 3rd Service Card */}
+          <div className="service-card">
+            <div className="service-icon">
+              <img src="services3.svg" alt="Customization" className="icon-svg" />
+            </div>
+            <h3 className="service-title">Customization</h3>
+            <p className="service-text">
+              Customize prices based on your preferred materials.
+            </p>
           </div>
-          <p className="service-text"><br />
-            ALLOWS THE USER TO CUSTOMIZE THE PRICE ACCORDING TO THE LIKING OF
-            THE TYPE OF MATERIALS
-          </p>
         </div>
-      </div><br /><br /><br /><br />
+      </div>
     </div>
   );
 };

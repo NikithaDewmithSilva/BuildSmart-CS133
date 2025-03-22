@@ -5,27 +5,25 @@ const AboutUs = () => {
   return (
     <div className="aboutus-container">
       <div className="aboutus-image">
-        <img
-          src="aboutus1.png" alt="Discussion"/>
       </div>
       <div className="aboutus-content">
         <h2 className="aboutus-title">ABOUT US</h2><br />
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-          turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
-          fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus
-          elit sed risus. Maecenas eget condimentum velit. Sit amet feugiat
-          lectus. Class aptent taciti sociosqu ad litora torquent per conubia
-          nostra, per inceptos himenaeos. Praesent auctor purus luctus enim
-          egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.
-          Suspendisse ac rhoncus nisl, eu tempor urna.
+        At BuildSmart, we are revolutionizing the construction and design process by seamlessly 
+        integrating design, procurement, and execution. Our advanced platform transforms CAD designs into 
+        accurate Bills of Quantities (BOQs), eliminating manual calculations and ensuring precise cost estimation. 
+        Beyond automation, we empower customers with real-time customization, allowing them to personalize materials, 
+        finishes, and design elements before construction begins. This interactive approach not only enhances customer 
+        satisfaction but also reduces costly revisions and last-minute changes.
         </p>
         <p>
-          Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque
-          quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo
-          vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu
-          vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus,
-          porttitor eu mauris a, blandit ultrices nibh.
+        
+        For project managers, our system provides real-time material tracking, offering complete visibility into 
+        inventory levels, procurement status, and resource allocation. By preventing shortages, reducing waste, and 
+        keeping costs under control, our platform optimizes project efficiency. With automation, customization, and 
+        live tracking combined, we create a collaborative space where architects, contractors, and clients can work in sync. 
+        Our mission is to eliminate inefficiencies, enhance transparency, and streamline communication, ensuring that every 
+        project is executed with accuracy, speed, and ease.
         </p>
       </div>
     </div>

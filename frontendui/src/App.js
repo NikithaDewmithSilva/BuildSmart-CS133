@@ -11,8 +11,14 @@ import Signup from "./Components/Signup";
 import Input from "./Components/Input";
 import Process from "./Components/Process";
 import Output from "./Components/Output";
+import CustomizeBoq from "./Components/CustomizeBoq";
 import Profile from "./Components/Profile";
+import MyProjects from "./Components/MyProjects";
+import ProjectPage from "./Components/ProjectPage";
 import Footer from "./Components/Footer";
+import InviteCustomerForm from "./Components/InviteCustomerForm";
+import MaterialChart from "./Components/MaterialChart";
+
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -42,6 +48,7 @@ const App = () => {
     setUser(null);
   };
 
+
   return (
     <Router>
       <div>
@@ -53,13 +60,17 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/input" element={<Input />} />
-          <Route path="/process" element={<Process />} />
-          <Route path="/output" element={<Output />} />
+          <Route path="/project/:id/input" element={<Input />} />
+          <Route path="/project/:id/input/process" element={<Process />} />
+          <Route path="/project/:id/input/process/output" element={<Output />} />
+          <Route path="/project/:id/input/process/output/customize" element={<CustomizeBoq />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/invite-customer" element={<InviteCustomerForm />} />
+          <Route path="/myProjects" element={<MyProjects />} />
+          <Route path="/project/:id" element={<ProjectPage />} />
+          <Route path="/project/:id/input/process/output/material-usage-chart" element={<MaterialChart/>} />
         </Routes>
       </div>
-
       <Footer/>
     </Router>
   );
