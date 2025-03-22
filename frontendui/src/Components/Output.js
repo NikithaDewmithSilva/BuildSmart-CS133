@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Output.css";
 import { supabase } from "../supabase";
 import InviteCustomerForm from "./InviteCustomerForm";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const Output = () => {
   const [fileProcessed, setFileProcessed] = useState(false);
@@ -53,10 +55,48 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
     }, 2000);
   };
 
-  // Function to handle download of BOQ
   const handleDownload = () => {
-    alert("Download functionality will be implemented here");
-    // This would typically generate a PDF or Excel file and trigger a download
+    const input = document.querySelector('.material-estimates');
+    const pdfName = `BOQ_Project_${id}_${new Date().toISOString().slice(0, 10)}.pdf`;
+    
+    // Define PDF options
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4'
+    });
+    
+    // Add title and project info to PDF
+    pdf.setFontSize(18);
+    pdf.text('Bill of Quantities (BOQ)', 15, 15);
+    pdf.setFontSize(12);
+    pdf.text(`Project ID: ${id}`, 15, 25);
+    pdf.text(`Generated on: ${new Date().toLocaleString()}`, 15, 32);
+    
+    // Create an image of the table and add it to the PDF
+    html2canvas(input, {
+      scale: 2, // Higher scale for better quality
+      useCORS: true,
+      logging: false
+    }).then(canvas => {
+      // Add some space for the header
+      const imgData = canvas.toDataURL('image/png');
+      
+      // Calculate dimensions to fit on page while maintaining aspect ratio
+      const imgWidth = 270; // A4 landscape width (297mm) minus margins
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      
+      // Add the image to the PDF, starting at y=40 to leave room for the header
+      pdf.addImage(imgData, 'PNG', 15, 40, imgWidth, imgHeight);
+      
+      // Add footer with total cost
+      const totalCost = calculateTotalCost();
+      pdf.setFontSize(14);
+      pdf.text(`Total Estimated Cost: $${totalCost}`, 15, pdf.internal.pageSize.height - 10);
+      
+      // Save the PDF
+      pdf.save(pdfName);
+    });
   };
 
   // Function to handle customization of BOQ
