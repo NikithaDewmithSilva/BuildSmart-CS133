@@ -56,47 +56,123 @@ const formatTitle = (key) => key.replace(/_/g, " ").replace(" Estimate", " Estim
   };
 
   const handleDownload = () => {
-    const input = document.querySelector('.material-estimates');
+    // Check if data is available
+    if (!data) {
+      alert("Please wait for the data to load before downloading.");
+      return;
+    }
+  
     const pdfName = `BOQ_Project_${id}_${new Date().toISOString().slice(0, 10)}.pdf`;
     
-    // Define PDF options
+
     const pdf = new jsPDF({
       orientation: 'landscape',
       unit: 'mm',
-      format: 'a4'
+      format: 'a3'
     });
     
-    // Add title and project info to PDF
     pdf.setFontSize(18);
     pdf.text('Bill of Quantities (BOQ)', 15, 15);
     pdf.setFontSize(12);
     pdf.text(`Project ID: ${id}`, 15, 25);
     pdf.text(`Generated on: ${new Date().toLocaleString()}`, 15, 32);
     
-    // Create an image of the table and add it to the PDF
-    html2canvas(input, {
-      scale: 2, // Higher scale for better quality
-      useCORS: true,
-      logging: false
-    }).then(canvas => {
-      // Add some space for the header
-      const imgData = canvas.toDataURL('image/png');
+    const columns = {
+      material: { x: 15, width: 80 },
+      quantity: { x: 100, width: 40 },
+      unit: { x: 145, width: 40 },
+      price: { x: 190, width: 40 },
+      cost: { x: 235, width: 70 }
+    };
+    
+    const fitTextInColumn = (text, columnWidth) => {
+      const charWidth = pdf.getStringUnitWidth(text) * pdf.getFontSize() / pdf.internal.scaleFactor;
+      if (charWidth <= columnWidth) {
+        return text;
+      }
       
-      // Calculate dimensions to fit on page while maintaining aspect ratio
-      const imgWidth = 270; // A4 landscape width (297mm) minus margins
-      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let maxLength = Math.floor(text.length * (columnWidth / charWidth));
+      if (maxLength < 5) maxLength = 5; 
       
-      // Add the image to the PDF, starting at y=40 to leave room for the header
-      pdf.addImage(imgData, 'PNG', 15, 40, imgWidth, imgHeight);
+      return text.substring(0, maxLength - 3) + '...';
+    };
+    
+    const addTableHeaders = (pdf, y) => {
+      pdf.setFont(undefined, 'bold');
+      pdf.text("Materials", columns.material.x, y);
+      pdf.text("Quantities", columns.quantity.x, y);
+      pdf.text("Units", columns.unit.x, y);
+      pdf.text("Price per unit", columns.price.x, y);
+      pdf.text("Cost", columns.cost.x, y);
+      pdf.setFont(undefined, 'normal');
+    
+      pdf.setDrawColor(200, 200, 200);
+      pdf.line(15, y + 2, 300, y + 2);
       
-      // Add footer with total cost
-      const totalCost = calculateTotalCost();
+      return y + 10;
+    };
+    
+    let y = 45;
+    
+    Object.keys(data).forEach((category, categoryIndex) => {
+      if (y > 180 && categoryIndex > 0) {
+        pdf.addPage();
+        y = 20;
+      }
+      
+      pdf.setFont(undefined, 'bold');
       pdf.setFontSize(14);
-      pdf.text(`Total Estimated Cost: $${totalCost}`, 15, pdf.internal.pageSize.height - 10);
+      pdf.text(formatTitle(category), 15, y);
+      pdf.setFontSize(12);
+      y += 10;
+
+      y = addTableHeaders(pdf, y);
       
-      // Save the PDF
-      pdf.save(pdfName);
+      Object.entries(data[category] || {}).forEach(([key, value]) => {
+        if (y > 200) {
+          pdf.addPage();
+          y = 20;
+          y = addTableHeaders(pdf, y);
+        }
+        
+        const materialInfo = getMaterialInfo(key) || {};
+        const unit = materialInfo.unit || "";
+        const price = materialInfo.price !== "Price not found" ? materialInfo.price : "N/A";
+        const cost = materialInfo.price !== "Price not found" ? calculateCost(value, materialInfo.price) : "N/A";
+        
+        const materialName = key.charAt(0).toUpperCase() + key.slice(1);
+        const fittedMaterialName = fitTextInColumn(materialName, columns.material.width);
+        
+        const quantityText = formatNumber(value).toString();
+        const priceText = price !== "N/A" ? formatNumber(price).toString() : "N/A";
+        const costText = cost !== "N/A" ? cost : "N/A";
+        
+        pdf.text(fittedMaterialName, columns.material.x, y);
+        pdf.text(quantityText, columns.quantity.x, y, { align: 'left' });
+        pdf.text(unit, columns.unit.x, y);
+        pdf.text(priceText, columns.price.x, y, { align: 'left' });
+        pdf.text(costText, columns.cost.x, y, { align: 'left' });
+        
+        
+        pdf.setDrawColor(230, 230, 230);
+        pdf.line(15, y + 4, 300, y + 4);
+        
+        y += 12; 
+      });
+      
+      y += 8; 
     });
+    
+ 
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(15, y, 285, 15, 'F');
+    
+    pdf.setFont(undefined, 'bold');
+    pdf.setFontSize(14);
+    pdf.text(`Total Estimated Cost: $${calculateTotalCost()}`, 15, y + 10);
+    
+    // Save PDF
+    pdf.save(pdfName);
   };
 
   // Function to handle customization of BOQ
