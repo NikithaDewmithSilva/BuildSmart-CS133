@@ -258,6 +258,24 @@ const CustomizeBoq = () => {
     navigate(`/project/${id}/input/process/output`);
   };
 
+  const handleNavigateToMaterialTracking = () => {
+    navigate(`/project/${id}/input/process/output/material-usage-chart`);
+  };
+
+  const handleClearCustomizations = () => {
+    // Reset cement brand to default
+    setCementBrand("Standard Cement");
+    
+    // Reset paint types
+    setPaintTypes({});
+    
+    // Reset tile types
+    setTileTypes({});
+    
+    // Recalculate costs with default values
+    calculateCustomizedCost("Standard Cement", {}, {});
+  };
+
   // Render the material dropdown if it's customizable
   const renderMaterialDropdown = (materialKey, value) => {
     if (materialKey.toLowerCase().includes("cement")) {
@@ -396,7 +414,9 @@ const CustomizeBoq = () => {
 
       <div className="action-buttons">
         <button className="save-btn" onClick={handleSaveAndDownload}>Save and Download</button>
-        <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
+        <button className="track-btn" onClick={handleNavigateToMaterialTracking}>Track Materials</button>
+        <button className="clear-btn" onClick={handleClearCustomizations}>Clear Customizations</button>
+        <button className="cancel-btn" onClick={handleCancel}>Go Back</button>
       </div>
     </div>
   );
