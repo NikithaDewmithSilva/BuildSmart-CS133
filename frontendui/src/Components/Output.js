@@ -339,7 +339,7 @@ const handleCustomize = () => {
           <div className="output-summary">
             <p className="grand-total">
               Your estimated cost is: <br />
-              ${calculateTotalCost()}
+              LKR {calculateTotalCost()}
             </p>
             
             <div className="output-buttons">
