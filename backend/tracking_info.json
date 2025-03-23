@@ -1,0 +1,53 @@
+{
+    "Summary": {
+        "Walls": 427,
+        "Total Wall Area": 37256.8845336533,
+        "Detected Doors": 415,
+        "Detected Windows": 1,
+        "Foundations": 92,
+        "Total Foundation Area": 340377.33304589003,
+        "Slabs": 0,
+        "Total Slab Area": 124.59414869496163,
+        "Total Floor Area": 124.59414869496163,
+        "Roofing Area": 137.05356356445782,
+        "Total Area (Walls + Foundations + Slabs)": 377758.8117282383
+    },
+    "Wall Material Estimate (Including 30% Waste)": {
+        "Estimated bricks required": 2421697,
+        "Estimated cement required (50kg bags)": 9686.789978749859,
+        "Estimated sand required": 1210.8487473437324
+    },
+    "Foundation Material Estimate (Including 30% Waste)": {
+        "Estimated cement required (50kg bags)": 849581.8232825415,
+        "Estimated gravel required": 84958.18232825416,
+        "Estimated sand required": 53098.86395515885,
+        "Estimated steel required": 13274715.988789711
+    },
+    "Slab Material Estimate (Including 30% Waste)": {
+        "Estimated cement required (50kg bags)": 155.4934975713121,
+        "Estimated gravel required": 15.54934975713121,
+        "Estimated sand required": 9.718343598207007,
+        "Estimated steel required": 1579.2308347086387
+    },
+    "Plaster Material Estimate (Including 30% Waste)": {
+        "Estimated cement required (25kg bags)": 8718.110980874872
+    },
+    "Primer Material Estimate (Including 30% Waste)": {
+        "Estimated Amount of Primer": 11624.147974499829
+    },
+    "Paint Material Estimate (Including 30% Waste)": {
+        "Estimated Amount of Paint": 9686.789978749859
+    },
+    "Roofing Material Estimate (Including 30% Waste)": {
+        "Roofing Area": 137.05356356445782
+    },
+    "Floor Tiling Estimate (Including 30% Waste)": {
+        "12 x 12 inches": 1800,
+        "24 x 24 inches": 450,
+        "12 x 24 inches": 900,
+        "18 x 18 inches": 800
+    },
+    "Floor Tiling Estimate (Including 30% Waste) Usage Tracking": {
+        "12 x 24 inches Used": 0.0
+    }
+}
