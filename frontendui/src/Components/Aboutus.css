@@ -1,101 +1,110 @@
-*{
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+* {
   font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Main Container */
 .aboutus-container {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, #2d3e6f, #1e2947);
-  color: white;
-  padding: 40px;
-  min-height: 100vh;
-  background-image: url(../../public/aboutus-background.jpg);
-  background-size: cover;
-  background-position: center;
-}
-
-.aboutus-content {
-  flex: 1 1 50%;
-  padding: 20px;
-  max-width: 600px;
   text-align: center;
+  height: 100vh;
+  background: url("../../public/aboutus-background.jpg") no-repeat center center/cover;
+  overflow: hidden;
 }
 
+/* Gradient Overlay (Subtle) */
+.aboutus-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+}
+
+/* Glassmorphism Effect for Content Box */
+.aboutus-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.aboutus-content:hover {
+  transform: scale(1.05);
+}
+
+/* Title Styling */
 .aboutus-title {
   font-size: 2.5rem;
-  font-weight: 500;
-  margin-bottom: 20px;
+  font-weight: 600;
   color: #00d1ff;
-  text-align: center;
-  padding-top: 40px;
-}
-
-.aboutus-content p {
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.6;
   margin-bottom: 20px;
 }
 
+/* Paragraphs */
+.aboutus-content p {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #ffffff;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+/* Highlighted Text */
+.highlight {
+  font-weight: 500;
+  color: #00d1ff;
+}
+
+/* Responsive Design */
 @media (max-width: 1024px) {
-  .aboutus-container {
-    flex-direction: column;
-    padding: 20px;
-  }
-
-  .aboutus-image {
-    max-width: 80%;
-    margin-bottom: 20px;
-  }
-
   .aboutus-content {
-    max-width: 90%;
-    padding: 15px;
-    text-align: center;
-  }
-
-  .aboutus-title {
-    font-size: 2rem;
-    margin-bottom: 15px;
-  }
-
-  .aboutus-content p {
-    font-size: 0.95rem;
+    max-width: 600px;
+    padding: 30px;
   }
 }
 
 @media (max-width: 768px) {
   .aboutus-title {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
+    font-size: 2rem;
   }
 
   .aboutus-content p {
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .aboutus-content {
+    max-width: 90%;
+    padding: 25px;
   }
 }
 
 @media (max-width: 480px) {
   .aboutus-title {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
   }
 
   .aboutus-content p {
-    font-size: 0.85rem;
-  }
-
-  .aboutus-container {
-    padding: 10px;
-  }
-
-  .aboutus-image img {
-    width: 100%;
+    font-size: 0.9rem;
   }
 
   .aboutus-content {
-    max-width: 100%;
+    padding: 20px;
   }
 }
