@@ -7,7 +7,6 @@ const Input = () => {
     const [fileName, setFileName] = useState("");
     const [isFileUploaded, setIsFileUploaded] = useState(false);
     const [file, setFile] = useState(null); // Store the selected file
-
     // Uploading the CAD Design
     const handleFileUpload = (event) => {
         const selectedFile = event.target.files[0];
@@ -82,15 +81,17 @@ const Input = () => {
             <div className="content">
                 <div className="text-section">
                     <h1>
-                        <span className="highlight">READY</span> TO START WITH YOUR <br />
-                        <span className="highlight">FIRST STEPS</span> IN THE
-                        <br />COMPLETION OF YOUR <br />DREAM<span className="highlight"> HOUSE</span> 
+                        <span className="highlight">Ready</span> to start with your <br />
+                        <span className="highlight">first steps</span> in the
+                        <br />completion of your <br />dream<span className="highlight"> house</span> 
                     </h1>
                     <br /><br /><br />
-                    <img src="/input1.svg" alt="arrow" className="input-img" />
-                    <p>
-                        <span className="highlight">ENTER</span> YOUR <span className="highlight">CAD DESIGN</span> IN THE <span className="highlight">ABOVE BOX</span>
-                    </p>
+                    <div className="enter-text-section">
+                        <p className="enter-text">
+                            <span className="highlight">Enter</span> your <span className="highlight">CAD DESIGN</span> in the <span className="highlight">above box</span>
+                        </p>
+                        <img src="/input1.svg" alt="arrow" className="input-img" />
+                    </div>
                 </div>
                 <div className="upload-container">
                     <div className="upload-box" onDragOver={handleDragOver} onDrop={handleDrop}>
