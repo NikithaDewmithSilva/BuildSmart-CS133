@@ -1,111 +1,141 @@
-*{
+* {
   font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .navbar {
-    display: flex;
-    position: fixed;
-    width: 100%;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #0e1a3b;
+  color: white;
+  height: 70px;
+  z-index: 5000;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 50px;
+  width: auto;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 50px;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1em;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #00d1ff;
+  font-weight: 500;
+}
+
+.nav-link::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #00d1ff;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-member-btn {
+  background: transparent;
+  color: #00d1ff;
+  border: 2px solid #00d1ff;
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-member-icon {
+  border-radius: 50%;
+  padding: 10px 12px;
+  font-size: 20px;
+}
+
+.nav-member-btn:hover {
+  background-color: #00d1ff;
+  color: #0e1a3b;
+}
+
+/* Mobile vision */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #0e1a3b;
-    color: white;
-    height: 70px;
-    font-family: Arial, sans-serif;
-    z-index: 5000;
   }
-  
-  .navbar-logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo-image {
-    height: 50px;
-    width: auto;
-  }
-  
+
   .navbar-links {
-    display: flex;
-    align-items: center;
-    gap: 60px;
-  }
-  
-  .nav-link {
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    position: relative;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
-    color: #00d1ff;
-  }
-  
-  .nav-link.active {
-    font-weight: bold;
-  }
-  
-  .nav-link.active::after,
-  .nav-link:hover::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: #00d1ff;
     position: absolute;
-    bottom: -5px;
+    top: 70px;
+    left: -100%;
+    width: 200px;
+    height: 100vh;
+    background-color: #0e1a3b;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 20px;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .navbar-links.active {
     left: 0;
-    transition: width 0.3s ease;
   }
 
-  .navbar-right{
-    padding-left: 300px;
-  }
-  
-  .nav-member-btn {
-    background: transparent;
-    color: #00d1ff;
-    border: 2px solid #00d1ff;
-    padding: 8px 20px;
-    margin-right: 60px;
-    border-radius: 5px;
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  .menu-toggle {
+    display: block;
   }
 
-  .nav-member-icon{
-    border-radius: 50%;
-    padding: 10px 12px;
-    font-size: 20px;
+  .nav-link {
+    font-size: 18px;
+    padding: 10px;
   }
-  
-  .nav-member-btn:hover {
-    background-color: #00d1ff;
-    color: #0e1a3b;
+
+  .navbar-right {
+    margin-right: 10px;
   }
-  
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px;
-    }
-  
-    .navbar-links {
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      margin-top: 10px;
-    }
-  
-    .navbar-right {
-      margin-top: 10px;
-      width: 100%;
-      text-align: center;
-    }
-  }
+}

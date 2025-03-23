@@ -1,59 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Navigate, useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = ({ user }) => {
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const navigate = useNavigate(); 
-  
+  const handleProfileClick = () => navigate("/profile");
+  const handleLoginClick = () => navigate("/login");
 
-  const handleProfileClick = () => {
-    navigate('/profile');
-  }
-
-  const handleLoginClick = () => {
-    navigate('/login');
-  }
   return (
-    <div className="navbar">
-      {/* what to be displayed in the navbar if the user has logged in */}
-
+    <nav className="navbar">
       <div className="navbar-logo">
         <img src="/logo.png" alt="Logo" className="logo-image" />
       </div>
 
-      <div className="navbar-links">
-        <Link to="/" className="nav-link">
-          Home
-        </Link>
-        <Link to="/about" className="nav-link">
-          About Us
-        </Link>
-        <Link to="/services" className="nav-link">
-          Services
-        </Link>
-        <Link to="/contact" className="nav-link">
-          Contact Us
-        </Link>
+      {/* The mobile vision when the screen gets small */}
+      <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <i className={`fa ${isMenuOpen ? "fa-times" : "fa-bars"}`}></i>
+      </button>
 
+      {/*Links */}
+      <div className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/about" className="nav-link">About Us</Link>
+        <Link to="/services" className="nav-link">Services</Link>
+        <Link to="/contact" className="nav-link">Contact Us</Link>
+      </div>
+
+      {/* Profile/Login Button */}
+      <div className="navbar-right">
         {user ? (
-        <div className="navbar-right">
-          <button className="nav-member-btn nav-member-icon" onClick={handleProfileClick}><i class="fa-regular fa-user"></i></button>
-        </div>
+          <button className="nav-member-btn nav-member-icon" onClick={handleProfileClick}>
+            <i className="fa-regular fa-user"></i>
+          </button>
         ) : (
-        <div className="navbar-right">
           <button className="nav-member-btn" onClick={handleLoginClick}>Login</button>
-        </div>
         )}
-      </div> 
-
-      {/* what to be displayed if the user hasn't logged in yet */}
-  
-    </div>
+      </div>
+    </nav>
   );
 };
-
-
 
 export default Navbar;

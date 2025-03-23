@@ -72,7 +72,8 @@ const Signup = () => {
       setIsLoading(false);
     }
   };
-
+    
+  //Form filling Part
   return (
     <div className="signup-page">
       <div className="signup-left">
