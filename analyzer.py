@@ -41,7 +41,8 @@ STEEL_FOUNDATION_RATIO = 100  # kg/m³
 SAND_DENSITY = 1600  # kg/m³
 GRAVEL_DENSITY = 1500  # kg/m³
 PLASTER_THICKNESS = 0.015  # meters
-PLASTER_CEMENT_RATE = 4.5  # kg/m² (cement-only plaster)
+PLASTER_CEMENT_RATE = 4.5  # kg/m² (cement for plaster)
+PLASTER_SAND_RATE = 13.5  # kg/m² (sand for plaster, added for 1:3 mix)
 PRIMER_RATE = 0.12  # L/m² per coat
 PRIMER_COATS = 2    # Number of primer coats
 PAINT_RATE = 0.1  # L/m² per coat
@@ -299,7 +300,6 @@ def save_results_to_json(results, output_path="output.json"):
     except Exception as e:
         print(f"Error saving results to JSON: {e}")  
  
-
 def process_dxf_file(file_path):
     """Process the DXF file and calculate material estimates with improved compatibility."""
     try:
@@ -421,7 +421,7 @@ def process_dxf_file(file_path):
         plaster_cement_bags = plaster_cement_needed_kg / 25
 
         print("\nPlaster Material Estimate (Including 30% Waste):")
-        print(f"Estimated cement required: {plaster_cement_bags:.2f} bags (25 kg each, {plaster_cement_needed_kg:.2f} kg)")
+        print(f"Estimated Plaster required: {plaster_cement_bags:.2f} bags (25 kg each, {plaster_cement_needed_kg:.2f} kg)")
 
         # Primer Material Estimate
         primer_needed = total_wall_area * PRIMER_RATE * PRIMER_COATS * WASTE_FACTOR
@@ -440,7 +440,7 @@ def process_dxf_file(file_path):
 
         # Floor Tiling Estimate     
         floor_area = total_slab_area
-        floor_tiling_estimate = {}  # Define the dictionary here
+        floor_tiling_estimate = {}
         print("\nFloor Tiling Estimate (Including 30% Waste):")
         for tile_desc, tile_area in TILE_SIZES.items():
             adjusted_floor_area = floor_area * WASTE_FACTOR
@@ -448,7 +448,7 @@ def process_dxf_file(file_path):
             floor_tiling_estimate[tile_desc] = num_tiles
             print(f"{tile_desc}: {num_tiles} tiles")
 
-        # Collect all results in a dictionary
+        # Collect all results in a dictionary with the desired format
         results = {
             "Summary": {
                 "Walls": walls,
@@ -465,37 +465,23 @@ def process_dxf_file(file_path):
             },
             "Wall Material Estimate (Including 30% Waste)": {
                 "Estimated bricks required": bricks_needed,
-                "Estimated cement required": {
-                    "bags": cement_needed_wall_bags,
-                    "kg": cement_needed_wall_kg
-                },
+                "Estimated cement required (50kg bags)": cement_needed_wall_bags,
                 "Estimated sand required": sand_needed_wall_cubic_m
             },
             "Foundation Material Estimate (Including 30% Waste)": {
-                "Estimated concrete volume": foundation_volume,
-                "Estimated cement required": {
-                    "bags": cement_needed_foundation_bags,
-                    "kg": cement_needed_foundation
-                },
+                "Estimated cement required (50kg bags)": cement_needed_foundation_bags,
                 "Estimated gravel required": gravel_needed_foundation_cubic_m,
                 "Estimated sand required": sand_needed_foundation_cubic_m,
                 "Estimated steel required": steel_needed_foundation
             },
             "Slab Material Estimate (Including 30% Waste)": {
-                "Estimated concrete volume": slab_volume,
-                "Estimated cement required": {
-                    "bags": cement_needed_slab_bags,
-                    "kg": cement_needed_slab
-                },
+                "Estimated cement required (50kg bags)": cement_needed_slab_bags,
                 "Estimated gravel required": gravel_needed_slab_cubic_m,
                 "Estimated sand required": sand_needed_slab_cubic_m,
                 "Estimated steel required": steel_needed_slab
             },
             "Plaster Material Estimate (Including 30% Waste)": {
-                "Estimated cement required": {
-                    "bags": plaster_cement_bags,
-                    "kg": plaster_cement_needed_kg
-                }
+                "Estimated Plaster required (25kg bags)": plaster_cement_bags
             },
             "Primer Material Estimate (Including 30% Waste)": {
                 "Estimated Amount of Primer": primer_needed
