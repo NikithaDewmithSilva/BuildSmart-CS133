@@ -83,7 +83,7 @@ const ProjectCard = ({ project, onDelete }) => {
         </div>
       </div>
 
-      {/* Project Delete Modal */}
+      {/* Project Deleting Part */}
       {showDeleteModal && (
         <div className='delete-modal-background'>
           <div className='delete-modal'>
