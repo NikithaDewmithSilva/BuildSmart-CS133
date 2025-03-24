@@ -109,22 +109,13 @@ def send_invite():
         # Generate a unique invite token
         invite_token = str(uuid.uuid4())
         
-        # Using the exact URL structure from your application
-        # From your example: http://localhost:3000/project/64c60ffe-8184-4d2e-a0e4-bd02d9978bfa/input/process/output
-        invite_link = f"{FRONTEND_BASE_URL}/project/{project_id}/input/process/output?access_token={invite_token}"
+        # FIXED: Ensure URL structure matches what the frontend expects
+        invite_link = f"{FRONTEND_BASE_URL}/project/{project_id}/input/process/output?token={invite_token}"
         
         # Send the invitation email with the optional description
         if send_invite_email(invitee_email, invite_link, description):
             # In a real implementation, save the invitation details to a database
             # This is critical for the link to work when clicked - you must implement this
-            # db.invitations.insert_one({
-            #    "token": invite_token,
-            #    "project_id": project_id,
-            #    "invited_by": invited_by,
-            #    "invitee_email": invitee_email,
-            #    "created_at": datetime.utcnow(),
-            #    "status": "pending"
-            # })
             
             return jsonify({
                 "message": f"Invitation sent successfully to {invitee_email}",
