@@ -17,6 +17,7 @@ body {
     padding-top: 20px;
     height: auto;
     min-height: 100vh;
+    padding: 100px;
 }
 
 .App {
@@ -47,6 +48,7 @@ body {
     font-size: 26px;
     font-weight: bold;
     color: white;
+    padding-top: 100px;
 }
 
 .output-highlight {

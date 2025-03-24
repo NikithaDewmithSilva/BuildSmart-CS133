@@ -16,13 +16,13 @@ SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USER = os.getenv("GMAIL_USER")
 SMTP_PASSWORD = os.getenv("GMAIL_PASSWORD")
+# New environment variable for the frontend base URL - default value is for development
+FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
 
-app = Blueprint("share_access", __name__)  # Convert to Blueprint
+app = Blueprint("share_access", __name__)
 CORS(app)
 
 # Function to send an invitation email via Gmail SMTP
-
-
 def send_invite_email(to_email, invite_link, description=""):
     try:
         # Create the email content
@@ -84,8 +84,6 @@ def send_invite_email(to_email, invite_link, description=""):
         return False
 
 # API: Send Invitation
-
-
 @app.route("/send-invite", methods=["POST"])
 def send_invite():
     try:
@@ -108,15 +106,17 @@ def send_invite():
         except ValueError:
             return jsonify({"error": "Invalid UUID format"}), 400
 
-        # Generate a unique invite token (in a real implementation, store it in the database)
+        # Generate a unique invite token
         invite_token = str(uuid.uuid4())
-
-        # Generate invite link (this would typically link to a frontend page that handles the invitation)
-        invite_link = f"http://localhost:3000/output/{project_id}?token={invite_token}"
-
+        
+        # FIXED: Ensure URL structure matches what the frontend expects
+        invite_link = f"{FRONTEND_BASE_URL}/project/{project_id}/input/process/output?token={invite_token}"
+        
         # Send the invitation email with the optional description
         if send_invite_email(invitee_email, invite_link, description):
             # In a real implementation, save the invitation details to a database
+            # This is critical for the link to work when clicked - you must implement this
+            
             return jsonify({
                 "message": f"Invitation sent successfully to {invitee_email}",
                 "invite_link": invite_link
