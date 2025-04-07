@@ -48,7 +48,7 @@
     color: #02152f;
 }
 
-/* 📱 Responsive Design */
+/* Responsive Design */
 @media (max-width: 768px) {
     .social-links {
         gap: 1rem;
